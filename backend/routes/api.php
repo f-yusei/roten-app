@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\OrderController;
 
-Route::resource('posts', PostController::class)->only([
+Route::resource('orders', OrderController::class)->only([
    'destroy', 'show', 'store', 'update'
 ]);
