@@ -7,12 +7,6 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
-   public function show($slug)
-   {
-       return view('post', [
-           'post' => Order::where('slug', '=', $slug)->first()
-       ]);
-   }
 
    public function store(Request $request)
    {
