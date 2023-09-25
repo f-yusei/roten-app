@@ -34,6 +34,11 @@ return [
     */
 
     'connections' => [
+        'mongodb' => [
+        'driver' => 'mongodb',
+        'dsn' => env('DB_DSN'),
+        'database' => 'RotenApp',
+    ],
 
         'sqlite' => [
             'driver' => 'sqlite',
