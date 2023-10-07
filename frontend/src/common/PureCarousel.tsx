@@ -6,12 +6,12 @@ export const PureCarousel: FC<{ cardInformation: OrderInformation[] }> = ({
   cardInformation,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const size = 400;
+  const size = 440;
   return (
     <HStack alignItems={'stretch'}>
       <HStack
         bg="gray.100"
-        w={6}
+        w={16}
         justifyContent="center"
         cursor={'pointer'}
         onClick={() => {
@@ -55,7 +55,7 @@ export const PureCarousel: FC<{ cardInformation: OrderInformation[] }> = ({
       </HStack>
       <HStack
         bg="gray.100"
-        w={6}
+        w={16}
         justifyContent="center"
         cursor={'pointer'}
         onClick={() => {
