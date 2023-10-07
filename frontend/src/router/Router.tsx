@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import NotFound from '../NotFound';
-import { ReceptionPage } from '../components/pages/reception';
+import { ReceptionPage } from '../components/pages/Reception';
 
 export const Router: FC = () => {
   return (
