@@ -39,7 +39,7 @@ function PayDrawer() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>注文番号を入力して検索</DrawerHeader>
+          <DrawerHeader>注文番号で履歴を検索</DrawerHeader>
 
           <DrawerBody>
             <Input placeholder="入力して..." />
