@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 
-function OrderHistoryDrawer() {
+function PayDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
 
@@ -39,7 +39,7 @@ function OrderHistoryDrawer() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>注文番号で履歴を検索</DrawerHeader>
+          <DrawerHeader>注文番号を入力して検索</DrawerHeader>
 
           <DrawerBody>
             <Input placeholder="入力して..." />
@@ -57,4 +57,4 @@ function OrderHistoryDrawer() {
   );
 }
 
-export default OrderHistoryDrawer;
+export default PayDrawer;
