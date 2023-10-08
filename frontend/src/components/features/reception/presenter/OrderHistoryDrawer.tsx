@@ -1,6 +1,5 @@
 import {
   useDisclosure,
-  IconButton,
   Drawer,
   DrawerOverlay,
   DrawerContent,
@@ -12,27 +11,23 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
-import { Ticket } from '../../../ui/icon';
 
-function TicketIdInputDrawer() {
+function PayDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
 
   return (
     <>
-      <IconButton
-        aria-label="ticket"
-        position="fixed"
-        bottom="40px"
-        right="40px"
-        icon={<Ticket />}
-        opacity={0.7}
-        isRound={true}
-        fontSize="300px"
+      <Button
+        fontSize="24px"
         size={{ base: '100px', sm: '150px' }}
+        m={2}
+        p={8}
         ref={btnRef.current}
         onClick={onOpen}
-      />
+      >
+        注文履歴
+      </Button>
       <Drawer
         size="lg"
         isOpen={isOpen}
@@ -43,7 +38,7 @@ function TicketIdInputDrawer() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>前売り券番号を入力してください</DrawerHeader>
+          <DrawerHeader>注文番号を入力して検索</DrawerHeader>
 
           <DrawerBody>
             <Input placeholder="入力して..." />
@@ -61,4 +56,4 @@ function TicketIdInputDrawer() {
   );
 }
 
-export default TicketIdInputDrawer;
+export default PayDrawer;
