@@ -1,4 +1,4 @@
-import ReceptionUI from '../presenter/Reception';
+import ReceptionUI from '../presenter/ReceptionUI';
 
 const ReceptionContainer = () => {
   return <ReceptionUI />;
