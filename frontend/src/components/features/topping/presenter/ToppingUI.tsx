@@ -1,44 +1,33 @@
-import { Box, Card, CardBody, HStack, Stack } from '@chakra-ui/react';
+import { Card, CardBody, Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
 
 const ToppingUI = () => {
+  const receptions = [
+    ['ソース', 'メンタイ'],
+    ['２ソース', '３メンタイ'],
+    ['４ソース', '1メンタイ'],
+    ['ソース', 'メンタイ'],
+    ['ソース', 'メンタイ'],
+    ['ソース', 'メンタイ'],
+    ['ソース', 'メンタイ'],
+    ['ソース', 'メンタイ'],
+    ['ソース', 'メンタイ'],
+  ];
   return (
     <div>
-      <Stack>
-        <HStack>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>ソース</h1>
-              <h1>メンタイ</h1>
-            </CardBody>
-          </Card>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>2 ソース</h1>
-              <h1>3 メンタイ</h1>
-            </CardBody>
-          </Card>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>4 ソース</h1>
-              <h1>1 メンタイ</h1>
-            </CardBody>
-          </Card>
-        </HStack>
-        <Box border="1px" borderColor={'gray.300'} />
-        <HStack>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>ソース</h1>
-              <h1>メンタイ</h1>
-            </CardBody>
-          </Card>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>ソース</h1>
-              <h1>メンタイ</h1>
-            </CardBody>
-          </Card>
+      <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+        {receptions.slice(0, 5).map((reception, index) => (
+          <GridItem key={index}>
+            <Card minW={'sm'} minH={'xs'}>
+              <CardBody>
+                {reception.map((item, itemIndex) => (
+                  <div key={itemIndex}>{item}</div>
+                ))}
+              </CardBody>
+            </Card>
+          </GridItem>
+        ))}
+        <GridItem key={5}>
           <PureCarousel
             cardInformation={[
               {
@@ -61,75 +50,10 @@ const ToppingUI = () => {
                 menu: 'ソース',
                 topping: 'メンタイ',
               },
-              {
-                orderNumber: 5,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 6,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 7,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 8,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 9,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 10,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 11,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 12,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 13,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 14,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 15,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 16,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 17,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
             ]}
           />
-        </HStack>
-      </Stack>
+        </GridItem>
+      </Grid>
     </div>
   );
 };
