@@ -8,7 +8,7 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import PayDrawer from './OrderHistoryDrawer';
+import OrderHistoryDrawer from './OrderHistoryDrawer';
 import { useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -31,17 +31,12 @@ type Topping = {
 
 const ReceptionUI = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const target = e.target;
-    const value = target.checked;
-    const name = target.name;
-    console.log(name, value);
-  };
+
   return (
     <Box maxHeight="100vh">
       <HStack>
         <VStack>
-          <PayDrawer />
+          <OrderHistoryDrawer />
           <HStack>
             <Button
               fontSize={{ base: '50px', sm: '24px' }}
@@ -161,7 +156,19 @@ const ReceptionUI = () => {
                 ...orders,
                 {
                   id: v4(),
-                  name: 'セット',
+                  name: 'ソース',
+                  toppings: {
+                    ソース: true,
+                    マヨ: true,
+                    青のり: true,
+                    かつお節: true,
+                  },
+                  isSet: true,
+                  price: 500,
+                },
+                {
+                  id: v4(),
+                  name: 'メンタイ',
                   toppings: {
                     ソース: true,
                     メンタイ: true,
@@ -183,18 +190,43 @@ const ReceptionUI = () => {
             {orders.map((order) =>
               //オーダーネームがセットの場合は<SetCard />を表示。それ以外は<Card />を表示
               order.isSet ? (
-                <SetCard />
+                <HStack>
+                  <Box
+                    h="9vh"
+                    w="2vw"
+                    bg="red.400"
+                    borderRadius={10}
+                    color={'white'}
+                    p={1}
+                  >
+                    <h2>セット</h2>
+                  </Box>
+                  <SetCard menuName={order.name} />
+                </HStack>
               ) : (
                 <Card w={'54vw'} minH={'8vh'} m={2}>
                   <h2>{order.name}</h2>
                   <HStack>
                     <CheckboxGroup>
-                      {Object.keys(order.toppings).map((topping) => (
+                      {Object.keys(order.toppings).map((topping, i) => (
                         <Checkbox
                           colorScheme="green"
-                          value={topping}
-                          onChange={handleChange}
-                          key={topping}
+                          onChange={(e) =>
+                            setOrders(
+                              orders.map((o) =>
+                                o.id === order.id
+                                  ? {
+                                      ...o,
+                                      toppings: {
+                                        ...o.toppings,
+                                        [topping]: e.target.checked,
+                                      },
+                                    }
+                                  : o,
+                              ),
+                            )
+                          }
+                          key={i}
                           defaultChecked
                         >
                           {topping}
@@ -238,49 +270,52 @@ const ReceptionUI = () => {
   );
 };
 
-const SetCard = () => {
+// TODO 削除ボタンを追加する
+const SetCard = ({ menuName }: { menuName: string }) => {
   return (
-    <HStack>
-      <Box h="16vh" w="2vw" bg="red.400" borderRadius={6}>
-        セット
-      </Box>
-      <Stack>
-        <Card w={'52vw'} minH={'8vh'} m={2}>
-          <h2>ソース</h2>
-          <HStack>
-            <Checkbox defaultChecked colorScheme="green">
-              ソース
-            </Checkbox>
-            <Checkbox defaultChecked colorScheme="green">
-              マヨ
-            </Checkbox>
-            <Checkbox defaultChecked colorScheme="green">
-              青のり
-            </Checkbox>
-            <Checkbox defaultChecked colorScheme="green">
-              かつお節
-            </Checkbox>
-          </HStack>
-        </Card>
-        <Card w={'52vw'} minH={'8vh'} m={2}>
-          <h2>メンタイ</h2>
-          <HStack>
-            <Checkbox defaultChecked colorScheme="green">
-              ソース
-            </Checkbox>
-            <Checkbox defaultChecked colorScheme="green">
-              メンタイ
-            </Checkbox>
-            <Checkbox defaultChecked colorScheme="green">
-              チーズ
-            </Checkbox>
-            <Checkbox defaultChecked colorScheme="green">
-              かつお節
-            </Checkbox>
-          </HStack>
-        </Card>
-      </Stack>
-    </HStack>
+    <>
+      {menuName === 'ソース' ? (
+        <Stack>
+          <Card w={'52vw'} minH={'8vh'}>
+            <h2>ソース</h2>
+            <HStack>
+              <Checkbox defaultChecked colorScheme="green">
+                ソース
+              </Checkbox>
+              <Checkbox defaultChecked colorScheme="green">
+                マヨ
+              </Checkbox>
+              <Checkbox defaultChecked colorScheme="green">
+                青のり
+              </Checkbox>
+              <Checkbox defaultChecked colorScheme="green">
+                かつお節
+              </Checkbox>
+            </HStack>
+          </Card>
+        </Stack>
+      ) : (
+        <Stack>
+          <Card w={'52vw'} minH={'8vh'}>
+            <h2>メンタイ</h2>
+            <HStack>
+              <Checkbox defaultChecked colorScheme="green">
+                ソース
+              </Checkbox>
+              <Checkbox defaultChecked colorScheme="green">
+                メンタイ
+              </Checkbox>
+              <Checkbox defaultChecked colorScheme="green">
+                チーズ
+              </Checkbox>
+              <Checkbox defaultChecked colorScheme="green">
+                かつお節
+              </Checkbox>
+            </HStack>
+          </Card>
+        </Stack>
+      )}
+    </>
   );
 };
 
