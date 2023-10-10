@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 
-function PayDrawer() {
+function OrderHistoryDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
 
@@ -57,4 +57,4 @@ function PayDrawer() {
   );
 }
 
-export default PayDrawer;
+export default OrderHistoryDrawer;
