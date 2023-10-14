@@ -11,6 +11,7 @@ import {
 import OrderHistoryDrawer from './OrderHistoryDrawer';
 import { useState } from 'react';
 import { v4 } from 'uuid';
+import PayDrawer from './Payment';
 
 type Order = {
   id: string;
