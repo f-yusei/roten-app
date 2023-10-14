@@ -1,5 +1,5 @@
 import { Box, Button, Card, HStack, Stack, VStack } from '@chakra-ui/react';
-import PayDrawer from './OrderHistoryDrawer';
+import PayDrawer from './Payment';
 
 const ReceptionUI = () => {
   return (
@@ -92,6 +92,7 @@ const ReceptionUI = () => {
             >
               お会計
             </Button>
+            <PayDrawer />
           </HStack>
         </Card>
       </HStack>
