@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Button,
   Card,
   Checkbox,
   CheckboxGroup,
@@ -9,7 +8,6 @@ import {
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import OrderHistoryDrawer from './OrderHistoryDrawer';
 import { Grid, GridItem } from '@chakra-ui/react';
 import { useState } from 'react';
 import { v4 } from 'uuid';
@@ -29,6 +27,8 @@ type Topping = {
   メンタイ?: boolean;
   チーズ?: boolean;
 };
+import PayDrawer from './Payment';
+import OrderHistoryDrawer from './OrderHistoryDrawer';
 
 const ReceptionUI = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -248,6 +248,7 @@ const ReceptionUI = () => {
             >
               お会計
             </Button>
+            <PayDrawer />
           </HStack>
         </Card>
       </HStack>
