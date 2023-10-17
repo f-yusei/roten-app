@@ -7,6 +7,10 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
+    public function getAll()
+    {
+        return Order::all();
+    }
 
     public function store(Request $request)
     {
@@ -18,11 +22,28 @@ class OrderController extends Controller
 
         $post->save();
 
-        return response()->json(["result" => "ok"], 201);
+        return response()->json(["result" => "Stored Successfully! :)"], 201);
     }
 
-    public function getAll()
+    public function update(Request $request, $updateId)
+   {
+       $post = Order::find($updateId);
+       $post->menu = $request->menu;
+       $post->arranges = $request->arranges;
+       $post->orderState = $request->orderState;
+       $post->save();
+
+       return response()->json(["result" => "Updated Successfully! :p"], 201);       
+   }
+    
+    public function destroy($destroyId)
     {
-        return Order::all();
+     $destroy = Order::find($destroyId);
+     $destroy->delete();
+
+     return response()->json([
+        "_id" => "$destroyId",
+        "result" => "Destroyed Successfully! :D"
+     ], 200);       
     }
 }
