@@ -16,6 +16,7 @@ const Calculator = () => {
     setValue(value.slice(0, -1));
   };
 
+  //百円券を使用する関数
   const useTicket = () => {
     if (parseInt(value, 10) < 100) {
       setValue('');
