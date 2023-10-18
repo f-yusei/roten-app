@@ -240,15 +240,6 @@ const ReceptionUI = () => {
                 orders.reduce((sum, order) => sum + order.price, 0)
               }
             </h2>
-            <Button
-              fontSize={{ base: '50px', sm: '24px' }}
-              h={'12vh'}
-              w={{ base: '100px', sm: '200px' }}
-              p={4}
-              m={4}
-            >
-              お会計
-            </Button>
             <PayDrawer />
           </HStack>
         </Card>
