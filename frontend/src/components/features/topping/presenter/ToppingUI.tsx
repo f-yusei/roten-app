@@ -1,32 +1,58 @@
-import { Card, CardBody, Grid, GridItem } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
+import OrderConfirmationModal from '../../reception/presenter/OrderConfirmationModal';
+
+type Order = {
+  menus: string[];
+  orderState: 'waiting' | 'available' | 'finished';
+};
 
 const ToppingUI = () => {
-  const receptions = [
-    ['ソース', 'メンタイ'],
-    ['２ソース', '３メンタイ'],
-    ['４ソース', '1メンタイ'],
-    ['ソース', 'メンタイ'],
-    ['ソース', 'メンタイ'],
-    ['ソース', 'メンタイ'],
-    ['ソース', 'メンタイ'],
-    ['ソース', 'メンタイ'],
-    ['ソース', 'メンタイ'],
+  const orders: Order[] = [
+    {
+      menus: ['ソース', 'メンタイ', 'ソース'],
+      orderState: 'available',
+    },
+    {
+      menus: ['２ソース', '３メンタイ'],
+      orderState: 'available',
+    },
+    {
+      menus: ['４ソース', '1メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
   ];
   return (
     <div>
       <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-        {receptions.slice(0, 5).map((reception, index) => (
-          <GridItem key={index}>
-            <Card minW={'sm'} minH={'xs'}>
-              <CardBody>
-                {reception.map((item, itemIndex) => (
-                  <div key={itemIndex}>{item}</div>
-                ))}
-              </CardBody>
-            </Card>
-          </GridItem>
-        ))}
+        {orders
+          .filter((order) => order.orderState === 'waiting')
+          .slice(0, 5)
+          .map((order, index) => (
+            <GridItem key={index}>
+              <OrderConfirmationModal order={order} />
+            </GridItem>
+          ))}
         <GridItem key={5}>
           <PureCarousel
             cardInformation={[

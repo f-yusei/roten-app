@@ -11,17 +11,39 @@ import {
   Card,
   ModalFooter,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { FC } from 'react';
 
-function OrderConfirmationModal() {
+export type OrderConfirmationModalProps = {
+  order: {
+    menus: string[];
+    orderState: 'waiting' | 'available' | 'finished';
+  };
+};
+
+const OrderConfirmationModal: FC<OrderConfirmationModalProps> = ({ order }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
+  useEffect(() => {
+    console.log(isOpen);
+    console.log(order);
+  }, [isOpen]);
+
+  const completeTopping = () => {
+    order.orderState = 'available';
+    onClose();
+  };
 
   return (
     <>
-      <Button size="lg" onClick={onOpen}>
-        注文を確定
+      <Button minW={'sm'} minH={'xs'} onClick={onOpen}>
+        <VStack>
+          {order.menus.map((item, index) => (
+            <div key={index}>{item}</div>
+          ))}
+        </VStack>
       </Button>
+
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -66,14 +88,15 @@ function OrderConfirmationModal() {
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
-              注文をせずに戻る
+              戻る
             </Button>
-            <Button variant="ghost">注文を確定する</Button>
+            <Button variant="ghost" onClick={() => completeTopping()}>
+              トッピングを完了する
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
   );
-}
-
+};
 export default OrderConfirmationModal;
