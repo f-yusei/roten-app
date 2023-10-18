@@ -1,44 +1,59 @@
-import { Box, Card, CardBody, HStack, Stack } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
+import ToppingInformationModal from './ToppingInformationModal';
+
+type Order = {
+  menus: string[];
+  orderState: 'waiting' | 'available' | 'finished';
+};
 
 const ToppingUI = () => {
+  const orders: Order[] = [
+    {
+      menus: ['ソース', 'メンタイ', 'ソース'],
+      orderState: 'available',
+    },
+    {
+      menus: ['２ソース', '３メンタイ'],
+      orderState: 'available',
+    },
+    {
+      menus: ['４ソース', '1メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
+    {
+      menus: ['ソース', 'メンタイ'],
+      orderState: 'waiting',
+    },
+  ];
   return (
     <div>
-      <Stack>
-        <HStack>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>ソース</h1>
-              <h1>メンタイ</h1>
-            </CardBody>
-          </Card>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>2 ソース</h1>
-              <h1>3 メンタイ</h1>
-            </CardBody>
-          </Card>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>4 ソース</h1>
-              <h1>1 メンタイ</h1>
-            </CardBody>
-          </Card>
-        </HStack>
-        <Box border="1px" borderColor={'gray.300'} />
-        <HStack>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>ソース</h1>
-              <h1>メンタイ</h1>
-            </CardBody>
-          </Card>
-          <Card minW={'sm'} minH={'xs'}>
-            <CardBody>
-              <h1>ソース</h1>
-              <h1>メンタイ</h1>
-            </CardBody>
-          </Card>
+      <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+        {orders
+          .filter((order) => order.orderState === 'waiting')
+          .slice(0, 5)
+          .map((order, index) => (
+            <GridItem key={index}>
+              <ToppingInformationModal order={order} />
+            </GridItem>
+          ))}
+        <GridItem key={5}>
           <PureCarousel
             cardInformation={[
               {
@@ -61,75 +76,10 @@ const ToppingUI = () => {
                 menu: 'ソース',
                 topping: 'メンタイ',
               },
-              {
-                orderNumber: 5,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 6,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 7,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 8,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 9,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 10,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 11,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 12,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 13,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 14,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 15,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 16,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 17,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
             ]}
           />
-        </HStack>
-      </Stack>
+        </GridItem>
+      </Grid>
     </div>
   );
 };
