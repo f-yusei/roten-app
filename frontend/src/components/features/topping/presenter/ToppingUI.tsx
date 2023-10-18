@@ -1,6 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
-import OrderConfirmationModal from '../../reception/presenter/OrderConfirmationModal';
+import ToppingInformationModal from './ToppingInformationModal';
 
 type Order = {
   menus: string[];
@@ -50,7 +50,7 @@ const ToppingUI = () => {
           .slice(0, 5)
           .map((order, index) => (
             <GridItem key={index}>
-              <OrderConfirmationModal order={order} />
+              <ToppingInformationModal order={order} />
             </GridItem>
           ))}
         <GridItem key={5}>
