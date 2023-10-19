@@ -1,4 +1,4 @@
-export type ValidOrder = {
+export type ValidOrderType = {
   orderNumber: number;
   menu: string;
   arranges: string[];
@@ -6,7 +6,7 @@ export type ValidOrder = {
   created_at?: string;
 };
 
-export type Order = {
+export type OrderType = {
   orderNumber?: number;
   menu?: string;
   arranges?: string[];
