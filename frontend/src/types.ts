@@ -3,7 +3,7 @@ export type ValidOrderType = {
   menu: string;
   arranges: string[];
   orderState: 'waiting' | 'available' | 'finished';
-  created_at?: string;
+  created_at?: Date;
 };
 
 export type OrderType = {
@@ -11,5 +11,5 @@ export type OrderType = {
   menu?: string;
   arranges?: string[];
   orderState?: 'waiting' | 'available' | 'finished';
-  created_at?: string;
+  created_at?: Date;
 };
