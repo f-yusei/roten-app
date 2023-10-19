@@ -7,9 +7,9 @@ export type ValidOrder = {
 };
 
 export type Order = {
-  orderNumber: number;
-  menu: string;
-  arranges: string[];
+  orderNumber?: number;
+  menu?: string;
+  arranges?: string[];
   orderState?: 'waiting' | 'available' | 'finished';
   created_at?: string;
 };
