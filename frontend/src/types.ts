@@ -1,5 +1,8 @@
 export type OrderInformation = {
-  orderNumber: number;
+  _id: string;
   menu: string;
-  topping: string;
+  arranges: string[];
+  orderState: 'waiting' | 'available' | 'finished';
+  updated_at: Date;
+  created_at: Date;
 };
