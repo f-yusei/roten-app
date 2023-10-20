@@ -1,3 +1,4 @@
+
 export type ValidOrderType = {
   orderNumber: number;
   menu: string;
@@ -12,4 +13,3 @@ export type OrderType = {
   arranges?: string[];
   orderState?: 'waiting' | 'available' | 'finished';
   created_at?: Date;
-};
