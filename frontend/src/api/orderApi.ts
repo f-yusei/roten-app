@@ -1,5 +1,6 @@
 import apiClient from './axiosClient';
 
+//TODO: add type
 const orderApi = {
   getAll: () => apiClient.get('/orders'),
   store: (params: any) => apiClient.post('/orders', params),
