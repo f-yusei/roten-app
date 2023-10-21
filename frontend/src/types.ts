@@ -9,10 +9,12 @@ export type OrderToppingType = {
 export type OrderInformationType = {
   _id: string;
   woodenNuber: number;
+
   orderState: 'waiting' | 'available' | 'finished' | 'discarded';
   orderStateLogs?: OrderStateLog[];
   menus: MenuInformation[];
 };
+
 //トッピング画面のためのオーダーの型
 export type OrderType = {
   _id: string;

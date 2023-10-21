@@ -11,7 +11,6 @@ import {
 import { Grid, GridItem } from '@chakra-ui/react';
 import { useState } from 'react';
 import { v4 } from 'uuid';
-import PayDrawer from './Payment';
 
 type Order = {
   id: string;
