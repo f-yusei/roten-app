@@ -13,12 +13,10 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { FC } from 'react';
+import { OrderType } from '../../../../types';
 
 export type ToppingInformationModalProps = {
-  order: {
-    menus: string[];
-    orderState: 'waiting' | 'available' | 'finished';
-  };
+  order: OrderType;
 };
 
 const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
@@ -26,10 +24,7 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
-  useEffect(() => {
-    console.log(isOpen);
-    console.log(order);
-  }, [isOpen]);
+  useEffect(() => {}, []);
 
   const completeTopping = () => {
     order.orderState = 'available';
@@ -40,8 +35,15 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
     <>
       <Button minW={'sm'} minH={'xs'} onClick={onOpen}>
         <VStack>
-          {order.menus.map((item, index) => (
-            <div key={index}>{item}</div>
+          {order.menus.map((menu, index) => (
+            <VStack>
+              <div key={index}>{menu.name}</div>
+              <div key={index}>
+                {Object.keys(menu.arranges).filter(
+                  (key) => menu.arranges[key] === false,
+                )}
+              </div>
+            </VStack>
           ))}
         </VStack>
       </Button>

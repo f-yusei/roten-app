@@ -1,45 +1,167 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
 import ToppingInformationModal from './ToppingInformationModal';
-
-type Order = {
-  menus: string[];
-  orderState: 'waiting' | 'available' | 'finished';
-};
+import { OrderType } from '../../../../types';
 
 const ToppingUI = () => {
-  const orders: Order[] = [
+  const orders: OrderType[] = [
     {
-      menus: ['ソース', 'メンタイ', 'ソース'],
-      orderState: 'available',
-    },
-    {
-      menus: ['２ソース', '３メンタイ'],
-      orderState: 'available',
-    },
-    {
-      menus: ['４ソース', '1メンタイ'],
+      woodenNumber: 1,
       orderState: 'waiting',
+      menus: [
+        {
+          name: 'ソース',
+          price: 250,
+          arranges: {
+            sauce: true,
+            mayo: true,
+            katsuo: true,
+            aosa: true,
+          },
+        },
+        {
+          name: 'めんたい',
+          price: 300,
+          arranges: {
+            sauce: true,
+            mentaiMayo: true,
+            katsuo: true,
+            cheese: true,
+          },
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 2,
       orderState: 'waiting',
+      menus: [
+        {
+          name: 'ソース',
+          price: 250,
+          arranges: {
+            sauce: true,
+            mayo: false,
+            katsuo: true,
+            aosa: true,
+          },
+        },
+        {
+          name: 'めんたい',
+          price: 300,
+          arranges: {
+            sauce: true,
+            mentaiMayo: true,
+            katsuo: true,
+            cheese: true,
+          },
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 3,
       orderState: 'waiting',
+      menus: [
+        {
+          name: 'めんたい',
+          price: 300,
+          arranges: {
+            sauce: true,
+            mentaiMayo: true,
+            katsuo: true,
+            cheese: true,
+          },
+        },
+        {
+          name: 'めんたい',
+          price: 300,
+          arranges: {
+            sauce: true,
+            mentaiMayo: true,
+            katsuo: true,
+            cheese: true,
+          },
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 4,
       orderState: 'waiting',
+      menus: [
+        {
+          name: 'ソース',
+          price: 250,
+          arranges: {
+            sauce: true,
+            mayo: false,
+            katsuo: true,
+            aosa: true,
+          },
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 5,
       orderState: 'waiting',
+      menus: [
+        {
+          name: 'めんたい',
+          price: 300,
+          arranges: {
+            sauce: true,
+            mentaiMayo: true,
+            katsuo: true,
+            cheese: true,
+          },
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 6,
       orderState: 'waiting',
+      menus: [
+        {
+          name: 'めんたい',
+          price: 300,
+          arranges: {
+            sauce: true,
+            mentaiMayo: true,
+            katsuo: true,
+            cheese: true,
+          },
+        },
+      ],
+    },
+    {
+      woodenNumber: 7,
+      orderState: 'waiting',
+      menus: [
+        {
+          name: 'ソース',
+          price: 250,
+          arranges: {
+            sauce: true,
+            mayo: false,
+            katsuo: true,
+            aosa: true,
+          },
+        },
+      ],
+    },
+    {
+      woodenNumber: 8,
+      orderState: 'waiting',
+      menus: [
+        {
+          name: 'ソース',
+          price: 250,
+          arranges: {
+            sauce: true,
+            mayo: true,
+            katsuo: false,
+            aosa: true,
+          },
+        },
+      ],
     },
   ];
   return (

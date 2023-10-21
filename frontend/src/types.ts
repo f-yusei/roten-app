@@ -2,15 +2,40 @@ export type ValidOrderType = {
   woodenNumber: number;
   orderState: 'waiting' | 'available' | 'finished';
   orderStateLogs: OrderStateLog[];
-  menus: menu[];
+  menus: menu<
+    | {
+        sauce: boolean;
+        mayo: boolean;
+        katsuo: boolean;
+        aosa: boolean;
+      }
+    | {
+        sauce: boolean;
+        mentaiMayo: boolean;
+        katsuo: boolean;
+        cheese: boolean;
+      }
+  >;
 };
 
 export type OrderType = {
   woodenNumber?: number;
-  isAdvanceTicket?: boolean;
   orderState?: 'waiting' | 'available' | 'finished';
   orderStateLogs?: OrderStateLog[];
-  menus?: menu[];
+  menus: menu<
+    | {
+        sauce: boolean;
+        mayo: boolean;
+        katsuo: boolean;
+        aosa: boolean;
+      }
+    | {
+        sauce: boolean;
+        mentaiMayo: boolean;
+        katsuo: boolean;
+        cheese: boolean;
+      }
+  >;
 };
 
 type OrderStateLog = {
@@ -20,7 +45,10 @@ type OrderStateLog = {
   invaildAt: Date;
 };
 
-type menu = {
+type menu<T> = {
+  map(
+    arg0: (menu: any, index: any) => import('react/jsx-runtime').JSX.Element,
+  ): import('react').ReactNode;
   name:
     | 'ソース前売り'
     | 'めんたい前売り'
@@ -29,5 +57,5 @@ type menu = {
     | 'ソース'
     | 'めんたい';
   price: number;
-  arranges: string[];
+  arranges: T;
 };
