@@ -1,4 +1,5 @@
 export type ValidOrderType = {
+  _id: string;
   woodenNumber: number;
   orderState: 'waiting' | 'available' | 'finished';
   orderStateLogs: OrderStateLog[];
@@ -6,6 +7,7 @@ export type ValidOrderType = {
 };
 
 export type OrderType = {
+  _id: string;
   woodenNumber?: number;
   orderState?: 'waiting' | 'available' | 'finished';
   orderStateLogs?: OrderStateLog[];
