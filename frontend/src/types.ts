@@ -1,3 +1,4 @@
+
 export type OrderToppingType = {
   woodenNumber: number;
   orderState: 'waiting' | 'available' | 'finished' | "discarded";
@@ -15,6 +16,7 @@ export type OrderInformationType = {
 }
 //トッピング画面のためのオーダーの型
 export type OrderType = {
+  _id: string;
   woodenNumber?: number;
   orderState?: 'waiting' | 'available' | 'finished' | "discarded";
   orderStateLogs?: OrderStateLog[];
