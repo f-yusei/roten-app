@@ -23,9 +23,9 @@ function OrderConfirmationModal() {
     <>
       <Button
         fontSize="2.4rem"
-        mt={10}
-        width="42vw"
-        height="12vh"
+        mt={1}
+        width="39.5vw"
+        height="10vh"
         onClick={onOpen}
       >
         確定
