@@ -1,21 +1,15 @@
 export type ValidOrderType = {
-  orderNumber: number;
   woodenNumber: number;
-  isAdvanceTicket: boolean;
-  arranges: string[];
   orderState: 'waiting' | 'available' | 'finished';
   orderStateLogs: OrderStateLog[];
   menus: menu[];
 };
 
 export type OrderType = {
-  orderNumber?: number;
   woodenNumber?: number;
-  isAdvanceTicket?: boolean;
-  arranges?: string[];
   orderState?: 'waiting' | 'available' | 'finished';
   orderStateLogs?: OrderStateLog[];
-  menus?: menu[];
+  menus: menu[];
 };
 
 type OrderStateLog = {
@@ -26,11 +20,17 @@ type OrderStateLog = {
 };
 
 type menu = {
+  isSauce: boolean;
   name:
     | 'ソース前売り'
     | 'めんたい前売り'
-    | 'セット前売り'
+    | 'ソース（セット）前売り'
+    | 'めんたい（セット）前売り'
     | 'ソース'
     | 'めんたい';
   price: number;
+  arranges: boolean[];
 };
+
+export const sauceToppings = ['ソース', 'マヨ', 'カツオ', 'アオサ'];
+export const mentaiToppings = ['ソース', 'めんたいマヨ', 'カツオ', 'チーズ'];

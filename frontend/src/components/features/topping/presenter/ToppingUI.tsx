@@ -1,45 +1,123 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
 import ToppingInformationModal from './ToppingInformationModal';
-
-type Order = {
-  menus: string[];
-  orderState: 'waiting' | 'available' | 'finished';
-};
+import { OrderType } from '../../../../types';
 
 const ToppingUI = () => {
-  const orders: Order[] = [
+  const orders: OrderType[] = [
     {
-      menus: ['ソース', 'メンタイ', 'ソース'],
-      orderState: 'available',
-    },
-    {
-      menus: ['２ソース', '３メンタイ'],
-      orderState: 'available',
-    },
-    {
-      menus: ['４ソース', '1メンタイ'],
+      woodenNumber: 1,
       orderState: 'waiting',
+      menus: [
+        {
+          isSauce: true,
+          name: 'ソース',
+          price: 250,
+          arranges: [true, true, true, true],
+        },
+        {
+          isSauce: false,
+          name: 'めんたい',
+          price: 300,
+          arranges: [true, false, false, true],
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 2,
       orderState: 'waiting',
+      menus: [
+        {
+          isSauce: true,
+          name: 'ソース',
+          price: 250,
+          arranges: [true, false, true, true],
+        },
+        {
+          isSauce: false,
+          name: 'めんたい',
+          price: 300,
+          arranges: [true, false, true, true],
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 3,
       orderState: 'waiting',
+      menus: [
+        {
+          isSauce: false,
+          name: 'めんたい',
+          price: 300,
+          arranges: [true, false, true, true],
+        },
+        {
+          isSauce: false,
+          name: 'めんたい',
+          price: 300,
+          arranges: [true, false, true, true],
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 4,
       orderState: 'waiting',
+      menus: [
+        {
+          isSauce: true,
+          name: 'ソース',
+          price: 250,
+          arranges: [true, false, true, true],
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 5,
       orderState: 'waiting',
+      menus: [
+        {
+          isSauce: false,
+          name: 'めんたい',
+          price: 300,
+          arranges: [true, false, true, true],
+        },
+      ],
     },
     {
-      menus: ['ソース', 'メンタイ'],
+      woodenNumber: 6,
       orderState: 'waiting',
+      menus: [
+        {
+          isSauce: false,
+          name: 'めんたい',
+          price: 300,
+          arranges: [true, false, true, true],
+        },
+      ],
+    },
+    {
+      woodenNumber: 7,
+      orderState: 'waiting',
+      menus: [
+        {
+          isSauce: true,
+          name: 'ソース',
+          price: 250,
+          arranges: [true, false, true, true],
+        },
+      ],
+    },
+    {
+      woodenNumber: 8,
+      orderState: 'waiting',
+      menus: [
+        {
+          isSauce: true,
+          name: 'ソース',
+          price: 250,
+          arranges: [true, false, true, true],
+        },
+      ],
     },
   ];
   return (
