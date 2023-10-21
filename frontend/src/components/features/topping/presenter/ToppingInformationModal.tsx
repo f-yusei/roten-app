@@ -10,10 +10,11 @@ import {
   VStack,
   Card,
   ModalFooter,
+  Box,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { FC } from 'react';
-import { OrderType } from '../../../../types';
+import { OrderType, mentaiToppings, sauceToppings } from '../../../../types';
 
 export type ToppingInformationModalProps = {
   order: OrderType;
@@ -36,13 +37,21 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
       <Button minW={'sm'} minH={'xs'} onClick={onOpen}>
         <VStack>
           {order.menus.map((menu, index) => (
-            <VStack>
-              <div key={index}>{menu.name}</div>
-              <div key={index}>
-                {Object.keys(menu.arranges).filter(
-                  (key) => menu.arranges[key] === false,
-                )}
-              </div>
+            <VStack key={index}>
+              <Box fontSize={'20px'}>{menu.name}</Box>
+              {menu.arranges.map((arrange, arrangeIndex) =>
+                arrange === false ? (
+                  menu.isSauce === true ? (
+                    <div key={arrangeIndex}>
+                      - no {sauceToppings[arrangeIndex]}
+                    </div>
+                  ) : (
+                    <div key={arrangeIndex}>
+                      -no {mentaiToppings[arrangeIndex]}
+                    </div>
+                  )
+                ) : null,
+              )}
             </VStack>
           ))}
         </VStack>

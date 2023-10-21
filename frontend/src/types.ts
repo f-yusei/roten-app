@@ -2,40 +2,14 @@ export type ValidOrderType = {
   woodenNumber: number;
   orderState: 'waiting' | 'available' | 'finished';
   orderStateLogs: OrderStateLog[];
-  menus: menu<
-    | {
-        sauce: boolean;
-        mayo: boolean;
-        katsuo: boolean;
-        aosa: boolean;
-      }
-    | {
-        sauce: boolean;
-        mentaiMayo: boolean;
-        katsuo: boolean;
-        cheese: boolean;
-      }
-  >;
+  menus: menu[];
 };
 
 export type OrderType = {
   woodenNumber?: number;
   orderState?: 'waiting' | 'available' | 'finished';
   orderStateLogs?: OrderStateLog[];
-  menus: menu<
-    | {
-        sauce: boolean;
-        mayo: boolean;
-        katsuo: boolean;
-        aosa: boolean;
-      }
-    | {
-        sauce: boolean;
-        mentaiMayo: boolean;
-        katsuo: boolean;
-        cheese: boolean;
-      }
-  >;
+  menus: menu[];
 };
 
 type OrderStateLog = {
@@ -45,10 +19,8 @@ type OrderStateLog = {
   invaildAt: Date;
 };
 
-type menu<T> = {
-  map(
-    arg0: (menu: any, index: any) => import('react/jsx-runtime').JSX.Element,
-  ): import('react').ReactNode;
+type menu = {
+  isSauce: boolean;
   name:
     | 'ソース前売り'
     | 'めんたい前売り'
@@ -57,5 +29,8 @@ type menu<T> = {
     | 'ソース'
     | 'めんたい';
   price: number;
-  arranges: T;
+  arranges: boolean[];
 };
+
+export const sauceToppings = ['ソース', 'マヨ', 'カツオ', 'アオサ'];
+export const mentaiToppings = ['ソース', 'めんたいマヨ', 'カツオ', 'チーズ'];
