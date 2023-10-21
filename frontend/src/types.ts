@@ -12,8 +12,8 @@ export type OrderInformationType = {
   orderState: 'waiting' | 'available' | 'finished' | 'discarded';
   orderStateLogs?: OrderStateLog[];
   menus: MenuInformation[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //トッピング画面のためのオーダーの型
