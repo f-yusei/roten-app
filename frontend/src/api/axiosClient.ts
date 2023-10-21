@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL = process.env.BACKEND_SERVER_URL;
 const apiClient = axios.create({
   baseURL: baseURL,
   timeout: 2000,
