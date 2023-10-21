@@ -156,7 +156,7 @@ const ReceptionUI = () => {
                 ...orders,
                 {
                   id: v4(),
-                  name: 'ソース',
+                  name: 'ソース（セット）前売り',
                   toppings: {
                     ソース: true,
                     マヨ: true,
@@ -168,7 +168,7 @@ const ReceptionUI = () => {
                 },
                 {
                   id: v4(),
-                  name: 'メンタイ',
+                  name: 'めんたい（セット）前売り',
                   toppings: {
                     ソース: true,
                     メンタイ: true,
@@ -188,8 +188,8 @@ const ReceptionUI = () => {
           <h1>注文内容</h1>
           <Stack bgColor={'gray.50'} h={'88vh'} overflow={'scroll'}>
             {orders.map((order) =>
-              //オーダーネームがセットの場合は<SetCard />を表示。それ以外は<Card />を表示
-              order.isSet ? (
+              order.name === 'ソース（セット）前売り' ||
+              order.name === 'めんたい（セット）前売り' ? (
                 <HStack>
                   <Box
                     h="9vh"
@@ -273,10 +273,10 @@ const ReceptionUI = () => {
 const SetCard = ({ menuName }: { menuName: string }) => {
   return (
     <>
-      {menuName === 'ソース' ? (
+      {menuName === 'ソース（セット）前売り' ? (
         <Stack>
           <Card w={'52vw'} minH={'8vh'}>
-            <h2>ソース</h2>
+            <h2>ソース（セット）前売り</h2>
             <HStack>
               <Checkbox defaultChecked colorScheme="green">
                 ソース
@@ -296,7 +296,7 @@ const SetCard = ({ menuName }: { menuName: string }) => {
       ) : (
         <Stack>
           <Card w={'52vw'} minH={'8vh'}>
-            <h2>メンタイ</h2>
+            <h2>めんたい（セット）前売り</h2>
             <HStack>
               <Checkbox defaultChecked colorScheme="green">
                 ソース
