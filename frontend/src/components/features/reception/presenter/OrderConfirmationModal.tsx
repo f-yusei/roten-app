@@ -21,7 +21,13 @@ function OrderConfirmationModal() {
 
   return (
     <>
-      <Button size="lg" onClick={onOpen}>
+      <Button
+        fontSize="2.4rem"
+        mt={10}
+        width="42vw"
+        height="12vh"
+        onClick={onOpen}
+      >
         確定
       </Button>
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
