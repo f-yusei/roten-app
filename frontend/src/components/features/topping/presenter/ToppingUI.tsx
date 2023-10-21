@@ -10,24 +10,16 @@ const ToppingUI = () => {
       orderState: 'waiting',
       menus: [
         {
+          isSauce: true,
           name: 'ソース',
           price: 250,
-          arranges: {
-            sauce: true,
-            mayo: true,
-            katsuo: true,
-            aosa: true,
-          },
+          arranges: [true, true, true, true],
         },
         {
+          isSauce: false,
           name: 'めんたい',
           price: 300,
-          arranges: {
-            sauce: true,
-            mentaiMayo: true,
-            katsuo: true,
-            cheese: true,
-          },
+          arranges: [true, false, false, true],
         },
       ],
     },
@@ -36,24 +28,16 @@ const ToppingUI = () => {
       orderState: 'waiting',
       menus: [
         {
+          isSauce: true,
           name: 'ソース',
           price: 250,
-          arranges: {
-            sauce: true,
-            mayo: false,
-            katsuo: true,
-            aosa: true,
-          },
+          arranges: [true, false, true, true],
         },
         {
+          isSauce: false,
           name: 'めんたい',
           price: 300,
-          arranges: {
-            sauce: true,
-            mentaiMayo: true,
-            katsuo: true,
-            cheese: true,
-          },
+          arranges: [true, false, true, true],
         },
       ],
     },
@@ -62,24 +46,16 @@ const ToppingUI = () => {
       orderState: 'waiting',
       menus: [
         {
+          isSauce: false,
           name: 'めんたい',
           price: 300,
-          arranges: {
-            sauce: true,
-            mentaiMayo: true,
-            katsuo: true,
-            cheese: true,
-          },
+          arranges: [true, false, true, true],
         },
         {
+          isSauce: false,
           name: 'めんたい',
           price: 300,
-          arranges: {
-            sauce: true,
-            mentaiMayo: true,
-            katsuo: true,
-            cheese: true,
-          },
+          arranges: [true, false, true, true],
         },
       ],
     },
@@ -88,14 +64,10 @@ const ToppingUI = () => {
       orderState: 'waiting',
       menus: [
         {
+          isSauce: true,
           name: 'ソース',
           price: 250,
-          arranges: {
-            sauce: true,
-            mayo: false,
-            katsuo: true,
-            aosa: true,
-          },
+          arranges: [true, false, true, true],
         },
       ],
     },
@@ -104,14 +76,10 @@ const ToppingUI = () => {
       orderState: 'waiting',
       menus: [
         {
+          isSauce: false,
           name: 'めんたい',
           price: 300,
-          arranges: {
-            sauce: true,
-            mentaiMayo: true,
-            katsuo: true,
-            cheese: true,
-          },
+          arranges: [true, false, true, true],
         },
       ],
     },
@@ -120,14 +88,10 @@ const ToppingUI = () => {
       orderState: 'waiting',
       menus: [
         {
+          isSauce: false,
           name: 'めんたい',
           price: 300,
-          arranges: {
-            sauce: true,
-            mentaiMayo: true,
-            katsuo: true,
-            cheese: true,
-          },
+          arranges: [true, false, true, true],
         },
       ],
     },
@@ -136,14 +100,10 @@ const ToppingUI = () => {
       orderState: 'waiting',
       menus: [
         {
+          isSauce: true,
           name: 'ソース',
           price: 250,
-          arranges: {
-            sauce: true,
-            mayo: false,
-            katsuo: true,
-            aosa: true,
-          },
+          arranges: [true, false, true, true],
         },
       ],
     },
@@ -152,14 +112,10 @@ const ToppingUI = () => {
       orderState: 'waiting',
       menus: [
         {
+          isSauce: true,
           name: 'ソース',
           price: 250,
-          arranges: {
-            sauce: true,
-            mayo: true,
-            katsuo: false,
-            aosa: true,
-          },
+          arranges: [true, false, true, true],
         },
       ],
     },
