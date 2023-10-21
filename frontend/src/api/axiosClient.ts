@@ -1,7 +1,8 @@
 import axios from 'axios';
-const baseURL = process.env.REACT_APP_API_URL;
+
 const apiClient = axios.create({
-  baseURL: baseURL,
+  //TODO: 環境変数をenvファイルに移す
+  baseURL: 'http://127.0.0.1:8000/api',
   timeout: 2000,
   headers: {
     'Content-Type': 'application/json',
