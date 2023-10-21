@@ -8,9 +8,9 @@ import {
   ModalCloseButton,
   ModalBody,
   VStack,
-  Card,
   ModalFooter,
   Box,
+  Stack,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { FC } from 'react';
@@ -25,6 +25,7 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
+
   useEffect(() => {}, []);
 
   const completeTopping = () => {
@@ -34,7 +35,13 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
 
   return (
     <>
-      <Button minW={'sm'} minH={'xs'} onClick={onOpen}>
+      <Button
+        minW={'sm'}
+        minH={'xs'}
+        onClick={() => {
+          onOpen();
+        }}
+      >
         <VStack>
           {order.menus.map((menu, index) => (
             <VStack key={index}>
@@ -64,38 +71,28 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
           <ModalCloseButton />
           <ModalBody>
             <VStack justify="center">
-              <Card
-                direction={{ base: 'column', sm: 'row' }}
-                overflow="hidden"
-                variant="outline"
-                width={{ base: '100%', sm: 'full' }}
-                height={{ base: '100%', sm: '100px' }}
-                borderRadius={30}
-              ></Card>
-              <Card
-                direction={{ base: 'column', sm: 'row' }}
-                overflow="hidden"
-                variant="outline"
-                width={{ base: '100%', sm: 'full' }}
-                height={{ base: '100%', sm: '100px' }}
-                borderRadius={30}
-              ></Card>
-              <Card
-                direction={{ base: 'column', sm: 'row' }}
-                overflow="hidden"
-                variant="outline"
-                width={{ base: '100%', sm: 'full' }}
-                height={{ base: '100%', sm: '100px' }}
-                borderRadius={30}
-              ></Card>
-              <Card
-                direction={{ base: 'column', sm: 'row' }}
-                overflow="hidden"
-                variant="outline"
-                width={{ base: '100%', sm: 'full' }}
-                height={{ base: '100%', sm: '100px' }}
-                borderRadius={30}
-              ></Card>
+              {order.menus.map((menu, index) => (
+                <Stack direction={'row'} justifyContent={'space-between'}>
+                  <Stack direction={'column'} key={index}>
+                    <Box fontSize={'20px'}>{menu.name}</Box>
+
+                    {menu.arranges.map((arrange, arrangeIndex) =>
+                      arrange === false ? (
+                        menu.isSauce === true ? (
+                          <div key={arrangeIndex}>
+                            - no {sauceToppings[arrangeIndex]}
+                          </div>
+                        ) : (
+                          <div key={arrangeIndex}>
+                            -no {mentaiToppings[arrangeIndex]}
+                          </div>
+                        )
+                      ) : null,
+                    )}
+                  </Stack>
+                  <Box fontSize={'40px'}>{menu.price}</Box>
+                </Stack>
+              ))}
             </VStack>
           </ModalBody>
 
