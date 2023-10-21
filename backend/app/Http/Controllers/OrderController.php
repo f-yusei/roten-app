@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Request;
 use App\Models\Order;
+
 
 class OrderController extends Controller
 {
@@ -15,10 +17,11 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $post = new Order;
-
-        $post->menu = $request->menu;
-        $post->arranges = $request->arranges;
+        
+        $post->woodenNumber = $request->woodenNumber;
         $post->orderState = $request->orderState;
+        $post->orderStateLogs = $request->orderStateLogs;
+        $post->menus = $request->menus;
 
         $post->save();
 
@@ -27,13 +30,15 @@ class OrderController extends Controller
 
     public function update(Request $request, $updateId)
    {
-       $post = Order::find($updateId);
-       $post->menu = $request->menu;
-       $post->arranges = $request->arranges;
-       $post->orderState = $request->orderState;
-       $post->save();
+        $post = Order::find($updateId);
+        $post->orderNumber = $request->orderNumber;
+        $post->woodenNumber = $request->woodenNumber;
+        $post->orderState = $request->orderState;
+        $post->orderStateLogs = $request->orderStateLogs;
+        $post->menus = $request->menus;
+        $post->save();
 
-       return response()->json(["result" => "Updated Successfully! :p"], 201);       
+        return response()->json(["result" => "Updated Successfully! :p"], 201);       
    }
     
     public function destroy($destroyId)
