@@ -1,7 +1,6 @@
-
 export type OrderToppingType = {
   woodenNumber: number;
-  orderState: 'waiting' | 'available' | 'finished' | "discarded";
+  orderState: 'waiting' | 'available' | 'finished' | 'discarded';
   orderStateLogs: OrderStateLog[];
   menus: MenuForTopping[];
 };
@@ -10,15 +9,17 @@ export type OrderToppingType = {
 export type OrderInformationType = {
   _id: string;
   woodenNuber: number;
-  orderState: 'waiting' | 'available' | 'finished' | "discarded";
+
+  orderState: 'waiting' | 'available' | 'finished' | 'discarded';
   orderStateLogs?: OrderStateLog[];
-  menus: MenuInformation[]
-}
+  menus: MenuInformation[];
+};
+
 //トッピング画面のためのオーダーの型
 export type OrderType = {
   _id: string;
   woodenNumber?: number;
-  orderState?: 'waiting' | 'available' | 'finished' | "discarded";
+  orderState?: 'waiting' | 'available' | 'finished' | 'discarded';
   orderStateLogs?: OrderStateLog[];
   menus: MenuForTopping[];
 };
@@ -43,7 +44,6 @@ type MenuForTopping = {
   arranges: boolean[];
 };
 
-
 type MenuInformation = {
   name:
     | 'ソース前売り'
@@ -53,22 +53,22 @@ type MenuInformation = {
     | 'ソース'
     | 'めんたい';
   price: number;
-  arranges: SauceToppings | MentaiToppings ;
-}
+  arranges: SauceToppings | MentaiToppings;
+};
 
 type SauceToppings = {
   ソース: boolean;
   マヨ: boolean;
   カツオ: boolean;
   アオサ: boolean;
-}
+};
 
 type MentaiToppings = {
   ソース: boolean;
   めんたいマヨ: boolean;
   カツオ: boolean;
   チーズ: boolean;
-}
+};
 
 export const sauceToppings = ['ソース', 'マヨ', 'カツオ', 'アオサ'];
 export const mentaiToppings = ['ソース', 'めんたいマヨ', 'カツオ', 'チーズ'];
