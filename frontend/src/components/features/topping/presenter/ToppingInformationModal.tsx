@@ -8,11 +8,13 @@ import {
   ModalCloseButton,
   ModalBody,
   VStack,
+  Card,
   ModalFooter,
   Box,
+  HStack,
   Stack,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FC } from 'react';
 import { OrderType, mentaiToppings, sauceToppings } from '../../../../types';
 
@@ -72,25 +74,22 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
           <ModalBody>
             <VStack justify="center">
               {order.menus.map((menu, index) => (
-                <Stack direction={'row'} justifyContent={'space-between'}>
-                  <Stack direction={'column'} key={index}>
-                    <Box fontSize={'20px'}>{menu.name}</Box>
+                <Stack key={index}>
+                  <Box fontSize={'20px'}>{menu.name}</Box>
 
-                    {menu.arranges.map((arrange, arrangeIndex) =>
-                      arrange === false ? (
-                        menu.isSauce === true ? (
-                          <div key={arrangeIndex}>
-                            - no {sauceToppings[arrangeIndex]}
-                          </div>
-                        ) : (
-                          <div key={arrangeIndex}>
-                            -no {mentaiToppings[arrangeIndex]}
-                          </div>
-                        )
-                      ) : null,
-                    )}
-                  </Stack>
-                  <Box fontSize={'40px'}>{menu.price}</Box>
+                  {menu.arranges.map((arrange, arrangeIndex) =>
+                    arrange === false ? (
+                      menu.isSauce === true ? (
+                        <div key={arrangeIndex}>
+                          - no {sauceToppings[arrangeIndex]}
+                        </div>
+                      ) : (
+                        <div key={arrangeIndex}>
+                          -no {mentaiToppings[arrangeIndex]}
+                        </div>
+                      )
+                    ) : null,
+                  )}
                 </Stack>
               ))}
             </VStack>
