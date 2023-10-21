@@ -8,13 +8,11 @@ import {
   ModalCloseButton,
   ModalBody,
   VStack,
-  Card,
   ModalFooter,
   Box,
-  HStack,
   Stack,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FC } from 'react';
 import { OrderType, mentaiToppings, sauceToppings } from '../../../../types';
 
