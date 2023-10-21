@@ -15,7 +15,8 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    //TODO: 後でフロントだけ許可する形にする。
+    'paths' => ['*'],
 
     'allowed_methods' => ['*'],
 
@@ -25,9 +26,9 @@ return [
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => [],
+    'exposed_headers' => false,
 
-    'max_age' => 0,
+    'max_age' => false,
 
     'supports_credentials' => false,
 
