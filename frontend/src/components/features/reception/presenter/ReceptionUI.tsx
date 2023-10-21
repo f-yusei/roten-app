@@ -203,6 +203,13 @@ const ReceptionUI = () => {
                     <h2>セット</h2>
                   </Box>
                   <SetCard menuName={order.name} />
+                  <Button
+                    onClick={() => {
+                      setOrders(orders.filter((o) => o.id !== order.id));
+                    }}
+                  >
+                    削除
+                  </Button>
                 </HStack>
               ) : (
                 <Card w={'54vw'} minH={'8vh'} m={2}>
