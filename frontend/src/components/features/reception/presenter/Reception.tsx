@@ -9,6 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import OrderHistoryDrawer from './OrderHistoryDrawer';
+import { Grid, GridItem } from '@chakra-ui/react';
 import { useState } from 'react';
 import { v4 } from 'uuid';
 
@@ -16,7 +17,6 @@ type Order = {
   id: string;
   name: string;
   toppings: Topping;
-  isSet: boolean;
   price: number;
 };
 
@@ -56,7 +56,6 @@ const ReceptionUI = () => {
                       青のり: true,
                       かつお節: true,
                     },
-                    isSet: false,
                     price: 250,
                   },
                 ]);
@@ -82,7 +81,6 @@ const ReceptionUI = () => {
                       青のり: true,
                       かつお節: true,
                     },
-                    isSet: false,
                     price: 0,
                   },
                 ]);
@@ -110,7 +108,6 @@ const ReceptionUI = () => {
                       チーズ: true,
                       かつお節: true,
                     },
-                    isSet: false,
                     price: 300,
                   },
                 ]);
@@ -136,7 +133,6 @@ const ReceptionUI = () => {
                       チーズ: true,
                       かつお節: true,
                     },
-                    isSet: false,
                     price: 0,
                   },
                 ]);
@@ -151,32 +147,20 @@ const ReceptionUI = () => {
             w={{ base: '100px', sm: '400px' }}
             p={4}
             m={2}
+            mb={4}
             onClick={() => {
               setOrders([
                 ...orders,
                 {
                   id: v4(),
-                  name: 'ソース（セット）前売り',
+                  name: 'セット前売り券',
                   toppings: {
                     ソース: true,
                     マヨ: true,
                     青のり: true,
                     かつお節: true,
                   },
-                  isSet: true,
-                  price: 500,
-                },
-                {
-                  id: v4(),
-                  name: 'めんたい（セット）前売り',
-                  toppings: {
-                    ソース: true,
-                    メンタイ: true,
-                    チーズ: true,
-                    かつお節: true,
-                  },
-                  isSet: true,
-                  price: 500,
+                  price: 0,
                 },
               ]);
             }}
@@ -187,21 +171,22 @@ const ReceptionUI = () => {
         <Card w={'60vw'} h={'96vh'} p={4} m={2}>
           <h1>注文内容</h1>
           <Stack bgColor={'gray.50'} h={'88vh'} overflow={'scroll'}>
-            {orders.map((order) =>
-              order.name === 'ソース（セット）前売り' ||
-              order.name === 'めんたい（セット）前売り' ? (
-                <HStack>
-                  <Box
-                    h="9vh"
-                    w="2vw"
-                    bg="red.400"
-                    borderRadius={10}
-                    color={'white'}
-                    p={1}
-                  >
-                    <h2>セット</h2>
-                  </Box>
+            {orders.map((order, index) =>
+              order.name === 'セット前売り券' ? (
+                <HStack key={index}>
                   <SetCard menuName={order.name} />
+
+                  <Button
+                    w="12vw"
+                    h="20vh"
+                    borderRadius={10}
+                    m={5}
+                    onClick={() => {
+                      setOrders(orders.filter((o) => o.id !== order.id));
+                    }}
+                  >
+                    削除
+                  </Button>
                 </HStack>
               ) : (
                 <Card w={'54vw'} minH={'8vh'} m={2}>
@@ -269,51 +254,74 @@ const ReceptionUI = () => {
   );
 };
 
-// TODO 削除ボタンを追加する
 const SetCard = ({ menuName }: { menuName: string }) => {
   return (
     <>
-      {menuName === 'ソース（セット）前売り' ? (
-        <Stack>
-          <Card w={'52vw'} minH={'8vh'}>
-            <h2>ソース（セット）前売り</h2>
-            <HStack>
-              <Checkbox defaultChecked colorScheme="green">
-                ソース
-              </Checkbox>
-              <Checkbox defaultChecked colorScheme="green">
-                マヨ
-              </Checkbox>
-              <Checkbox defaultChecked colorScheme="green">
-                青のり
-              </Checkbox>
-              <Checkbox defaultChecked colorScheme="green">
-                かつお節
-              </Checkbox>
-            </HStack>
-          </Card>
-        </Stack>
-      ) : (
-        <Stack>
-          <Card w={'52vw'} minH={'8vh'}>
-            <h2>めんたい（セット）前売り</h2>
-            <HStack>
-              <Checkbox defaultChecked colorScheme="green">
-                ソース
-              </Checkbox>
-              <Checkbox defaultChecked colorScheme="green">
-                メンタイ
-              </Checkbox>
-              <Checkbox defaultChecked colorScheme="green">
-                チーズ
-              </Checkbox>
-              <Checkbox defaultChecked colorScheme="green">
-                かつお節
-              </Checkbox>
-            </HStack>
-          </Card>
-        </Stack>
-      )}
+      {menuName === 'セット前売り券' ? (
+        <Box width={'40vw'}>
+          <Grid
+            templateRows="repeat(2, 1rf)"
+            templateColumns="repeat(2, 1fr)"
+            gap={4}
+            marginLeft={5}
+          >
+            <GridItem
+              colSpan={1}
+              rowSpan={2}
+              h="20vh"
+              w="4vw"
+              bg="red.400"
+              borderRadius={10}
+              color={'white'}
+              p={'1.4vw'}
+            >
+              セット
+            </GridItem>
+            <GridItem rowSpan={1} colSpan={1}>
+              <Stack>
+                <Card w={'35vw'} minH={'8vh'}>
+                  <h2>ソース（セット）前売り</h2>
+                  <HStack>
+                    <Checkbox defaultChecked colorScheme="green">
+                      ソース
+                    </Checkbox>
+                    <Checkbox defaultChecked colorScheme="green">
+                      マヨ
+                    </Checkbox>
+                    <Checkbox defaultChecked colorScheme="green">
+                      青のり
+                    </Checkbox>
+                    <Checkbox defaultChecked colorScheme="green">
+                      かつお節
+                    </Checkbox>
+                  </HStack>
+                </Card>
+              </Stack>
+            </GridItem>
+            <GridItem rowSpan={1} colSpan={1}>
+              <Stack>
+                <Card w={'35vw'} minH={'8vh'}>
+                  <h2>めんたい（セット）前売り</h2>
+                  <HStack>
+                    <Checkbox defaultChecked colorScheme="green">
+                      ソース
+                    </Checkbox>
+                    <Checkbox defaultChecked colorScheme="green">
+                      マヨ
+                    </Checkbox>
+                    <Checkbox defaultChecked colorScheme="green">
+                      青のり
+                    </Checkbox>
+                    <Checkbox defaultChecked colorScheme="green">
+                      かつお節
+                    </Checkbox>
+                  </HStack>
+                </Card>
+              </Stack>
+            </GridItem>
+          </Grid>
+        </Box>
+      ) : null}
     </>
   );
 };
