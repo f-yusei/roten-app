@@ -6,6 +6,7 @@ import { OrderType } from '../../../../types';
 const ToppingUI = () => {
   const orders: OrderType[] = [
     {
+      _id: 'a',
       woodenNumber: 1,
       orderState: 'waiting',
       menus: [
@@ -24,6 +25,7 @@ const ToppingUI = () => {
       ],
     },
     {
+      _id: 'b',
       woodenNumber: 2,
       orderState: 'waiting',
       menus: [
@@ -42,6 +44,7 @@ const ToppingUI = () => {
       ],
     },
     {
+      _id: 'c',
       woodenNumber: 3,
       orderState: 'waiting',
       menus: [
@@ -60,6 +63,7 @@ const ToppingUI = () => {
       ],
     },
     {
+      _id: 'd',
       woodenNumber: 4,
       orderState: 'waiting',
       menus: [
@@ -72,6 +76,7 @@ const ToppingUI = () => {
       ],
     },
     {
+      _id: 'e',
       woodenNumber: 5,
       orderState: 'waiting',
       menus: [
@@ -84,6 +89,7 @@ const ToppingUI = () => {
       ],
     },
     {
+      _id: 'f',
       woodenNumber: 6,
       orderState: 'waiting',
       menus: [
@@ -96,6 +102,7 @@ const ToppingUI = () => {
       ],
     },
     {
+      _id: 'g',
       woodenNumber: 7,
       orderState: 'waiting',
       menus: [
@@ -108,6 +115,7 @@ const ToppingUI = () => {
       ],
     },
     {
+      _id: 'h',
       woodenNumber: 8,
       orderState: 'waiting',
       menus: [
