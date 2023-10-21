@@ -1,18 +1,36 @@
-import { Button } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-
-
+import { Button } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 const TopPageUI = () => {
+  const navigate = useNavigate();
   return (
     <div className="linkButton">
-      <Button height="300px" width="300px"><Link to={'/reception'}>受付</Link></Button>
-      <Button height="300px" width="300px"><Link to={'/topping'}>トッピング確認</Link></Button>
-      <Button height="300px" width="300px"><Link to={'/delivery'}>受け渡し</Link></Button>
+      <Button
+        onClick={() => navigate('/reception')}
+        height="30vh"
+        width="30vw"
+        m={3}
+      >
+        受付
+      </Button>
+      <Button
+        onClick={() => navigate('/topping')}
+        height="30vh"
+        width="30vw"
+        m={3}
+      >
+        トッピング確認
+      </Button>
+      <Button
+        onClick={() => navigate('/delivery')}
+        height="30vh"
+        width="30vw"
+        m={3}
+      >
+        受け渡し
+      </Button>
     </div>
-    
-    
-  )
-}
+  );
+};
 
-export default TopPageUI
+export default TopPageUI;
