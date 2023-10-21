@@ -8,6 +8,16 @@ export type ValidOrderType = {
   menus: menu[];
 };
 
+export type OrderType = {
+  orderNumber?: number;
+  woodenNumber?: number;
+  isAdvanceTicket?: boolean;
+  arranges?: string[];
+  orderState?: 'waiting' | 'available' | 'finished';
+  orderStateLogs?: OrderStateLog[];
+  menus?: menu[];
+};
+
 type OrderStateLog = {
   orderRecievedAt: Date;
   readiedAt: Date;
