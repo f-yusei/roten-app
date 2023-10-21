@@ -8,11 +8,12 @@ export type OrderToppingType = {
 //情報をデータベースから受け取った時の型
 export type OrderInformationType = {
   _id: string;
-  woodenNuber: number;
-
+  woodenNumber: number;
   orderState: 'waiting' | 'available' | 'finished' | 'discarded';
   orderStateLogs?: OrderStateLog[];
   menus: MenuInformation[];
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 //トッピング画面のためのオーダーの型
@@ -25,12 +26,12 @@ export type OrderType = {
 };
 
 type OrderStateLog = {
-  orderRecievedAt: Date;
+  orderReceivedAt: Date;
   readiedAt: Date;
   deliveredAt: Date;
-  invaildAt: Date;
+  invalidAt: Date;
 };
-
+//トッピング画面用のメニューの型
 type MenuForTopping = {
   isSauce: boolean;
   name:
@@ -44,6 +45,7 @@ type MenuForTopping = {
   arranges: boolean[];
 };
 
+//データベースから受け取ったメニューの型
 type MenuInformation = {
   name:
     | 'ソース前売り'
