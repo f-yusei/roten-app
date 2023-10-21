@@ -1,31 +1,41 @@
-import { Box, Button, Grid, GridItem, IconButton, Input } from '@chakra-ui/react';
+import { Box, Button, Grid, GridItem, IconButton, Input, Textarea } from '@chakra-ui/react';
 import { BackspaceIcon } from '../../../../common/BackspaceIcon';
 import React from 'react';
 import OrderConfirmationModal from './OrderConfirmationModal';
 
+const totalMoney = "350";
+
 const Calculator = () => {
-  const [value, setValue] = React.useState('');
+  const [numberOfTicketsUsed, setNumberOfTicketsUsed] = React.useState(0);
+  const [depositAmount, setDepositAmount] = React.useState('0');
+  let difference_money = 0;
+  if(numberOfTicketsUsed*100 > parseInt(totalMoney)){
+    difference_money = 0;
+  }else{
+  difference_money = (parseInt(totalMoney) - numberOfTicketsUsed * 100);
+  }
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const currentValue = e.currentTarget.name;
-    setValue(value + currentValue);
+    if(parseInt(depositAmount) == 0){
+      setDepositAmount(currentValue);
+    }else{
+    setDepositAmount(depositAmount + currentValue);
+    }
   };
   const handleClear = () => {
-    setValue('');
+    setDepositAmount('0');
+    setNumberOfTicketsUsed(0);
   };
   const handleBackspace = () => {
-    setValue(value.slice(0, -1));
+    setDepositAmount(depositAmount.slice(0, -1));
   };
 
   //百円券を使用する関数
   const useTicket = () => {
-    if (parseInt(value, 10) < 100) {
-      setValue('');
-      return;
-    } else if (value === '') {
-      setValue('');
+    if(difference_money <= 0){
       return;
     }
-    setValue((parseInt(value, 10) - 100).toString());
+      setNumberOfTicketsUsed(numberOfTicketsUsed + 1);
   };
 
   return (
@@ -34,12 +44,23 @@ const Calculator = () => {
         templateColumns="repeat(3, 1fr)"
         gap={4}
       >
-        <GridItem colSpan={3}>
-          <Input isDisabled value={value}
-            fontSize="2.4rem"
-            width="39.5vw"
+        <GridItem colSpan={2}>
+          <Textarea value={"差　　額:" +difference_money+ "円" + "\n預かり金:" + depositAmount + "円"}
+            fontSize="2.6rem"
+            width="26vw"
             height="20vh"
-          />
+            disabled={true}
+          >
+          </Textarea>
+        </GridItem>
+        <GridItem colSpan={1}>
+          <Textarea value={"100円券:" + numberOfTicketsUsed + "枚" + "\n\n合計金額\n" + totalMoney + "円"}
+            fontSize="1.4rem"
+            width="12vw"
+            height="20vh"
+            disabled={true}
+          >
+          </Textarea>
         </GridItem>
         <GridItem colSpan={2}>
           <Button onClick={useTicket}
