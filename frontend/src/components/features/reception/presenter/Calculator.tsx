@@ -1,9 +1,9 @@
-import { Box, Button, Grid, GridItem, IconButton, Input, Textarea } from '@chakra-ui/react';
+import { Box, Button, Grid, GridItem, IconButton, Textarea } from '@chakra-ui/react';
 import { BackspaceIcon } from '../../../../common/BackspaceIcon';
 import React from 'react';
 import OrderConfirmationModal from './OrderConfirmationModal';
 
-const totalMoney = "350";
+const totalMoney = "1000";
 
 const Calculator = () => {
   const [numberOfTicketsUsed, setNumberOfTicketsUsed] = React.useState(0);
@@ -46,7 +46,7 @@ const Calculator = () => {
       >
         <GridItem colSpan={2}>
           <Textarea value={"差　　額:" +difference_money+ "円" + "\n預かり金:" + depositAmount + "円"}
-            fontSize="2.6rem"
+            fontSize="2.8vw"
             width="26vw"
             height="20vh"
             disabled={true}
@@ -55,7 +55,7 @@ const Calculator = () => {
         </GridItem>
         <GridItem colSpan={1}>
           <Textarea value={"100円券:" + numberOfTicketsUsed + "枚" + "\n\n合計金額\n" + totalMoney + "円"}
-            fontSize="1.4rem"
+            fontSize="1.6vw"
             width="12vw"
             height="20vh"
             disabled={true}
