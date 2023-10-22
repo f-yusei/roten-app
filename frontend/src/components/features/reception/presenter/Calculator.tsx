@@ -10,7 +10,7 @@ import { BackspaceIcon } from '../../../../common/BackspaceIcon';
 import React from 'react';
 import OrderConfirmationModal from './OrderConfirmationModal';
 
-const totalMoney = '350';
+const totalMoney = '1000';
 
 const Calculator = () => {
   const [numberOfTicketsUsed, setNumberOfTicketsUsed] = React.useState(0);
@@ -58,7 +58,7 @@ const Calculator = () => {
               depositAmount +
               '円'
             }
-            fontSize="2.6rem"
+            fontSize="2rem"
             width="26vw"
             height="20vh"
             disabled={true}
@@ -74,7 +74,7 @@ const Calculator = () => {
               totalMoney +
               '円'
             }
-            fontSize="1.4rem"
+            fontSize="1.1rem"
             width="12vw"
             height="20vh"
             disabled={true}
