@@ -1,7 +1,7 @@
 export type OrderToppingType = {
   woodenNumber: number;
   orderState: 'waiting' | 'available' | 'finished' | 'discarded';
-  orderStateLogs: OrderStateLog[];
+  orderStateLogs: OrderStateLogs;
   menus: MenuForTopping[];
 };
 
@@ -10,10 +10,17 @@ export type OrderInformationType = {
   _id: string;
   woodenNumber: number;
   orderState: 'waiting' | 'available' | 'finished' | 'discarded';
-  orderStateLogs?: OrderStateLog[];
+  orderStateLogs?: OrderStateLogs;
   menus: MenuInformation[];
   createdAt?: Date;
   updatedAt?: Date;
+};
+
+export type OrderInformationTypeForPost = {
+  woodenNumber: number;
+  orderState: 'waiting' | 'available' | 'finished' | 'discarded';
+  orderStateLogs: OrderStateLogs;
+  menus: MenuInformation[];
 };
 
 //トッピング画面のためのオーダーの型
@@ -21,11 +28,11 @@ export type OrderType = {
   _id: string;
   woodenNumber?: number;
   orderState?: 'waiting' | 'available' | 'finished' | 'discarded';
-  orderStateLogs?: OrderStateLog[];
+  orderStateLogs?: OrderStateLogs;
   menus: MenuForTopping[];
 };
 
-type OrderStateLog = {
+type OrderStateLogs = {
   orderReceivedAt: Date;
   readiedAt: Date;
   deliveredAt: Date;
