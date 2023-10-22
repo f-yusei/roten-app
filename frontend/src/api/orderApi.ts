@@ -1,12 +1,40 @@
-import { OrderInformationType } from '../types';
+import { OrderInformationType, OrderInformationTypeForPost } from '../types';
 import apiClient from './axiosClient';
 
-//TODO: add type
+const getAllOrder = async () => {
+  const response = await apiClient.get<OrderInformationType[]>('/get_all');
+  console.log(response);
+  return response.data;
+};
+
+const storeOrder = async (order: OrderInformationTypeForPost) => {
+  const response = await apiClient.post<OrderInformationTypeForPost>(
+    '/orders',
+    order,
+  );
+  return response.data;
+};
+
+const updateOrder = async (order: OrderInformationType) => {
+  const response = await apiClient.put<OrderInformationType>(
+    `/orders/${order._id}`,
+    order,
+  );
+  return response.data;
+};
+
+const destroyOder = async (id: string) => {
+  const response = await apiClient.delete<OrderInformationType>(
+    `/orders/${id}`,
+  );
+  return response.data;
+};
+
 const orderApi = {
-  getAll: () => apiClient.get('/get_all'),
-  store: (params: any) => apiClient.post('/orders', params),
-  update: (params: OrderInformationType) => apiClient.put(`/orders/${params._id}`, params),
-  delete: (id: number) => apiClient.delete(`/orders/${id}`),
+  getAllOrder,
+  storeOrder,
+  updateOrder,
+  destroyOder,
 };
 
 export default orderApi;
