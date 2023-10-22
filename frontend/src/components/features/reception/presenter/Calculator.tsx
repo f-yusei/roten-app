@@ -1,25 +1,32 @@
-import { Box, Button, Grid, GridItem, IconButton, Input, Textarea } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  IconButton,
+  Textarea,
+} from '@chakra-ui/react';
 import { BackspaceIcon } from '../../../../common/BackspaceIcon';
 import React from 'react';
 import OrderConfirmationModal from './OrderConfirmationModal';
 
-const totalMoney = "350";
+const totalMoney = '350';
 
 const Calculator = () => {
   const [numberOfTicketsUsed, setNumberOfTicketsUsed] = React.useState(0);
   const [depositAmount, setDepositAmount] = React.useState('0');
   let difference_money = 0;
-  if(numberOfTicketsUsed*100 > parseInt(totalMoney)){
+  if (numberOfTicketsUsed * 100 > parseInt(totalMoney)) {
     difference_money = 0;
-  }else{
-  difference_money = (parseInt(totalMoney) - numberOfTicketsUsed * 100);
+  } else {
+    difference_money = parseInt(totalMoney) - numberOfTicketsUsed * 100;
   }
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const currentValue = e.currentTarget.name;
-    if(parseInt(depositAmount) == 0){
+    if (parseInt(depositAmount) == 0) {
       setDepositAmount(currentValue);
-    }else{
-    setDepositAmount(depositAmount + currentValue);
+    } else {
+      setDepositAmount(depositAmount + currentValue);
     }
   };
   const handleClear = () => {
@@ -32,38 +39,50 @@ const Calculator = () => {
 
   //百円券を使用する関数
   const useTicket = () => {
-    if(difference_money <= 0){
+    if (difference_money <= 0) {
       return;
     }
-      setNumberOfTicketsUsed(numberOfTicketsUsed + 1);
+    setNumberOfTicketsUsed(numberOfTicketsUsed + 1);
   };
 
   return (
-    <Box w={"5vw"}>
-      <Grid
-        templateColumns="repeat(3, 1fr)"
-        gap={4}
-      >
+    <Box w={'5vw'}>
+      <Grid templateColumns="repeat(3, 1fr)" gap={4}>
         <GridItem colSpan={2}>
-          <Textarea value={"差　　額:" +difference_money+ "円" + "\n預かり金:" + depositAmount + "円"}
+          <Textarea
+            value={
+              '差　　額:' +
+              difference_money +
+              '円' +
+              '\n預かり金:' +
+              depositAmount +
+              '円'
+            }
             fontSize="2.6rem"
             width="26vw"
             height="20vh"
             disabled={true}
-          >
-          </Textarea>
+          ></Textarea>
         </GridItem>
         <GridItem colSpan={1}>
-          <Textarea value={"100円券:" + numberOfTicketsUsed + "枚" + "\n\n合計金額\n" + totalMoney + "円"}
+          <Textarea
+            value={
+              '100円券:' +
+              numberOfTicketsUsed +
+              '枚' +
+              '\n\n合計金額\n' +
+              totalMoney +
+              '円'
+            }
             fontSize="1.4rem"
             width="12vw"
             height="20vh"
             disabled={true}
-          >
-          </Textarea>
+          ></Textarea>
         </GridItem>
         <GridItem colSpan={2}>
-          <Button onClick={useTicket}
+          <Button
+            onClick={useTicket}
             fontSize="2.4rem"
             width="26vw"
             height="10vh"
@@ -72,7 +91,7 @@ const Calculator = () => {
             100円券
           </Button>
         </GridItem>
-        <GridItem colSpan={1} >
+        <GridItem colSpan={1}>
           <IconButton
             fontSize="2.4rem"
             width="12vw"
@@ -84,7 +103,9 @@ const Calculator = () => {
           ></IconButton>
         </GridItem>
         <GridItem colSpan={1}>
-          <Button name="1" onClick={handleClick}
+          <Button
+            name="1"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -95,7 +116,9 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1}>
-          <Button name="2" onClick={handleClick}
+          <Button
+            name="2"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -106,7 +129,9 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem colSpan={1}>
-          <Button name="3" onClick={handleClick}
+          <Button
+            name="3"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -117,7 +142,9 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem colSpan={1}>
-          <Button name="4" onClick={handleClick}
+          <Button
+            name="4"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -127,7 +154,9 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem rowSpan={1} colSpan={1}>
-          <Button name="5" onClick={handleClick}
+          <Button
+            name="5"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -137,7 +166,9 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem colSpan={1}>
-          <Button name="6" onClick={handleClick}
+          <Button
+            name="6"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -147,7 +178,9 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem colSpan={1}>
-          <Button name="7" onClick={handleClick}
+          <Button
+            name="7"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -157,7 +190,9 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem colSpan={1}>
-          <Button name="8" onClick={handleClick}
+          <Button
+            name="8"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -167,7 +202,9 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem colSpan={1}>
-          <Button name="9" onClick={handleClick}
+          <Button
+            name="9"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -175,9 +212,11 @@ const Calculator = () => {
           >
             9
           </Button>
-        </GridItem >
+        </GridItem>
         <GridItem colSpan={1}>
-          <Button name="0" onClick={handleClick}
+          <Button
+            name="0"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -187,7 +226,9 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem colSpan={1}>
-          <Button name="00" onClick={handleClick}
+          <Button
+            name="00"
+            onClick={handleClick}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -197,7 +238,8 @@ const Calculator = () => {
           </Button>
         </GridItem>
         <GridItem colSpan={1}>
-          <Button onClick={handleClear}
+          <Button
+            onClick={handleClear}
             fontSize="2.4rem"
             width="12vw"
             height="10vh"
@@ -211,7 +253,7 @@ const Calculator = () => {
         <GridItem colSpan={1}>
           <OrderConfirmationModal />
         </GridItem>
-      </Grid >
+      </Grid>
     </Box>
   );
 };
