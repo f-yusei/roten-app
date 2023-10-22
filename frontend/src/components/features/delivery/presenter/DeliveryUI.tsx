@@ -9,11 +9,16 @@ import {
 } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
 import { OrderInformationType } from '../../../../types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import orderApi from '../../../../api/orderApi';
+import { useGetAllOrder } from '../../../../api/hooks';
 
 const DeliveryUI = () => {
-  const orders: OrderInformationType[] = [
+  const { orders, isLoading } = useGetAllOrder();
+
+  const [availableOrders, setAvailableOrders] = useState<
+    OrderInformationType[]
+  >([
     {
       _id: '6533ae6bfb99ad75540d3592',
       woodenNumber: 1,
@@ -41,88 +46,48 @@ const DeliveryUI = () => {
         },
       ],
     },
-    {
-      _id: '3',
-      woodenNumber: 13,
-      orderState: 'available',
-      menus: [
-        {
-          name: 'めんたい（セット）前売り',
-          price: 15,
-          arranges: {
-            ソース: true,
-            めんたいマヨ: true,
-            カツオ: true,
-            チーズ: false,
-          },
-        },
-      ],
-    },
-    {
-      _id: '8',
-      woodenNumber: 14,
-      orderState: 'available',
-      menus: [
-        {
-          name: 'ソース（セット）前売り',
-          price: 15,
-          arranges: {
-            ソース: true,
-            めんたいマヨ: false,
-            カツオ: false,
-            チーズ: false,
-          },
-        },
-      ],
-    },
-    {
-      _id: '4',
-      woodenNumber: 3214,
-      orderState: 'finished',
-      menus: [
-        {
-          name: 'めんたい（セット）前売り',
-          price: 15,
-          arranges: {
-            ソース: true,
-            めんたいマヨ: true,
-            カツオ: true,
-            チーズ: false,
-          },
-        },
-      ],
-    },
-  ];
+  ]);
 
-  const availableOrders = orders.filter(
-    (order) => order.orderState === 'available',
-  );
+  const [currentSelectOrder, setCurrentSelectOrder] =
+    useState<OrderInformationType>(availableOrders[0]);
 
-  const [currentSelectOrder, setCurrentSelectOrder] = useState(
-    availableOrders[0],
-  );
+  useEffect(() => {
+    if (!orders) return;
+    setAvailableOrders(
+      orders.filter((order) => order.orderState === 'available'),
+    );
+  }, [orders]);
 
+  if (isLoading) return <div>loading...</div>;
   //選択した注文番号
   const handleClick = (order: OrderInformationType) => {
     setCurrentSelectOrder(order);
   };
 
-  const discardOrder = async () => {
+  const discardOrder = () => {
     const newOrder: OrderInformationType = {
       ...currentSelectOrder,
       orderState: 'discarded',
     };
-    const res = await orderApi.update(newOrder);
-    console.log(res);
+    try {
+      const res = orderApi.updateOrder(newOrder);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const finishOrderDelivery = async () => {
+  const finishOrderDelivery = () => {
     const newOrder: OrderInformationType = {
       ...currentSelectOrder,
       orderState: 'finished',
     };
-    const res = await orderApi.update(newOrder);
-    console.log(res);
+    try {
+      const res = orderApi.updateOrder(newOrder);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -148,7 +113,11 @@ const DeliveryUI = () => {
           <Card h={'44vh'}>
             <CardBody>
               <Box height="25vh">
-                <Box>{currentSelectOrder.woodenNumber}</Box>
+                <Box>
+                  {currentSelectOrder.woodenNumber
+                    ? currentSelectOrder.woodenNumber
+                    : 'lording...'}
+                </Box>
                 {currentSelectOrder.menus.map((menu, index) => (
                   <>
                     <Box key={index}>{menu.name}</Box>
