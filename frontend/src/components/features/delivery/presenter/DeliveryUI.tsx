@@ -195,24 +195,36 @@ const DeliveryUI = () => {
           <PureCarousel
             cardInformation={[
               {
-                orderNumber: 1,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 2,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 3,
-                menu: 'ソース',
-                topping: 'メンタイ',
-              },
-              {
-                orderNumber: 4,
-                menu: 'ソース',
-                topping: 'メンタイ',
+                _id: '6533ae6bfb99ad75540d3592',
+                woodenNumber: 1,
+                orderState: 'available',
+                orderStateLogs: {
+                  orderReceivedAt: new Date(),
+                  readiedAt: new Date(),
+                  deliveredAt: undefined,
+                },
+                menus: [
+                  {
+                    name: 'ソース',
+                    price: 250,
+                    arranges: {
+                      ソース: true,
+                      マヨ: true,
+                      カツオ: true,
+                      アオサ: true,
+                    },
+                  },
+                  {
+                    name: 'めんたい',
+                    price: 300,
+                    arranges: {
+                      ソース: true,
+                      めんたいマヨ: true,
+                      チーズ: true,
+                      カツオ: true,
+                    },
+                  },
+                ],
               },
             ]}
           />
