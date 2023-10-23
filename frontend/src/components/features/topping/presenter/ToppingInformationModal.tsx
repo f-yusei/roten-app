@@ -11,7 +11,7 @@ import {
   ModalFooter,
   Box,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FC } from 'react';
 import { OrderInformationType } from '../../../../types';
 import orderApi from '../../../../api/orderApi';
@@ -26,15 +26,13 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
 
-  useEffect(() => {}, []);
-
-  const completeTopping = () => {
+  const completeTopping = async () => {
     const newOrder: OrderInformationType = {
       ...order,
       orderState: 'available',
     };
     try {
-      const res = orderApi.updateOrder(newOrder);
+      const res = await orderApi.updateOrder(newOrder);
       console.log(res);
     } catch (error) {
       console.log(error);
