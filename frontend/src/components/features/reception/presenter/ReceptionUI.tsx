@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Grid, GridItem } from '@chakra-ui/react';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { v4 } from 'uuid';
 
 type Order = {
@@ -29,8 +29,13 @@ type Topping = {
 };
 import PayDrawer from './Payment';
 import OrderHistoryDrawer from './OrderHistoryDrawer';
+import { MenuInformation } from '../../../../types';
 
-const ReceptionUI = () => {
+type ReceptionUIProps = {
+  cart: MenuInformation[];
+};
+
+const ReceptionUI: FC<ReceptionUIProps> = ({ cart }) => {
   const [orders, setOrders] = useState<Order[]>([]);
 
   return (
@@ -172,8 +177,8 @@ const ReceptionUI = () => {
         <Card w={'60vw'} h={'96vh'} p={4} m={2}>
           <h1>注文内容</h1>
           <Stack bgColor={'gray.50'} h={'88vh'} overflow={'scroll'}>
-            {orders.map((order, index) =>
-              order.name === 'セット前売り券' ? (
+            {cart.map((order, index) =>
+              order.name === 'ソース（セット）前売り' ? (
                 <HStack key={index}>
                   <SetCard menuName={order.name} />
 
@@ -189,12 +194,14 @@ const ReceptionUI = () => {
                     削除
                   </Button>
                 </HStack>
+              ) : order.name === 'めんたい（セット）前売り' ? (
+                <Box></Box>
               ) : (
                 <Card w={'54vw'} minH={'8vh'} m={2}>
                   <h2>{order.name}</h2>
                   <HStack>
                     <CheckboxGroup>
-                      {Object.keys(order.toppings).map((topping, i) => (
+                      {Object.keys(order.arranges).map((topping, i) => (
                         <Checkbox
                           colorScheme="green"
                           onChange={(e) =>
