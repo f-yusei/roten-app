@@ -31,6 +31,7 @@ const DeliveryUI = () => {
       },
       menus: [
         {
+          id: v4(),
           name: 'ソース',
           price: 250,
           arranges: {
@@ -42,6 +43,7 @@ const DeliveryUI = () => {
           },
         },
         {
+          id: v4(),
           name: 'めんたい',
           price: 300,
           arranges: {
@@ -205,6 +207,7 @@ const DeliveryUI = () => {
                 },
                 menus: [
                   {
+                    id: v4(),
                     name: 'ソース',
                     price: 250,
                     arranges: {
@@ -215,6 +218,7 @@ const DeliveryUI = () => {
                     },
                   },
                   {
+                    id: v4(),
                     name: 'めんたい',
                     price: 300,
                     arranges: {

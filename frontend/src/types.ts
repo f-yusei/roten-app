@@ -54,6 +54,7 @@ type MenuForTopping = {
 
 //データベースから受け取ったメニューの型
 export type MenuInformation = {
+  id: string;
   name:
     | 'ソース前売り'
     | 'めんたい前売り'
