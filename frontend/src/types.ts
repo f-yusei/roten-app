@@ -66,17 +66,19 @@ type MenuInformation = {
 };
 
 type SauceToppings = {
-  ソース: boolean;
-  マヨ: boolean;
-  カツオ: boolean;
-  アオサ: boolean;
+  kind: 'sauce';
+  sauce: boolean;
+  mayo: boolean;
+  katsuo: boolean;
+  aosa: boolean;
 };
 
 type MentaiToppings = {
-  ソース: boolean;
-  めんたいマヨ: boolean;
-  カツオ: boolean;
-  チーズ: boolean;
+  kind: 'mentai';
+  sauce: boolean;
+  mentaiMayo: boolean;
+  katsuo: boolean;
+  cheese: boolean;
 };
 
 export const sauceToppings = ['ソース', 'マヨ', 'カツオ', 'アオサ'];

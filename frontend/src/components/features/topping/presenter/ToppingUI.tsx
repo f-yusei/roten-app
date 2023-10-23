@@ -1,144 +1,62 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
 import ToppingInformationModal from './ToppingInformationModal';
-import { OrderType } from '../../../../types';
+import { useGetAllOrder } from '../../../../api/hooks';
+import { useEffect, useState } from 'react';
+import { OrderInformationType } from '../../../../types';
 
 const ToppingUI = () => {
-  const orders: OrderType[] = [
+  const { orders, isLoading } = useGetAllOrder();
+  const [waitingOrders, setWaitingOrders] = useState<OrderInformationType[]>([
     {
-      _id: 'a',
+      _id: '6533ae6bfb99ad75540d3592',
       woodenNumber: 1,
-      orderState: 'waiting',
+      orderState: 'available',
       menus: [
         {
-          isSauce: true,
           name: 'ソース',
           price: 250,
-          arranges: [true, true, true, true],
+          arranges: {
+            kind: 'sauce',
+            sauce: true,
+            mayo: true,
+            katsuo: true,
+            aosa: true,
+          },
         },
         {
-          isSauce: false,
           name: 'めんたい',
           price: 300,
-          arranges: [true, false, false, true],
+          arranges: {
+            kind: 'mentai',
+            sauce: true,
+            mentaiMayo: true,
+            cheese: true,
+            katsuo: true,
+          },
         },
       ],
     },
-    {
-      _id: 'b',
-      woodenNumber: 2,
-      orderState: 'waiting',
-      menus: [
-        {
-          isSauce: true,
-          name: 'ソース',
-          price: 250,
-          arranges: [true, false, true, true],
-        },
-        {
-          isSauce: false,
-          name: 'めんたい',
-          price: 300,
-          arranges: [true, false, true, true],
-        },
-      ],
-    },
-    {
-      _id: 'c',
-      woodenNumber: 3,
-      orderState: 'waiting',
-      menus: [
-        {
-          isSauce: false,
-          name: 'めんたい',
-          price: 300,
-          arranges: [true, false, true, true],
-        },
-        {
-          isSauce: false,
-          name: 'めんたい',
-          price: 300,
-          arranges: [true, false, true, true],
-        },
-      ],
-    },
-    {
-      _id: 'd',
-      woodenNumber: 4,
-      orderState: 'waiting',
-      menus: [
-        {
-          isSauce: true,
-          name: 'ソース',
-          price: 250,
-          arranges: [true, false, true, true],
-        },
-      ],
-    },
-    {
-      _id: 'e',
-      woodenNumber: 5,
-      orderState: 'waiting',
-      menus: [
-        {
-          isSauce: false,
-          name: 'めんたい',
-          price: 300,
-          arranges: [true, false, true, true],
-        },
-      ],
-    },
-    {
-      _id: 'f',
-      woodenNumber: 6,
-      orderState: 'waiting',
-      menus: [
-        {
-          isSauce: false,
-          name: 'めんたい',
-          price: 300,
-          arranges: [true, false, true, true],
-        },
-      ],
-    },
-    {
-      _id: 'g',
-      woodenNumber: 7,
-      orderState: 'waiting',
-      menus: [
-        {
-          isSauce: true,
-          name: 'ソース',
-          price: 250,
-          arranges: [true, false, true, true],
-        },
-      ],
-    },
-    {
-      _id: 'h',
-      woodenNumber: 8,
-      orderState: 'waiting',
-      menus: [
-        {
-          isSauce: true,
-          name: 'ソース',
-          price: 250,
-          arranges: [true, false, true, true],
-        },
-      ],
-    },
-  ];
+  ]);
+
+  useEffect(() => {
+    if (!orders) return;
+    setWaitingOrders(orders.filter((order) => order.orderState === 'waiting'));
+  }, [orders]);
+
+  if (isLoading) return <div>loading...</div>;
   return (
     <div>
       <Grid templateColumns="repeat(3, 1fr)" gap={4}>
-        {orders
-          .filter((order) => order.orderState === 'waiting')
-          .slice(0, 5)
-          .map((order, index) => (
+        {waitingOrders ? (
+          waitingOrders.slice(0, 5).map((order, index) => (
             <GridItem key={index}>
               <ToppingInformationModal order={order} />
             </GridItem>
-          ))}
+          ))
+        ) : (
+          <Box>お疲れ様でした。ちょっと休憩...</Box>
+        )}
         <GridItem key={5}>
           <PureCarousel
             cardInformation={[

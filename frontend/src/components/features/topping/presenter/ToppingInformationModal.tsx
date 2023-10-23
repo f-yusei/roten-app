@@ -10,14 +10,14 @@ import {
   VStack,
   ModalFooter,
   Box,
-  Stack,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { FC } from 'react';
-import { OrderType, mentaiToppings, sauceToppings } from '../../../../types';
+import { OrderInformationType } from '../../../../types';
+import orderApi from '../../../../api/orderApi';
 
 export type ToppingInformationModalProps = {
-  order: OrderType;
+  order: OrderInformationType;
 };
 
 const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
@@ -29,7 +29,16 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
   useEffect(() => {}, []);
 
   const completeTopping = () => {
-    order.orderState = 'available';
+    const newOrder: OrderInformationType = {
+      ...order,
+      orderState: 'available',
+    };
+    try {
+      const res = orderApi.updateOrder(newOrder);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
     onClose();
   };
 
@@ -46,18 +55,22 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
           {order.menus.map((menu, index) => (
             <VStack key={index}>
               <Box fontSize={'20px'}>{menu.name}</Box>
-              {menu.arranges.map((arrange, arrangeIndex) =>
-                arrange === false ? (
-                  menu.isSauce === true ? (
-                    <div key={arrangeIndex}>
-                      - no {sauceToppings[arrangeIndex]}
-                    </div>
-                  ) : (
-                    <div key={arrangeIndex}>
-                      -no {mentaiToppings[arrangeIndex]}
-                    </div>
-                  )
-                ) : null,
+              {menu.arranges.kind === 'sauce' ? (
+                <>
+                  <Box>{menu.arranges.sauce ? '' : 'ソース: なし'}</Box>
+                  <Box>{menu.arranges.mayo ? '' : 'マヨ: なし'}</Box>
+                  <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
+                  <Box> {menu.arranges.aosa ? '' : 'アオサ:なし'}</Box>
+                </>
+              ) : (
+                <>
+                  <Box> {menu.arranges.sauce ? '' : 'ソース:なし'}</Box>
+                  <Box>
+                    {menu.arranges.mentaiMayo ? '' : 'めんたいマヨ:なし'}
+                  </Box>
+                  <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
+                  <Box>{menu.arranges.cheese ? '' : 'チーズ:なし'}</Box>
+                </>
               )}
             </VStack>
           ))}
@@ -72,23 +85,26 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
           <ModalBody>
             <VStack justify="center">
               {order.menus.map((menu, index) => (
-                <Stack key={index}>
+                <VStack key={index}>
                   <Box fontSize={'20px'}>{menu.name}</Box>
-
-                  {menu.arranges.map((arrange, arrangeIndex) =>
-                    arrange === false ? (
-                      menu.isSauce === true ? (
-                        <div key={arrangeIndex}>
-                          - no {sauceToppings[arrangeIndex]}
-                        </div>
-                      ) : (
-                        <div key={arrangeIndex}>
-                          -no {mentaiToppings[arrangeIndex]}
-                        </div>
-                      )
-                    ) : null,
+                  {menu.arranges.kind === 'sauce' ? (
+                    <>
+                      <Box>{menu.arranges.sauce ? '' : 'ソース: なし'}</Box>
+                      <Box>{menu.arranges.mayo ? '' : 'マヨ: なし'}</Box>
+                      <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
+                      <Box> {menu.arranges.aosa ? '' : 'アオサ:なし'}</Box>
+                    </>
+                  ) : (
+                    <>
+                      <Box> {menu.arranges.sauce ? '' : 'ソース:なし'}</Box>
+                      <Box>
+                        {menu.arranges.mentaiMayo ? '' : 'めんたいマヨ:なし'}
+                      </Box>
+                      <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
+                      <Box>{menu.arranges.cheese ? '' : 'チーズ:なし'}</Box>
+                    </>
                   )}
-                </Stack>
+                </VStack>
               ))}
             </VStack>
           </ModalBody>
