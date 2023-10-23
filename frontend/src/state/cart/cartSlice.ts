@@ -11,6 +11,12 @@ export type ArrangeState = {
   checked: boolean;
 };
 
+export type ArrangeState = {
+  id: string;
+  arrange: string;
+  checked: boolean;
+};
+
 export const cartSlice = createSlice({
   name: 'cartSlice',
   initialState: state,
