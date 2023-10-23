@@ -12,6 +12,7 @@ import { OrderInformationType } from '../../../../types';
 import { useEffect, useState } from 'react';
 import orderApi from '../../../../api/orderApi';
 import { useGetAllOrder } from '../../../../api/hooks';
+import { v4 } from 'uuid';
 
 const DeliveryUI = () => {
   const { orders, isLoading } = useGetAllOrder();
@@ -23,6 +24,11 @@ const DeliveryUI = () => {
       _id: '6533ae6bfb99ad75540d3592',
       woodenNumber: 1,
       orderState: 'available',
+      orderStateLogs: {
+        orderReceivedAt: new Date(),
+        readiedAt: new Date(),
+        deliveredAt: undefined,
+      },
       menus: [
         {
           name: 'ソース',
@@ -49,7 +55,7 @@ const DeliveryUI = () => {
   ]);
 
   const [currentSelectOrder, setCurrentSelectOrder] =
-    useState<OrderInformationType>(availableOrders[0]);
+    useState<OrderInformationType | null>(availableOrders[0]);
 
   useEffect(() => {
     if (!orders) return;
@@ -64,39 +70,58 @@ const DeliveryUI = () => {
     setCurrentSelectOrder(order);
   };
 
-  const discardOrder = () => {
+  const discardOrder = async () => {
+    if (!currentSelectOrder) return;
     const newOrder: OrderInformationType = {
       ...currentSelectOrder,
       orderState: 'discarded',
     };
     try {
-      const res = orderApi.updateOrder(newOrder);
+      const res = await orderApi.updateOrder(newOrder);
       console.log(res);
+      //画面を更新する
+      const newAvailableOrders = availableOrders.filter(
+        (order) => order._id !== newOrder._id,
+      );
+      setAvailableOrders(newAvailableOrders);
+      setCurrentSelectOrder(null);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const finishOrderDelivery = () => {
+  const finishOrderDelivery = async () => {
+    if (!currentSelectOrder) return;
     const newOrder: OrderInformationType = {
       ...currentSelectOrder,
       orderState: 'finished',
     };
     try {
-      const res = orderApi.updateOrder(newOrder);
+      const res = await orderApi.updateOrder(newOrder);
       console.log(res);
     } catch (error) {
       console.log(error);
     }
   };
 
+  //現在の時間とorder.orderStateLogs.readiedAtの差を計算する関数
+  // const calculateSec = (order: OrderInformationType) => {
+  //   const now = new Date();
+  //   //注文受付からの経過時間を計算
+  //   const readiedAt = order.orderStateLogs.readiedAt;
+  //   if (!readiedAt) return 'lording...';
+  //   const diff = now.getTime() - readiedAt.getTime();
+  //   //秒数まで計算
+  //   const diffSec = Math.floor(diff / 1000).toString();
+  //   return diffSec;
+  // };
+
   return (
     <HStack>
       <Grid templateColumns="repeat(2, 1fr)">
-        {availableOrders.slice(0, 6).map((order, index) => (
-          <GridItem key={index}>
+        {availableOrders.slice(0, 6).map((order) => (
+          <GridItem key={v4()}>
             <Button
-              key={index}
               w="24vw"
               h="24vh"
               bgColor="gray.100"
@@ -105,6 +130,14 @@ const DeliveryUI = () => {
             >
               {order.woodenNumber}
             </Button>
+            {
+              //TODO: ここで時間を表示する
+              /* <Box>
+              {order.orderStateLogs.readiedAt
+                ? calculateSec(order) + '秒'
+                : 'lording...'}
+            </Box> */
+            }
           </GridItem>
         ))}
       </Grid>
@@ -114,21 +147,21 @@ const DeliveryUI = () => {
             <CardBody>
               <Box height="25vh">
                 <Box>
-                  {currentSelectOrder.woodenNumber
+                  {currentSelectOrder?.woodenNumber
                     ? currentSelectOrder.woodenNumber
                     : 'lording...'}
                 </Box>
-                {currentSelectOrder.menus.map((menu, index) => (
-                  <>
-                    <Box key={index}>{menu.name}</Box>
-                    <Box key={index}>トッピング</Box>
+                {currentSelectOrder?.menus.map((menu) => (
+                  <Box key={v4()}>
+                    <Box>{menu.name}</Box>
+                    <Box>トッピング</Box>
                     {Object.entries(menu.arranges).map(([topping, value]) => {
                       if (!value) {
                         return <Box key={topping}>-no {topping}</Box>;
                       }
                       return null;
                     })}
-                  </>
+                  </Box>
                 ))}
               </Box>
               <div className="oprButton">
