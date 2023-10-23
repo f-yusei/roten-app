@@ -1,8 +1,9 @@
 import { HStack, AspectRatio, Box, Card } from '@chakra-ui/react';
 import { FC, useRef } from 'react';
-import { OrderInformation } from '../types';
+import { OrderInformationType } from '../types';
+import { v4 } from 'uuid';
 
-export const PureCarousel: FC<{ cardInformation: OrderInformation[] }> = ({
+export const PureCarousel: FC<{ cardInformation: OrderInformationType[] }> = ({
   cardInformation,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -34,7 +35,7 @@ export const PureCarousel: FC<{ cardInformation: OrderInformation[] }> = ({
           scrollSnapType: 'x mandatory',
         }}
       >
-        {cardInformation.map((card, i) => {
+        {cardInformation.map((order, i) => {
           return (
             <AspectRatio
               ratio={1}
@@ -45,9 +46,19 @@ export const PureCarousel: FC<{ cardInformation: OrderInformation[] }> = ({
               }}
             >
               <Card key={i}>
-                <Box>{card.orderNumber}</Box>
-                <Box>{card.menu}</Box>
-                <Box>{card.topping}</Box>
+                <Box>{order._id}</Box>
+                <Box>{order.woodenNumber}</Box>
+                {order.menus.map((menu) => (
+                  <Box key={v4()}>
+                    <Box>{menu.name}</Box>
+                    {Object.entries(menu.arranges).map(([topping, value]) => {
+                      if (!value) {
+                        return <Box key={topping}>-no {topping}</Box>;
+                      }
+                      return null;
+                    })}
+                  </Box>
+                ))}
               </Card>
             </AspectRatio>
           );
