@@ -53,7 +53,7 @@ type MenuForTopping = {
 };
 
 //データベースから受け取ったメニューの型
-type MenuInformation = {
+export type MenuInformation = {
   name:
     | 'ソース前売り'
     | 'めんたい前売り'
