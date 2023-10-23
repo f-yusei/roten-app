@@ -57,7 +57,9 @@ const ToppingUI = () => {
         ) : (
           <Box>お疲れ様でした。ちょっと休憩...</Box>
         )}
-        <GridItem key={5}>{/**何か */}</GridItem>
+        <GridItem key={5}>
+          <PureCarousel cardInformation={[]} />
+        </GridItem>
       </Grid>
     </div>
   );
