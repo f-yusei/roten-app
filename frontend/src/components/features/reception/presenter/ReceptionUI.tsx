@@ -36,135 +36,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
   return (
     <Box maxHeight="100vh">
       <HStack>
-        <VStack>
-          <OrderHistoryDrawer />
-          <HStack>
-            <Button
-              fontSize={{ base: '50px', sm: '24px' }}
-              h={{ base: '100px', sm: '200px' }}
-              w={{ base: '100px', sm: '200px' }}
-              p={4}
-              m={4}
-              onClick={() =>
-                handleAddToCart({
-                  id: v4(),
-                  name: 'ソース',
-                  price: 250,
-                  arranges: {
-                    ソース: true,
-                    マヨ: true,
-                    アオサ: true,
-                    カツオ: true,
-                  },
-                })
-              }
-            >
-              ソース
-            </Button>
-            <Button
-              fontSize={{ base: '50px', sm: '24px' }}
-              h={{ base: '100px', sm: '200px' }}
-              w={{ base: '100px', sm: '200px' }}
-              p={4}
-              m={4}
-              onClick={() =>
-                handleAddToCart({
-                  id: v4(),
-                  name: 'ソース前売り',
-                  price: 0,
-                  arranges: {
-                    ソース: true,
-                    マヨ: true,
-                    アオサ: true,
-                    カツオ: true,
-                  },
-                })
-              }
-            >
-              ソース前売り券
-            </Button>
-          </HStack>
-          <HStack>
-            <Button
-              fontSize={{ base: '50px', sm: '24px' }}
-              h={{ base: '100px', sm: '200px' }}
-              w={{ base: '100px', sm: '200px' }}
-              p={4}
-              m={4}
-              onClick={() =>
-                handleAddToCart({
-                  id: v4(),
-                  name: 'めんたい',
-                  price: 300,
-                  arranges: {
-                    ソース: true,
-                    めんたいマヨ: true,
-                    チーズ: true,
-                    カツオ: true,
-                  },
-                })
-              }
-            >
-              メンタイ
-            </Button>
-            <Button
-              fontSize={{ base: '50px', sm: '24px' }}
-              h={{ base: '100px', sm: '200px' }}
-              w={{ base: '100px', sm: '200px' }}
-              p={4}
-              m={4}
-              onClick={() =>
-                handleAddToCart({
-                  id: v4(),
-                  name: 'めんたい前売り',
-                  price: 0,
-                  arranges: {
-                    ソース: true,
-                    めんたいマヨ: true,
-                    チーズ: true,
-                    カツオ: true,
-                  },
-                })
-              }
-            >
-              メンタイ前売り券
-            </Button>
-          </HStack>
-          <Button
-            fontSize={{ base: '50px', sm: '24px' }}
-            h={{ base: '100px', sm: '200px' }}
-            w={{ base: '100px', sm: '400px' }}
-            p={4}
-            m={2}
-            mb={4}
-            onClick={() => {
-              handleAddToCart({
-                id: v4(),
-                name: 'ソース（セット）前売り',
-                price: 0,
-                arranges: {
-                  ソース: true,
-                  マヨ: true,
-                  アオサ: true,
-                  カツオ: true,
-                },
-              });
-              handleAddToCart({
-                id: v4(),
-                name: 'めんたい（セット）前売り',
-                price: 0,
-                arranges: {
-                  ソース: true,
-                  めんたいマヨ: true,
-                  チーズ: true,
-                  カツオ: true,
-                },
-              });
-            }}
-          >
-            セット
-          </Button>
-        </VStack>
+        <OrderButton handleAddToCart={handleAddToCart} />
         <Card w={'60vw'} h={'96vh'} p={4} m={2}>
           <h1>注文内容</h1>
           <Stack bgColor={'gray.50'} h={'88vh'} overflow={'scroll'}>
@@ -396,6 +268,144 @@ const SetCard = ({
         </Box>
       ) : null}
     </>
+  );
+};
+
+type orderButtonProps = {
+  handleAddToCart: ({ name, price, arranges, id }: MenuInformation) => void;
+};
+
+const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
+  return (
+    <VStack>
+      <OrderHistoryDrawer />
+      <HStack>
+        <Button
+          fontSize={{ base: '50px', sm: '24px' }}
+          h={{ base: '100px', sm: '200px' }}
+          w={{ base: '100px', sm: '200px' }}
+          p={4}
+          m={4}
+          onClick={() =>
+            handleAddToCart({
+              id: v4(),
+              name: 'ソース',
+              price: 250,
+              arranges: {
+                ソース: true,
+                マヨ: true,
+                アオサ: true,
+                カツオ: true,
+              },
+            })
+          }
+        >
+          ソース
+        </Button>
+        <Button
+          fontSize={{ base: '50px', sm: '24px' }}
+          h={{ base: '100px', sm: '200px' }}
+          w={{ base: '100px', sm: '200px' }}
+          p={4}
+          m={4}
+          onClick={() =>
+            handleAddToCart({
+              id: v4(),
+              name: 'ソース前売り',
+              price: 0,
+              arranges: {
+                ソース: true,
+                マヨ: true,
+                アオサ: true,
+                カツオ: true,
+              },
+            })
+          }
+        >
+          ソース前売り券
+        </Button>
+      </HStack>
+      <HStack>
+        <Button
+          fontSize={{ base: '50px', sm: '24px' }}
+          h={{ base: '100px', sm: '200px' }}
+          w={{ base: '100px', sm: '200px' }}
+          p={4}
+          m={4}
+          onClick={() =>
+            handleAddToCart({
+              id: v4(),
+              name: 'めんたい',
+              price: 300,
+              arranges: {
+                ソース: true,
+                めんたいマヨ: true,
+                チーズ: true,
+                カツオ: true,
+              },
+            })
+          }
+        >
+          メンタイ
+        </Button>
+        <Button
+          fontSize={{ base: '50px', sm: '24px' }}
+          h={{ base: '100px', sm: '200px' }}
+          w={{ base: '100px', sm: '200px' }}
+          p={4}
+          m={4}
+          onClick={() =>
+            handleAddToCart({
+              id: v4(),
+              name: 'めんたい前売り',
+              price: 0,
+              arranges: {
+                ソース: true,
+                めんたいマヨ: true,
+                チーズ: true,
+                カツオ: true,
+              },
+            })
+          }
+        >
+          メンタイ前売り券
+        </Button>
+      </HStack>
+      <Button
+        fontSize={{ base: '50px', sm: '24px' }}
+        h={{ base: '100px', sm: '200px' }}
+        w={{ base: '100px', sm: '400px' }}
+        p={4}
+        m={2}
+        mb={4}
+        onClick={() => {
+          handleAddToCart({
+            id: v4(),
+            name: 'ソース（セット）前売り',
+            price: 0,
+            arranges: {
+              ソース: true,
+              マヨ: true,
+              アオサ: true,
+              カツオ: true,
+            },
+          });
+          handleAddToCart({
+            id: v4(),
+            name: 'めんたい（セット）前売り',
+            price: 0,
+            arranges: {
+              ソース: true,
+              めんたいマヨ: true,
+              チーズ: true,
+              カツオ: true,
+            },
+          });
+        }}
+      >
+        セット
+      </Button>
+    </VStack>
   );
 };
 
