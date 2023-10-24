@@ -9,173 +9,46 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Grid, GridItem } from '@chakra-ui/react';
-import { useState } from 'react';
-import { v4 } from 'uuid';
-
-type Order = {
-  id: string;
-  name: string;
-  toppings: Topping;
-  price: number;
-};
-
-type Topping = {
-  ソース?: boolean;
-  マヨ?: boolean;
-  青のり?: boolean;
-  かつお節?: boolean;
-  メンタイ?: boolean;
-  チーズ?: boolean;
-};
+import { FC, useEffect } from 'react';
 import PayDrawer from './Payment';
 import OrderHistoryDrawer from './OrderHistoryDrawer';
+import { MenuInformation } from '../../../../types';
+import { v4 } from 'uuid';
+import { ArrangeState } from '../../../../state/cart/cartSlice';
 
-const ReceptionUI = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
+type ReceptionUIProps = {
+  cart: MenuInformation[];
+  handleAddToCart: ({ name, price, arranges, id }: MenuInformation) => void;
+  handleDeleteFromCart: (id: string) => void;
+  handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
+  handleDeleteSetMenu: (index: number) => void;
+};
+
+const ReceptionUI: FC<ReceptionUIProps> = ({
+  cart,
+  handleAddToCart,
+  handleDeleteFromCart,
+  handleUpdateOrderCheck,
+  handleDeleteSetMenu,
+}) => {
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
 
   return (
     <Box maxHeight="100vh">
       <HStack>
-        <VStack>
-          <OrderHistoryDrawer />
-          <HStack>
-            <Button
-              fontSize={{ base: '50px', sm: '24px' }}
-              h={{ base: '100px', sm: '200px' }}
-              w={{ base: '100px', sm: '200px' }}
-              p={4}
-              m={4}
-              onClick={() => {
-                setOrders([
-                  ...orders,
-                  {
-                    id: v4(),
-                    name: 'ソース',
-                    toppings: {
-                      ソース: true,
-                      マヨ: true,
-                      青のり: true,
-                      かつお節: true,
-                    },
-                    price: 250,
-                  },
-                ]);
-              }}
-            >
-              ソース
-            </Button>
-            <Button
-              fontSize={{ base: '50px', sm: '24px' }}
-              h={{ base: '100px', sm: '200px' }}
-              w={{ base: '100px', sm: '200px' }}
-              p={4}
-              m={4}
-              onClick={() => {
-                setOrders([
-                  ...orders,
-                  {
-                    id: v4(),
-                    name: 'ソース前売り券',
-                    toppings: {
-                      ソース: true,
-                      マヨ: true,
-                      青のり: true,
-                      かつお節: true,
-                    },
-                    price: 0,
-                  },
-                ]);
-              }}
-            >
-              ソース前売り券
-            </Button>
-          </HStack>
-          <HStack>
-            <Button
-              fontSize={{ base: '50px', sm: '24px' }}
-              h={{ base: '100px', sm: '200px' }}
-              w={{ base: '100px', sm: '200px' }}
-              p={4}
-              m={4}
-              onClick={() => {
-                setOrders([
-                  ...orders,
-                  {
-                    id: v4(),
-                    name: 'メンタイ',
-                    toppings: {
-                      ソース: true,
-                      メンタイ: true,
-                      チーズ: true,
-                      かつお節: true,
-                    },
-                    price: 300,
-                  },
-                ]);
-              }}
-            >
-              メンタイ
-            </Button>
-            <Button
-              fontSize={{ base: '50px', sm: '24px' }}
-              h={{ base: '100px', sm: '200px' }}
-              w={{ base: '100px', sm: '200px' }}
-              p={4}
-              m={4}
-              onClick={() => {
-                setOrders([
-                  ...orders,
-                  {
-                    id: v4(),
-                    name: 'メンタイ前売り券',
-                    toppings: {
-                      ソース: true,
-                      メンタイ: true,
-                      チーズ: true,
-                      かつお節: true,
-                    },
-                    price: 0,
-                  },
-                ]);
-              }}
-            >
-              メンタイ前売り券
-            </Button>
-          </HStack>
-          <Button
-            fontSize={{ base: '50px', sm: '24px' }}
-            h={{ base: '100px', sm: '200px' }}
-            w={{ base: '100px', sm: '400px' }}
-            p={4}
-            m={2}
-            mb={4}
-            onClick={() => {
-              setOrders([
-                ...orders,
-                {
-                  id: v4(),
-                  name: 'セット前売り券',
-                  toppings: {
-                    ソース: true,
-                    マヨ: true,
-                    青のり: true,
-                    かつお節: true,
-                  },
-                  price: 0,
-                },
-              ]);
-            }}
-          >
-            セット
-          </Button>
-        </VStack>
+        <OrderButton handleAddToCart={handleAddToCart} />
         <Card w={'60vw'} h={'96vh'} p={4} m={2}>
           <h1>注文内容</h1>
           <Stack bgColor={'gray.50'} h={'88vh'} overflow={'scroll'}>
-            {orders.map((order, index) =>
-              order.name === 'セット前売り券' ? (
+            {cart.map((order, index) =>
+              order.name === 'ソース（セット）前売り' ? (
                 <HStack key={index}>
-                  <SetCard menuName={order.name} />
+                  <SetCard
+                    order={order}
+                    handleUpdateOrderCheck={handleUpdateOrderCheck}
+                  />
 
                   <Button
                     w="12vw"
@@ -183,37 +56,31 @@ const ReceptionUI = () => {
                     borderRadius={10}
                     m={5}
                     onClick={() => {
-                      setOrders(orders.filter((o) => o.id !== order.id));
+                      handleDeleteSetMenu(index);
                     }}
                   >
                     削除
                   </Button>
                 </HStack>
+              ) : order.name === 'めんたい（セット）前売り' ? (
+                <Box key={v4()}></Box>
               ) : (
-                <Card w={'54vw'} minH={'8vh'} m={2}>
+                <Card key={order.id} w={'54vw'} minH={'8vh'} m={2}>
                   <h2>{order.name}</h2>
                   <HStack>
                     <CheckboxGroup>
-                      {Object.keys(order.toppings).map((topping, i) => (
+                      {Object.keys(order.arranges).map((topping, i) => (
                         <Checkbox
-                          colorScheme="green"
-                          onChange={(e) =>
-                            setOrders(
-                              orders.map((o) =>
-                                o.id === order.id
-                                  ? {
-                                      ...o,
-                                      toppings: {
-                                        ...o.toppings,
-                                        [topping]: e.target.checked,
-                                      },
-                                    }
-                                  : o,
-                              ),
-                            )
-                          }
                           key={i}
-                          defaultChecked
+                          defaultChecked={true}
+                          colorScheme="green"
+                          onChange={(e) => {
+                            handleUpdateOrderCheck({
+                              id: order.id,
+                              arrange: topping,
+                              checked: e.target.checked,
+                            });
+                          }}
                         >
                           {topping}
                         </Checkbox>
@@ -221,7 +88,7 @@ const ReceptionUI = () => {
                     </CheckboxGroup>
                     <Button
                       onClick={() => {
-                        setOrders(orders.filter((o) => o.id !== order.id));
+                        handleDeleteFromCart(order.id);
                       }}
                     >
                       削除
@@ -236,7 +103,7 @@ const ReceptionUI = () => {
             <h2>
               {
                 //注文の合計金額を表示
-                orders.reduce((sum, order) => sum + order.price, 0)
+                cart.reduce((sum, order) => sum + order.price, 0)
               }
             </h2>
             <PayDrawer />
@@ -247,10 +114,16 @@ const ReceptionUI = () => {
   );
 };
 
-const SetCard = ({ menuName }: { menuName: string }) => {
+const SetCard = ({
+  order,
+  handleUpdateOrderCheck,
+}: {
+  order: MenuInformation;
+  handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
+}) => {
   return (
     <>
-      {menuName === 'セット前売り券' ? (
+      {order.name === 'ソース（セット）前売り' ? (
         <Box width={'40vw'}>
           <Grid
             templateRows="repeat(2, 1rf)"
@@ -275,16 +148,56 @@ const SetCard = ({ menuName }: { menuName: string }) => {
                 <Card w={'35vw'} minH={'8vh'}>
                   <h2>ソース（セット）前売り</h2>
                   <HStack>
-                    <Checkbox defaultChecked colorScheme="green">
+                    <Checkbox
+                      defaultChecked={true}
+                      colorScheme="green"
+                      onChange={(e) => {
+                        handleUpdateOrderCheck({
+                          id: order.id,
+                          arrange: 'ソース',
+                          checked: e.target.checked,
+                        });
+                      }}
+                    >
                       ソース
                     </Checkbox>
-                    <Checkbox defaultChecked colorScheme="green">
+                    <Checkbox
+                      defaultChecked={true}
+                      colorScheme="green"
+                      onChange={(e) => {
+                        handleUpdateOrderCheck({
+                          id: order.id,
+                          arrange: 'マヨ',
+                          checked: e.target.checked,
+                        });
+                      }}
+                    >
                       マヨ
                     </Checkbox>
-                    <Checkbox defaultChecked colorScheme="green">
+                    <Checkbox
+                      defaultChecked={true}
+                      colorScheme="green"
+                      onChange={(e) => {
+                        handleUpdateOrderCheck({
+                          id: order.id,
+                          arrange: 'アオサ',
+                          checked: e.target.checked,
+                        });
+                      }}
+                    >
                       青のり
                     </Checkbox>
-                    <Checkbox defaultChecked colorScheme="green">
+                    <Checkbox
+                      defaultChecked={true}
+                      colorScheme="green"
+                      onChange={(e) => {
+                        handleUpdateOrderCheck({
+                          id: order.id,
+                          arrange: 'カツオ',
+                          checked: e.target.checked,
+                        });
+                      }}
+                    >
                       かつお節
                     </Checkbox>
                   </HStack>
@@ -296,16 +209,56 @@ const SetCard = ({ menuName }: { menuName: string }) => {
                 <Card w={'35vw'} minH={'8vh'}>
                   <h2>めんたい（セット）前売り</h2>
                   <HStack>
-                    <Checkbox defaultChecked colorScheme="green">
+                    <Checkbox
+                      defaultChecked={true}
+                      colorScheme="green"
+                      onChange={(e) => {
+                        handleUpdateOrderCheck({
+                          id: order.id,
+                          arrange: 'ソース',
+                          checked: e.target.checked,
+                        });
+                      }}
+                    >
                       ソース
                     </Checkbox>
-                    <Checkbox defaultChecked colorScheme="green">
-                      マヨ
+                    <Checkbox
+                      defaultChecked={true}
+                      colorScheme="green"
+                      onChange={(e) => {
+                        handleUpdateOrderCheck({
+                          id: order.id,
+                          arrange: 'めんたいマヨ',
+                          checked: e.target.checked,
+                        });
+                      }}
+                    >
+                      めんたいマヨ
                     </Checkbox>
-                    <Checkbox defaultChecked colorScheme="green">
-                      青のり
+                    <Checkbox
+                      defaultChecked={true}
+                      colorScheme="green"
+                      onChange={(e) => {
+                        handleUpdateOrderCheck({
+                          id: order.id,
+                          arrange: 'チーズ',
+                          checked: e.target.checked,
+                        });
+                      }}
+                    >
+                      チーズ
                     </Checkbox>
-                    <Checkbox defaultChecked colorScheme="green">
+                    <Checkbox
+                      defaultChecked={true}
+                      colorScheme="green"
+                      onChange={(e) => {
+                        handleUpdateOrderCheck({
+                          id: order.id,
+                          arrange: 'カツオ',
+                          checked: e.target.checked,
+                        });
+                      }}
+                    >
                       かつお節
                     </Checkbox>
                   </HStack>
@@ -316,6 +269,144 @@ const SetCard = ({ menuName }: { menuName: string }) => {
         </Box>
       ) : null}
     </>
+  );
+};
+
+type orderButtonProps = {
+  handleAddToCart: ({ name, price, arranges, id }: MenuInformation) => void;
+};
+
+const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
+  return (
+    <VStack>
+      <OrderHistoryDrawer />
+      <HStack>
+        <Button
+          fontSize={{ base: '50px', sm: '24px' }}
+          h={{ base: '100px', sm: '200px' }}
+          w={{ base: '100px', sm: '200px' }}
+          p={4}
+          m={4}
+          onClick={() =>
+            handleAddToCart({
+              id: v4(),
+              name: 'ソース',
+              price: 250,
+              arranges: {
+                ソース: true,
+                マヨ: true,
+                アオサ: true,
+                カツオ: true,
+              },
+            })
+          }
+        >
+          ソース
+        </Button>
+        <Button
+          fontSize={{ base: '50px', sm: '24px' }}
+          h={{ base: '100px', sm: '200px' }}
+          w={{ base: '100px', sm: '200px' }}
+          p={4}
+          m={4}
+          onClick={() =>
+            handleAddToCart({
+              id: v4(),
+              name: 'ソース前売り',
+              price: 0,
+              arranges: {
+                ソース: true,
+                マヨ: true,
+                アオサ: true,
+                カツオ: true,
+              },
+            })
+          }
+        >
+          ソース前売り券
+        </Button>
+      </HStack>
+      <HStack>
+        <Button
+          fontSize={{ base: '50px', sm: '24px' }}
+          h={{ base: '100px', sm: '200px' }}
+          w={{ base: '100px', sm: '200px' }}
+          p={4}
+          m={4}
+          onClick={() =>
+            handleAddToCart({
+              id: v4(),
+              name: 'めんたい',
+              price: 300,
+              arranges: {
+                ソース: true,
+                めんたいマヨ: true,
+                チーズ: true,
+                カツオ: true,
+              },
+            })
+          }
+        >
+          メンタイ
+        </Button>
+        <Button
+          fontSize={{ base: '50px', sm: '24px' }}
+          h={{ base: '100px', sm: '200px' }}
+          w={{ base: '100px', sm: '200px' }}
+          p={4}
+          m={4}
+          onClick={() =>
+            handleAddToCart({
+              id: v4(),
+              name: 'めんたい前売り',
+              price: 0,
+              arranges: {
+                ソース: true,
+                めんたいマヨ: true,
+                チーズ: true,
+                カツオ: true,
+              },
+            })
+          }
+        >
+          メンタイ前売り券
+        </Button>
+      </HStack>
+      <Button
+        fontSize={{ base: '50px', sm: '24px' }}
+        h={{ base: '100px', sm: '200px' }}
+        w={{ base: '100px', sm: '400px' }}
+        p={4}
+        m={2}
+        mb={4}
+        onClick={() => {
+          handleAddToCart({
+            id: v4(),
+            name: 'ソース（セット）前売り',
+            price: 0,
+            arranges: {
+              ソース: true,
+              マヨ: true,
+              アオサ: true,
+              カツオ: true,
+            },
+          });
+          handleAddToCart({
+            id: v4(),
+            name: 'めんたい（セット）前売り',
+            price: 0,
+            arranges: {
+              ソース: true,
+              めんたいマヨ: true,
+              チーズ: true,
+              カツオ: true,
+            },
+          });
+        }}
+      >
+        セット
+      </Button>
+    </VStack>
   );
 };
 
