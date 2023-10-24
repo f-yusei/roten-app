@@ -219,13 +219,6 @@ function OrderConfirmationModal({
                           </p>
                           {Object.entries(menu.arranges).map(
                             ([topping, value]) => {
-                              if (!value) {
-                                return (
-                                  <p key={topping} style={{ color: '#5f9ea0' }}>
-                                    -{topping}なし
-                                  </p>
-                                );
-                              }
                               return null;
                             },
                           )}
