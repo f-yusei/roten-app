@@ -21,6 +21,7 @@ type ReceptionUIProps = {
   handleAddToCart: ({ name, price, arranges, id }: MenuInformation) => void;
   handleDeleteFromCart: (id: string) => void;
   handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
+  handleDeleteSetMenu: (index: number) => void;
 };
 
 const ReceptionUI: FC<ReceptionUIProps> = ({
@@ -28,6 +29,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
   handleAddToCart,
   handleDeleteFromCart,
   handleUpdateOrderCheck,
+  handleDeleteSetMenu,
 }) => {
   useEffect(() => {
     console.log(cart);
@@ -54,8 +56,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
                     borderRadius={10}
                     m={5}
                     onClick={() => {
-                      //
-                      handleDeleteFromCart(order.id);
+                      handleDeleteSetMenu(index);
                     }}
                   >
                     削除

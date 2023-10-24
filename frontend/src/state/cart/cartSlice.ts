@@ -24,6 +24,10 @@ export const cartSlice = createSlice({
       const newCart = state.cart.filter((order) => order.id !== id);
       state.cart = newCart;
     },
+    removeMenuByIndex: (state, action: PayloadAction<number>): void => {
+      const index = action.payload;
+      state.cart.splice(index, 1);
+    },
     updateCheckBox: (state, action: PayloadAction<ArrangeState>): void => {
       const { id, arrange, checked } = action.payload;
       const index = state.cart.findIndex((order) => order.id === id);
@@ -37,4 +41,5 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addMenu, removeMenu, updateCheckBox } = cartSlice.actions;
+export const { addMenu, removeMenu, removeMenuByIndex, updateCheckBox } =
+  cartSlice.actions;
