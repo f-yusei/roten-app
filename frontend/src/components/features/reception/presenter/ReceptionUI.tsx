@@ -62,9 +62,9 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
                   </Button>
                 </HStack>
               ) : order.name === 'めんたい（セット）前売り' ? (
-                <Box></Box>
+                <Box key={v4()}></Box>
               ) : (
-                <Card w={'54vw'} minH={'8vh'} m={2}>
+                <Card key={order.id} w={'54vw'} minH={'8vh'} m={2}>
                   <h2>{order.name}</h2>
                   <HStack>
                     <CheckboxGroup>
