@@ -2,11 +2,15 @@ import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
 import ToppingInformationModal from './ToppingInformationModal';
 import { useGetAllOrder } from '../../../../api/hooks';
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { OrderInformationType } from '../../../../types';
 
+const { orders, isLoading } = useGetAllOrder();
+const [allOrders, setAllOrders] = useState<OrderInformationType[]>([]);
+export const OrderContext = createContext({});
+export const SetOrderContext = createContext({ allOrders, setAllOrders });
+
 const ToppingUI = () => {
-  const { orders, isLoading } = useGetAllOrder();
   const [waitingOrders, setWaitingOrders] = useState<OrderInformationType[]>([
     {
       _id: '6533ae6bfb99ad75540d3592',
@@ -41,7 +45,10 @@ const ToppingUI = () => {
 
   useEffect(() => {
     if (!orders) return;
-    setWaitingOrders(orders.filter((order) => order.orderState === 'waiting'));
+    setAllOrders(orders);
+    setWaitingOrders(
+      allOrders.filter((order) => order.orderState === 'waiting'),
+    );
   }, [orders]);
 
   if (isLoading) return <div>loading...</div>;
@@ -51,7 +58,11 @@ const ToppingUI = () => {
         {waitingOrders ? (
           waitingOrders.slice(0, 5).map((order, index) => (
             <GridItem key={index}>
-              <ToppingInformationModal order={order} />
+              <SetOrderContext.Provider value={{ allOrders, setAllOrders }}>
+                <OrderContext.Provider value={{ orders, isLoading }}>
+                  <ToppingInformationModal order={order} />
+                </OrderContext.Provider>
+              </SetOrderContext.Provider>
             </GridItem>
           ))
         ) : (
