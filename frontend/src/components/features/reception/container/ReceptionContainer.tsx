@@ -7,6 +7,7 @@ import {
   ArrangeState,
   addMenu,
   removeMenu,
+  removeMenuByIndex,
   updateCheckBox,
 } from '../../../../state/cart/cartSlice';
 
@@ -38,12 +39,18 @@ const ReceptionContainer = () => {
       }),
     );
   };
+  //ここで２回消しているのは、セット商品の場合、配列の中に二つ並んで入っているため
+  const handleDeleteSetMenu = (index: number) => {
+    dispatch(removeMenuByIndex(index));
+    dispatch(removeMenuByIndex(index));
+  };
 
   const args = {
     cart: cart,
     handleAddToCart: handleAddToCart,
     handleDeleteFromCart: handleDeleteFromCart,
     handleUpdateOrderCheck: handleUpdateOrderCheck,
+    handleDeleteSetMenu: handleDeleteSetMenu,
   };
   return <ReceptionUI {...args} />;
 };
