@@ -15,6 +15,7 @@ import {
   GridItem,
 } from '@chakra-ui/react';
 import React from 'react';
+<<<<<<< HEAD
 import {
   OrderInformationType,
   OrderInformationTypeForPost,
@@ -32,6 +33,17 @@ function OrderConfirmationModal({
   numberOfTicketsUsed: number;
   difference_money: number;
   depositAmount: number;
+=======
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../state/common/rootState.type';
+
+function OrderConfirmationModal({
+  difference_money,
+  depositAmount,
+}: {
+  difference_money: number;
+  depositAmount: string;
+>>>>>>> baeb3ca ("feat: 受け取り、受け渡しの金額をグローバルにあるcartから取ってくる")
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
@@ -117,6 +129,8 @@ function OrderConfirmationModal({
 
   const cart = useSelector((state: RootState) => state.cart);
 
+  const cart = useSelector((state: RootState) => state.cart);
+
   return (
     <>
       <Button
@@ -138,6 +152,7 @@ function OrderConfirmationModal({
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
+<<<<<<< HEAD
             <Box>
               <Grid
                 templateRows="repeat(6, 1fr)"
@@ -248,6 +263,33 @@ function OrderConfirmationModal({
                 </GridItem>
               </Grid>
             </Box>
+=======
+            <VStack justify="left">
+              <h1>注文内容</h1>
+              {cart.map((order) => (
+                <Box>
+                  <h1>{order.name + order.price + '円'}</h1>
+                </Box>
+              ))}
+              <Box>
+                <h1>
+                  合計金額{' '}
+                  {cart.reduce((sum, order) => sum + order.price, 0).toString()}
+                  円
+                </h1>
+                <h1>お預かり {depositAmount}円</h1>
+                <h1>お釣り {difference_money}円 </h1>
+              </Box>
+              <Card>
+                <CardHeader>注文番号</CardHeader>
+                <CardBody>26</CardBody>
+              </Card>
+              <Card>
+                <CardHeader>受け取り番号</CardHeader>
+                <CardBody>10</CardBody>
+              </Card>
+            </VStack>
+>>>>>>> baeb3ca ("feat: 受け取り、受け渡しの金額をグローバルにあるcartから取ってくる")
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
