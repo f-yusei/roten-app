@@ -12,7 +12,10 @@ import { GridItem } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
 import PayDrawer from './Payment';
 import OrderHistoryDrawer from './OrderHistoryDrawer';
-import { MenuInformationForReception } from '../../../../types';
+import {
+  MenuInformation,
+  MenuInformationForReception,
+} from '../../../../types';
 import { v4 } from 'uuid';
 import { ArrangeState } from '../../../../state/cart/cartSlice';
 
