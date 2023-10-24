@@ -14,10 +14,20 @@ import {
   CardBody,
 } from '@chakra-ui/react';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../state/common/rootState.type';
 
-function OrderConfirmationModal() {
+function OrderConfirmationModal({
+  difference_money,
+  depositAmount,
+}: {
+  difference_money: number;
+  depositAmount: string;
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
+
+  const cart = useSelector((state: RootState) => state.cart);
 
   return (
     <>
@@ -35,17 +45,21 @@ function OrderConfirmationModal() {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <VStack justify="center">
+            <VStack justify="left">
               <h1>注文内容</h1>
+              {cart.map((order) => (
+                <Box>
+                  <h1>{order.name + order.price + '円'}</h1>
+                </Box>
+              ))}
               <Box>
-                <h1>ソース 250円</h1>
-                <h1>メンタイ 300円</h1>
-                <h1>ソース（前）0円</h1>
-              </Box>
-              <Box>
-                <h1>合計 550円</h1>
-                <h1>お預かり 900円</h1>
-                <h1>お釣り 350円</h1>
+                <h1>
+                  合計金額{' '}
+                  {cart.reduce((sum, order) => sum + order.price, 0).toString()}
+                  円
+                </h1>
+                <h1>お預かり {depositAmount}円</h1>
+                <h1>お釣り {difference_money}円 </h1>
               </Box>
               <Card>
                 <CardHeader>注文番号</CardHeader>
