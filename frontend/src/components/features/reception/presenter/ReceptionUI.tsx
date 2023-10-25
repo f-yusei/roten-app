@@ -5,6 +5,7 @@ import {
   Checkbox,
   CheckboxGroup,
   HStack,
+  HStack,
   Stack,
   VStack,
 } from '@chakra-ui/react';
@@ -40,7 +41,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
   handleDeleteSetMenu,
 }) => {
   useEffect(() => {
-    console.log(cart);
+    console.log('in cart: ', cart);
   }, [cart]);
 
   const { orders, isLoading } = useGetAllOrder();
