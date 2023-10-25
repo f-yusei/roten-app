@@ -16,7 +16,7 @@ const Calculator = () => {
   const [numberOfTicketsUsed, setNumberOfTicketsUsed] = React.useState(0);
   const [depositAmount, setDepositAmount] = React.useState('0');
 
-  const cart = useSelector((state: RootState) => state.cart);
+  const cart = useSelector((state: RootState) => state.cart).cart;
 
   const totalMoney = cart
     .reduce((sum, order) => sum + order.menuInfo.price, 0)

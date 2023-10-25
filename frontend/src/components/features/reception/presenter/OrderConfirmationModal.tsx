@@ -52,10 +52,11 @@ function OrderConfirmationModal({
         name: 'ソース',
         price: 250,
         arranges: {
-          ソース: true,
-          マヨ: true,
-          カツオ: true,
-          アオサ: true,
+          kind: 'sauce',
+          sauce: true,
+          mayo: true,
+          aosa: true,
+          katsuo: true,
         },
       },
       {
@@ -63,10 +64,11 @@ function OrderConfirmationModal({
         name: 'めんたい',
         price: 300,
         arranges: {
-          ソース: true,
-          めんたいマヨ: true,
-          チーズ: true,
-          カツオ: true,
+          kind: 'mentai',
+          sauce: true,
+          mentaiMayo: true,
+          cheese: true,
+          katsuo: true,
         },
       },
     ],
@@ -117,7 +119,7 @@ function OrderConfirmationModal({
     return count + 1;
   }, 0);
 
-  const cart = useSelector((state: RootState) => state.cart);
+  const cart = useSelector((state: RootState) => state.cart).cart;
 
   const cart = useSelector((state: RootState) => state.cart);
 

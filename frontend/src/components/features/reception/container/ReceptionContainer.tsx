@@ -49,7 +49,7 @@ const ReceptionContainer = () => {
   };
 
   const args = {
-    cart: cart,
+    cart: cart.cart,
     handleAddToCart: handleAddToCart,
     handleDeleteFromCart: handleDeleteFromCart,
     handleUpdateOrderCheck: handleUpdateOrderCheck,
