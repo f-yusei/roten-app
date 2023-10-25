@@ -5,6 +5,9 @@ export const useGetAllOrder = () => {
   const { data: orders, isLoading } = useQuery<OrderInformationType[]>(
     'orders',
     () => orderApi.getAllOrder(),
+    {
+      refetchInterval: 10000,
+    },
   );
   return { orders, isLoading };
 };
