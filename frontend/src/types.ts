@@ -10,7 +10,7 @@ export type OrderInformationType = {
   _id: string;
   woodenNumber: number;
   orderState: 'waiting' | 'available' | 'finished' | 'discarded';
-  orderStateLogs: OrderStateLogs;
+  orderStateLogs?: OrderStateLogs;
   menus: MenuInformation[];
   createdAt?: Date;
   updatedAt?: Date;
@@ -33,10 +33,10 @@ export type OrderType = {
 };
 
 type OrderStateLogs = {
-  orderReceivedAt?: Date;
-  readiedAt?: Date;
-  deliveredAt?: Date;
-  invalidAt?: Date;
+  orderReceivedAt: Date;
+  readiedAt: Date;
+  deliveredAt: Date;
+  invalidAt: Date;
 };
 //トッピング画面用のメニューの型
 type MenuForTopping = {
@@ -54,7 +54,6 @@ type MenuForTopping = {
 
 //データベースから受け取ったメニューの型
 export type MenuInformation = {
-  id: string;
   name:
     | 'ソース前売り'
     | 'めんたい前売り'
@@ -67,17 +66,19 @@ export type MenuInformation = {
 };
 
 type SauceToppings = {
-  ソース: boolean;
-  マヨ: boolean;
-  カツオ: boolean;
-  アオサ: boolean;
+  kind: 'sauce';
+  sauce: boolean;
+  mayo: boolean;
+  katsuo: boolean;
+  aosa: boolean;
 };
 
 type MentaiToppings = {
-  ソース: boolean;
-  めんたいマヨ: boolean;
-  カツオ: boolean;
-  チーズ: boolean;
+  kind: 'mentai';
+  sauce: boolean;
+  mentaiMayo: boolean;
+  katsuo: boolean;
+  cheese: boolean;
 };
 
 export const sauceToppings = ['ソース', 'マヨ', 'カツオ', 'アオサ'];
