@@ -20,7 +20,7 @@ const ToppingUI = ({
     {
       _id: '6533ae6bfb99ad75540d3592',
       woodenNumber: 1,
-      orderState: 'available',
+      orderState: 'waiting',
       orderStateLogs: {
         orderReceivedAt: undefined,
         readiedAt: undefined,
@@ -57,15 +57,14 @@ const ToppingUI = ({
 
   useEffect(() => {
     if (!orders) return;
-    setAllOrders(orders);
     setWaitingOrders(orders.filter((order) => order.orderState === 'waiting'));
   }, [orders, setAllOrders]);
   return (
     <div>
       <Grid templateColumns="repeat(3, 1fr)" gap={4}>
         {waitingOrders ? (
-          waitingOrders.slice(0, 5).map((order, index) => (
-            <GridItem key={index}>
+          waitingOrders.slice(0, 5).map((order) => (
+            <GridItem key={order._id}>
               <ToppingInformationModal
                 order={order}
                 updateOrderState={updateOrderState}
