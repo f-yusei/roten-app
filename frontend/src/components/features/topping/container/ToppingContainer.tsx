@@ -1,12 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ToppingUI from '../presenter/ToppingUI';
 import { OrderInformationType } from '../../../../types';
 import { useGetAllOrder } from '../../../../api/hooks';
-import { RootState } from '../../../../state/common/rootState.type';
 
 export const ToppingContainer = () => {
   const { orders } = useGetAllOrder();
-  const allOrders = useSelector((state: RootState) => state.orders);
   const dispatch = useDispatch();
 
   const setAllOrders = (orders: OrderInformationType[]) => {
@@ -22,7 +20,7 @@ export const ToppingContainer = () => {
   const args = {
     setAllOrders: setAllOrders,
     updateOrderState: updateOrderState,
-    orders: allOrders.orders,
+    orders: orders,
   };
   return <ToppingUI {...args} />;
 };

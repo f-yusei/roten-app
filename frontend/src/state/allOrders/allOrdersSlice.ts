@@ -1,9 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { OrderInformationType } from '../../types';
 
-const state = {
-  orders: [] as OrderInformationType[],
-};
+const state = { orders: [] as OrderInformationType[] };
 
 export const allOrdersSlice = createSlice({
   name: 'allOrdersSlice',
