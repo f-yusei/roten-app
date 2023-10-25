@@ -67,6 +67,7 @@ export type MenuInformation = {
 
 export type MenuInformationForReception = {
   id: string;
+  setId?: string;
   menuInfo: MenuInformation;
 };
 

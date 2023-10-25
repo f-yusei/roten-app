@@ -16,9 +16,14 @@ const ReceptionContainer = () => {
 
   const dispatch = useDispatch();
 
-  const handleAddToCart = ({ menuInfo, id }: MenuInformationForReception) => {
+  const handleAddToCart = ({
+    id,
+    setId,
+    menuInfo,
+  }: MenuInformationForReception) => {
     const newMenu = {
       id,
+      setId,
       menuInfo,
     };
     dispatch(addMenu(newMenu));
