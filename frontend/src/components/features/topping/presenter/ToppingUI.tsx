@@ -1,23 +1,34 @@
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
 import ToppingInformationModal from './ToppingInformationModal';
-import { useGetAllOrder } from '../../../../api/hooks';
-import { createContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { OrderInformationType } from '../../../../types';
+import { v4 } from 'uuid';
 
-const { orders, isLoading } = useGetAllOrder();
-const [allOrders, setAllOrders] = useState<OrderInformationType[]>([]);
-export const OrderContext = createContext({});
-export const SetOrderContext = createContext({ allOrders, setAllOrders });
+type ToppingUIProps = {
+  setAllOrders: (orders: OrderInformationType[]) => void;
+  updateOrderState: (order: OrderInformationType) => void;
+  orders: OrderInformationType[];
+};
 
-const ToppingUI = () => {
+const ToppingUI = ({
+  setAllOrders,
+  updateOrderState,
+  orders,
+}: ToppingUIProps) => {
   const [waitingOrders, setWaitingOrders] = useState<OrderInformationType[]>([
     {
       _id: '6533ae6bfb99ad75540d3592',
       woodenNumber: 1,
       orderState: 'available',
+      orderStateLogs: {
+        orderReceivedAt: undefined,
+        readiedAt: undefined,
+        deliveredAt: undefined,
+      },
       menus: [
         {
+          id: v4(),
           name: 'ソース',
           price: 250,
           arranges: {
@@ -29,6 +40,7 @@ const ToppingUI = () => {
           },
         },
         {
+          id: v4(),
           name: 'めんたい',
           price: 300,
           arranges: {
@@ -46,23 +58,18 @@ const ToppingUI = () => {
   useEffect(() => {
     if (!orders) return;
     setAllOrders(orders);
-    setWaitingOrders(
-      allOrders.filter((order) => order.orderState === 'waiting'),
-    );
-  }, [orders]);
-
-  if (isLoading) return <div>loading...</div>;
+    setWaitingOrders(orders.filter((order) => order.orderState === 'waiting'));
+  }, [orders, setAllOrders]);
   return (
     <div>
       <Grid templateColumns="repeat(3, 1fr)" gap={4}>
         {waitingOrders ? (
           waitingOrders.slice(0, 5).map((order, index) => (
             <GridItem key={index}>
-              <SetOrderContext.Provider value={{ allOrders, setAllOrders }}>
-                <OrderContext.Provider value={{ orders, isLoading }}>
-                  <ToppingInformationModal order={order} />
-                </OrderContext.Provider>
-              </SetOrderContext.Provider>
+              <ToppingInformationModal
+                order={order}
+                updateOrderState={updateOrderState}
+              />
             </GridItem>
           ))
         ) : (
