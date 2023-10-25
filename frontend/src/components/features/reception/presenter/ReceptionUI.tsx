@@ -66,14 +66,6 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
     };
   };
 
-  if(true) {
-    console.log("isLoading = ", isLoading);
-    returnWoodenNum();
-  };
-
-
-  
-
   return (
     <Box maxHeight="100vh">
       <HStack>
