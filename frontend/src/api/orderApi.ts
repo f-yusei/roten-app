@@ -8,10 +8,7 @@ const getAllOrder = async () => {
 };
 
 const storeOrder = async (order: OrderInformationTypeForPost) => {
-  const response = await apiClient.post<OrderInformationTypeForPost>(
-    '/orders',
-    order,
-  );
+  const response = await apiClient.post<OrderInformationType>('/orders', order);
   return response.data;
 };
 

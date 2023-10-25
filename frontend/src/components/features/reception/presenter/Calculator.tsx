@@ -260,8 +260,9 @@ const Calculator = () => {
       <Grid>
         <GridItem colSpan={1}>
           <OrderConfirmationModal
+            numberOfTicketsUsed={numberOfTicketsUsed}
             difference_money={difference_money}
-            depositAmount={depositAmount}
+            depositAmount={parseInt(depositAmount)}
           />
         </GridItem>
       </Grid>

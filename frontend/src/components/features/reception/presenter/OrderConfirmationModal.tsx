@@ -16,81 +16,104 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
+import {
+  OrderInformationType,
+  OrderInformationTypeForPost,
+} from '../../../../types';
 import { useSelector } from 'react-redux';
+import orderApi from '../../../../api/orderApi';
 import { RootState } from '../../../../state/common/rootState.type';
-import { OrderInformationType } from '../../../../types';
 import { v4 } from 'uuid';
 
 function OrderConfirmationModal({
+  numberOfTicketsUsed,
   difference_money,
   depositAmount,
 }: {
+  numberOfTicketsUsed: number;
   difference_money: number;
-  depositAmount: string;
+  depositAmount: number;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
-
-  const orders: OrderInformationType[] = [
-    {
-      _id: '6533ae6bfb99ad75540d3592',
-      woodenNumber: 1,
-      orderState: 'available',
-      menus: [
-        {
-          id: v4(),
-          name: 'ソース',
-          price: 250,
-          arranges: {
-            ソース: true,
-            マヨ: true,
-            カツオ: true,
-            アオサ: true,
-          },
-        },
-        {
-          id: v4(),
-          name: 'ソース',
-          price: 250,
-          arranges: {
-            ソース: false,
-            マヨ: true,
-            カツオ: true,
-            アオサ: true,
-          },
-        },
-        {
-          id: v4(),
-          name: 'めんたい',
-          price: 300,
-          arranges: {
-            ソース: true,
-            めんたいマヨ: true,
-            チーズ: true,
-            カツオ: true,
-          },
-        },
-      ],
+  const [order, setOrder] = React.useState<OrderInformationType>({
+    _id: '6533ae6bfb99ad75540d3592',
+    woodenNumber: 404,
+    orderState: 'waiting',
+    orderStateLogs: {
+      orderReceivedAt: new Date(),
+      readiedAt: new Date(),
+      deliveredAt: undefined,
     },
-  ];
+    menus: [
+      {
+        id: v4(),
+        name: 'ソース',
+        price: 250,
+        arranges: {
+          ソース: true,
+          マヨ: true,
+          カツオ: true,
+          アオサ: true,
+        },
+      },
+      {
+        id: v4(),
+        name: 'めんたい',
+        price: 300,
+        arranges: {
+          ソース: true,
+          めんたいマヨ: true,
+          チーズ: true,
+          カツオ: true,
+        },
+      },
+    ],
+  });
 
-  const totalItemCount = orders.reduce(
-    (total, order) => total + order.menus.length,
-    0,
-  );
+  const calculateChange = () => {
+    return depositAmount - difference_money;
+  };
+
+  //cartをpostする関数
+  const postOrder = async () => {
+    const orderForPost: OrderInformationTypeForPost = {
+      woodenNumber: 1,
+      orderState: 'waiting',
+      orderStateLogs: {
+        orderReceivedAt: new Date(),
+        readiedAt: undefined,
+        deliveredAt: undefined,
+        invalidAt: undefined,
+      },
+      menus: cart.map((menu) => ({
+        id: menu.id,
+        name: menu.name,
+        price: menu.price,
+        arranges: menu.arranges,
+      })),
+    };
+
+    const response = await orderApi.storeOrder(orderForPost);
+    setOrder(response);
+    console.log(response);
+  };
+
+  const handleButtonClick = () => {
+    postOrder();
+    onOpen();
+  };
+
+  const totalItemCount = order.menus.length; // 合計の個数
 
   // 特定の商品の個数をカウント
   const specificProducts = ['ソース', 'めんたい']; // カウントしたくない特定の商品名
 
-  const nonSpecificProductCount = orders.reduce((total, order) => {
-    const count = order.menus.reduce((itemTotal, menu) => {
-      if (!specificProducts.includes(menu.name)) {
-        return itemTotal + 1;
-      }
-      return itemTotal;
-    }, 0);
-
-    return total + count;
+  const nonSpecificProductCount = order.menus.reduce((count, menu) => {
+    if (specificProducts.includes(menu.name)) {
+      return count;
+    }
+    return count + 1;
   }, 0);
 
   const cart = useSelector((state: RootState) => state.cart);
@@ -102,7 +125,7 @@ function OrderConfirmationModal({
         mt={1}
         width="39.5vw"
         height="10vh"
-        onClick={onOpen}
+        onClick={handleButtonClick}
       >
         確定
       </Button>
@@ -177,43 +200,38 @@ function OrderConfirmationModal({
                   m={5}
                 >
                   {/* メニュー情報を表示 */}
-                  {orders.map((order, index) => (
-                    <div key={index}>
-                      <h2 style={{ color: '#7d7d7d' }}>
-                        {order.woodenNumber}番テーブルの注文
-                      </h2>
-                      <ul>
-                        {order.menus.map((menu, menuIndex) => (
-                          <div key={menuIndex}>
-                            <p>
-                              ・{menu.name}
-                              <span style={{ color: '#ffa500' }}>
-                                価格: {menu.price}円
-                              </span>
-                            </p>
-                            {Object.entries(menu.arranges).map(
-                              ([topping, value]) => {
-                                if (!value) {
-                                  return (
-                                    <p
-                                      key={topping}
-                                      style={{ color: '#5f9ea0' }}
-                                    >
-                                      -{topping}なし
-                                    </p>
-                                  );
-                                }
-                                return null;
-                              },
-                            )}
-                          </div>
-                        ))}
-                        <p style={{ lineHeight: '3' }}>
-                          [100円券: {numberOfTicketsUsed}枚]
-                        </p>
-                      </ul>
-                    </div>
-                  ))}
+                  <div>
+                    <h2 style={{ color: '#7d7d7d' }}>
+                      木札の番号：{order.woodenNumber}
+                    </h2>
+                    <ul>
+                      {order.menus.map((menu, menuIndex) => (
+                        <div key={menuIndex}>
+                          <p>
+                            ・{menu.name}
+                            <span style={{ color: '#ffa500' }}>
+                              価格: {menu.price}円
+                            </span>
+                          </p>
+                          {Object.entries(menu.arranges).map(
+                            ([topping, value]) => {
+                              if (!value) {
+                                return (
+                                  <p key={topping} style={{ color: '#5f9ea0' }}>
+                                    -{topping}なし
+                                  </p>
+                                );
+                              }
+                              return null;
+                            },
+                          )}
+                        </div>
+                      ))}
+                      <p style={{ lineHeight: '3' }}>
+                        [100円券: {numberOfTicketsUsed}枚]
+                      </p>
+                    </ul>
+                  </div>
                 </GridItem>
                 <GridItem
                   rowSpan={3}
@@ -249,9 +267,9 @@ function OrderConfirmationModal({
                     <p>
                       小計 | {totalItemCount}[点]（{nonSpecificProductCount}）
                     </p>
-                    <p>合計 | {totalMoney}円</p>
+                    <p>合計 | {difference_money}円</p>
                     <p>お預かり | {depositAmount}円</p>
-                    <p>お釣り | {depositAmount - totalMoney}円</p>
+                    <p>お釣り | {calculateChange()}円</p>
                   </p>
                 </GridItem>
               </Grid>
