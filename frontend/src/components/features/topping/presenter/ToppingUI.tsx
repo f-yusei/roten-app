@@ -1,19 +1,30 @@
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
 import ToppingInformationModal from './ToppingInformationModal';
-import { useGetAllOrder } from '../../../../api/hooks';
 import { useEffect, useState } from 'react';
 import { OrderInformationType } from '../../../../types';
+import { v4 } from 'uuid';
 
-const ToppingUI = () => {
-  const { orders, isLoading } = useGetAllOrder();
+type ToppingUIProps = {
+  updateOrderState: (order: OrderInformationType) => void;
+  setAllOrders: (orders: OrderInformationType[]) => void;
+  orders: OrderInformationType[];
+};
+
+const ToppingUI = ({ updateOrderState, orders }: ToppingUIProps) => {
   const [waitingOrders, setWaitingOrders] = useState<OrderInformationType[]>([
     {
       _id: '6533ae6bfb99ad75540d3592',
       woodenNumber: 1,
-      orderState: 'available',
+      orderState: 'waiting',
+      orderStateLogs: {
+        orderReceivedAt: undefined,
+        readiedAt: undefined,
+        deliveredAt: undefined,
+      },
       menus: [
         {
+          id: v4(),
           name: 'ソース',
           price: 250,
           arranges: {
@@ -25,6 +36,7 @@ const ToppingUI = () => {
           },
         },
         {
+          id: v4(),
           name: 'めんたい',
           price: 300,
           arranges: {
@@ -38,26 +50,31 @@ const ToppingUI = () => {
       ],
     },
   ]);
-
   useEffect(() => {
-    if (!orders) return;
-    setWaitingOrders(orders.filter((order) => order.orderState === 'waiting'));
-  }, [orders]);
+    const waitingOrders = orders.filter(
+      (order) => order.orderState === 'waiting',
+    );
 
-  if (isLoading) return <div>loading...</div>;
+    setWaitingOrders(waitingOrders);
+  }, [orders]);
   return (
     <div>
       <Grid templateColumns="repeat(3, 1fr)" gap={4}>
         {waitingOrders ? (
-          waitingOrders.slice(0, 5).map((order, index) => (
-            <GridItem key={index}>
-              <ToppingInformationModal order={order} />
+          waitingOrders.slice(0, 5).map((order) => (
+            <GridItem key={order._id}>
+              <ToppingInformationModal
+                order={order}
+                updateOrderState={updateOrderState}
+              />
             </GridItem>
           ))
         ) : (
           <Box>お疲れ様でした。ちょっと休憩...</Box>
         )}
-        <GridItem key={5}>{/**何か */}</GridItem>
+        <GridItem key={5}>
+          <PureCarousel cardInformation={[]} />
+        </GridItem>
       </Grid>
     </div>
   );

@@ -18,10 +18,12 @@ import orderApi from '../../../../api/orderApi';
 
 export type ToppingInformationModalProps = {
   order: OrderInformationType;
+  updateOrderState: (order: OrderInformationType) => void;
 };
 
 const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
   order,
+  updateOrderState,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
@@ -33,6 +35,7 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
     };
     try {
       const res = await orderApi.updateOrder(newOrder);
+      updateOrderState(newOrder);
       console.log(res);
     } catch (error) {
       console.log(error);
