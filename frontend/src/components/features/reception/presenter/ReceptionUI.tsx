@@ -44,7 +44,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
           <Stack bgColor={'gray.50'} h={'88vh'} overflow={'scroll'}>
             {cart.map((order, index) =>
               order.name === 'ソース（セット）前売り' ? (
-                <HStack key={index}>
+                <HStack key={order.id}>
                   <SetCard
                     order={order}
                     handleUpdateOrderCheck={handleUpdateOrderCheck}

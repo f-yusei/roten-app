@@ -9,13 +9,21 @@ import {
 import { BackspaceIcon } from '../../../../common/BackspaceIcon';
 import React from 'react';
 import OrderConfirmationModal from './OrderConfirmationModal';
-
-const totalMoney = '1000';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../state/common/rootState.type';
 
 const Calculator = () => {
   const [numberOfTicketsUsed, setNumberOfTicketsUsed] = React.useState(0);
   const [depositAmount, setDepositAmount] = React.useState('0');
+
+  const cart = useSelector((state: RootState) => state.cart);
+
+  const totalMoney = cart
+    .reduce((sum, order) => sum + order.price, 0)
+    .toString();
+
   let difference_money = 0;
+
   if (numberOfTicketsUsed * 100 > parseInt(totalMoney)) {
     difference_money = 0;
   } else {
@@ -251,7 +259,11 @@ const Calculator = () => {
       </Grid>
       <Grid>
         <GridItem colSpan={1}>
-          <OrderConfirmationModal />
+          <OrderConfirmationModal
+            numberOfTicketsUsed={numberOfTicketsUsed}
+            difference_money={difference_money}
+            depositAmount={parseInt(depositAmount)}
+          />
         </GridItem>
       </Grid>
     </Box>
