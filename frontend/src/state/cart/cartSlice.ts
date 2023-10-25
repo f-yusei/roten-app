@@ -42,7 +42,9 @@ export const cartSlice = createSlice({
       const index = state.cart.findIndex((order) => order.id === id);
       const target = state.cart[index];
       if ('arranges' in target) {
-        const arranges = target.arranges as { [key: string]: boolean };
+        const arranges = target.arranges as unknown as {
+          [key: string]: boolean;
+        };
         arranges[arrange] = checked;
       }
       state.cart = [...state.cart];
