@@ -11,22 +11,20 @@ import {
   ModalFooter,
   Box,
 } from '@chakra-ui/react';
-import React, { useContext } from 'react';
+import React from 'react';
 import { FC } from 'react';
 import { OrderInformationType } from '../../../../types';
 import orderApi from '../../../../api/orderApi';
-import { OrderContext, SetOrderContext } from './ToppingUI';
-import { useGetAllOrder } from '../../../../api/hooks';
 
 export type ToppingInformationModalProps = {
   order: OrderInformationType;
+  updateOrderState: (order: OrderInformationType) => void;
 };
 
 const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
   order,
+  updateOrderState,
 }) => {
-  const {} = useContext(OrderContext);
-  const { setAllOrders } = useContext(SetOrderContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
 
@@ -37,14 +35,8 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
     };
     try {
       const res = await orderApi.updateOrder(newOrder);
+      updateOrderState(newOrder);
       console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      const { orders } = useGetAllOrder();
-      if (!orders) return;
-      setAllOrders(orders);
     } catch (error) {
       console.log(error);
     }
