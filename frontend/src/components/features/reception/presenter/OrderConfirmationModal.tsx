@@ -16,10 +16,14 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eef680a ("feat: 確定ボタンでポストできるよう実装")
 import {
   OrderInformationType,
   OrderInformationTypeForPost,
 } from '../../../../types';
+<<<<<<< HEAD
 import { useSelector } from 'react-redux';
 import orderApi from '../../../../api/orderApi';
 import { RootState } from '../../../../state/common/rootState.type';
@@ -34,16 +38,29 @@ function OrderConfirmationModal({
   difference_money: number;
   depositAmount: number;
 =======
+=======
+>>>>>>> eef680a ("feat: 確定ボタンでポストできるよう実装")
 import { useSelector } from 'react-redux';
+import orderApi from '../../../../api/orderApi';
 import { RootState } from '../../../../state/common/rootState.type';
+<<<<<<< HEAD
+=======
+import { v4 } from 'uuid';
+>>>>>>> eef680a ("feat: 確定ボタンでポストできるよう実装")
 
 function OrderConfirmationModal({
+  numberOfTicketsUsed,
   difference_money,
   depositAmount,
 }: {
+  numberOfTicketsUsed: number;
   difference_money: number;
+<<<<<<< HEAD
   depositAmount: string;
 >>>>>>> baeb3ca ("feat: 受け取り、受け渡しの金額をグローバルにあるcartから取ってくる")
+=======
+  depositAmount: number;
+>>>>>>> eef680a ("feat: 確定ボタンでポストできるよう実装")
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
