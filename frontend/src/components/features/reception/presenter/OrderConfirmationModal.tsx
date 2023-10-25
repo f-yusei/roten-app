@@ -13,7 +13,6 @@ import {
   CardBody,
   Grid,
   GridItem,
-  VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import {
@@ -139,31 +138,6 @@ function OrderConfirmationModal({
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <VStack justify="left">
-              <h1>注文内容</h1>
-              {cart.map((order) => (
-                <Box>
-                  <h1>{order.name + order.price + '円'}</h1>
-                </Box>
-              ))}
-              <Box>
-                <h1>
-                  合計金額{' '}
-                  {cart.reduce((sum, order) => sum + order.price, 0).toString()}
-                  円
-                </h1>
-                <h1>お預かり {depositAmount}円</h1>
-                <h1>お釣り {difference_money}円 </h1>
-              </Box>
-              <Card>
-                <CardHeader>注文番号</CardHeader>
-                <CardBody>26</CardBody>
-              </Card>
-              <Card>
-                <CardHeader>受け取り番号</CardHeader>
-                <CardBody>10</CardBody>
-              </Card>
-            </VStack>
             <Box>
               <Grid
                 templateRows="repeat(6, 1fr)"
