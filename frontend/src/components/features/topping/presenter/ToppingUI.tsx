@@ -6,16 +6,12 @@ import { OrderInformationType } from '../../../../types';
 import { v4 } from 'uuid';
 
 type ToppingUIProps = {
-  setAllOrders: (orders: OrderInformationType[]) => void;
   updateOrderState: (order: OrderInformationType) => void;
+  setAllOrders: (orders: OrderInformationType[]) => void;
   orders: OrderInformationType[];
 };
 
-const ToppingUI = ({
-  setAllOrders,
-  updateOrderState,
-  orders,
-}: ToppingUIProps) => {
+const ToppingUI = ({ updateOrderState, orders }: ToppingUIProps) => {
   const [waitingOrders, setWaitingOrders] = useState<OrderInformationType[]>([
     {
       _id: '6533ae6bfb99ad75540d3592',
@@ -54,11 +50,13 @@ const ToppingUI = ({
       ],
     },
   ]);
-
   useEffect(() => {
-    if (!orders) return;
-    setWaitingOrders(orders.filter((order) => order.orderState === 'waiting'));
-  }, [orders, setAllOrders]);
+    const waitingOrders = orders.filter(
+      (order) => order.orderState === 'waiting',
+    );
+
+    setWaitingOrders(waitingOrders);
+  }, [orders]);
   return (
     <div>
       <Grid templateColumns="repeat(3, 1fr)" gap={4}>
