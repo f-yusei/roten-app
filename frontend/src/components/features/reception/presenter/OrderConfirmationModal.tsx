@@ -13,17 +13,14 @@ import {
   CardBody,
   Grid,
   GridItem,
+  VStack,
+  ModalBody,
 } from '@chakra-ui/react';
 import React from 'react';
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> eef680a ("feat: 確定ボタンでポストできるよう実装")
 import {
   OrderInformationType,
   OrderInformationTypeForPost,
 } from '../../../../types';
-<<<<<<< HEAD
 import { useSelector } from 'react-redux';
 import orderApi from '../../../../api/orderApi';
 import { RootState } from '../../../../state/common/rootState.type';
@@ -37,30 +34,6 @@ function OrderConfirmationModal({
   numberOfTicketsUsed: number;
   difference_money: number;
   depositAmount: number;
-=======
-=======
->>>>>>> eef680a ("feat: 確定ボタンでポストできるよう実装")
-import { useSelector } from 'react-redux';
-import orderApi from '../../../../api/orderApi';
-import { RootState } from '../../../../state/common/rootState.type';
-<<<<<<< HEAD
-=======
-import { v4 } from 'uuid';
->>>>>>> eef680a ("feat: 確定ボタンでポストできるよう実装")
-
-function OrderConfirmationModal({
-  numberOfTicketsUsed,
-  difference_money,
-  depositAmount,
-}: {
-  numberOfTicketsUsed: number;
-  difference_money: number;
-<<<<<<< HEAD
-  depositAmount: string;
->>>>>>> baeb3ca ("feat: 受け取り、受け渡しの金額をグローバルにあるcartから取ってくる")
-=======
-  depositAmount: number;
->>>>>>> eef680a ("feat: 確定ボタンでポストできるよう実装")
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
@@ -169,7 +142,31 @@ function OrderConfirmationModal({
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-<<<<<<< HEAD
+            <VStack justify="left">
+              <h1>注文内容</h1>
+              {cart.map((order) => (
+                <Box>
+                  <h1>{order.name + order.price + '円'}</h1>
+                </Box>
+              ))}
+              <Box>
+                <h1>
+                  合計金額{' '}
+                  {cart.reduce((sum, order) => sum + order.price, 0).toString()}
+                  円
+                </h1>
+                <h1>お預かり {depositAmount}円</h1>
+                <h1>お釣り {difference_money}円 </h1>
+              </Box>
+              <Card>
+                <CardHeader>注文番号</CardHeader>
+                <CardBody>26</CardBody>
+              </Card>
+              <Card>
+                <CardHeader>受け取り番号</CardHeader>
+                <CardBody>10</CardBody>
+              </Card>
+            </VStack>
             <Box>
               <Grid
                 templateRows="repeat(6, 1fr)"
