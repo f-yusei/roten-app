@@ -15,6 +15,11 @@ import {
   GridItem,
 } from '@chakra-ui/react';
 import React from 'react';
+import { OrderInformationType } from '../../../../types';
+
+const numberOfTicketsUsed = 10;
+const depositAmount = 1000;
+const totalMoney = 900;
 
 import {
   OrderInformationType,
@@ -117,6 +122,62 @@ function OrderConfirmationModal({
   }, 0);
 
   const cart = useSelector((state: RootState) => state.cart);
+
+  const orders: OrderInformationType[] = [
+    {
+      _id: '6533ae6bfb99ad75540d3592',
+      woodenNumber: 1,
+      orderState: 'available',
+      menus: [
+        {
+          name: 'ソース',
+          price: 250,
+          arranges: {
+            ソース: true,
+            マヨ: true,
+            カツオ: true,
+            アオサ: true,
+          },
+        },
+        {
+          name: 'ソース',
+          price: 250,
+          arranges: {
+            ソース: false,
+            マヨ: true,
+            カツオ: true,
+            アオサ: true,
+          },
+        },
+        {
+          name: 'めんたい',
+          price: 300,
+          arranges: {
+            ソース: true,
+            めんたいマヨ: true,
+            チーズ: true,
+            カツオ: true,
+          },
+        },
+      ],
+    },
+  ]
+
+  const totalItemCount = orders.reduce((total, order) => total + order.menus.length, 0);
+
+  // 特定の商品の個数をカウント
+  const specificProducts = ['ソース', 'めんたい']; // カウントしたくない特定の商品名
+
+  const nonSpecificProductCount = orders.reduce((total, order) => {
+    const count = order.menus.reduce((itemTotal, menu) => {
+      if (!specificProducts.includes(menu.name)) {
+        return itemTotal + 1;
+      }
+      return itemTotal;
+    }, 0);
+
+    return total + count;
+  }, 0);
 
   return (
     <>
@@ -251,7 +312,7 @@ function OrderConfirmationModal({
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="blue" mr={3} onClick={onClose} >
               閉じる
             </Button>
           </ModalFooter>
