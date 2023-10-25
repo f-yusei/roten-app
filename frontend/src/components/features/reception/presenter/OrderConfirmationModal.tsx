@@ -225,7 +225,7 @@ function OrderConfirmationModal({
                       受取番号
                     </CardHeader>
                     <CardBody fontSize={50} textAlign={'center'} m={2} p={2}>
-                      -23i
+                      16
                     </CardBody>
                   </Card>
                 </GridItem>
