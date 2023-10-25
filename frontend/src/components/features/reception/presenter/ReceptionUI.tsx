@@ -324,10 +324,11 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
               name: 'ソース',
               price: 250,
               arranges: {
-                ソース: true,
-                マヨ: true,
-                アオサ: true,
-                カツオ: true,
+                kind: 'sauce',
+                sauce: true,
+                mayo: true,
+                katsuo: true,
+                aosa: true,
               },
             })
           }
@@ -346,10 +347,11 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
               name: 'ソース前売り',
               price: 0,
               arranges: {
-                ソース: true,
-                マヨ: true,
-                アオサ: true,
-                カツオ: true,
+                kind: 'sauce',
+                sauce: true,
+                mayo: true,
+                katsuo: true,
+                aosa: true,
               },
             })
           }
@@ -370,10 +372,11 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
               name: 'めんたい',
               price: 300,
               arranges: {
-                ソース: true,
-                めんたいマヨ: true,
-                チーズ: true,
-                カツオ: true,
+                kind: 'mentai',
+                sauce: true,
+                mentaiMayo: true,
+                cheese: true,
+                katsuo: true,
               },
             })
           }
@@ -392,10 +395,11 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
               name: 'めんたい前売り',
               price: 0,
               arranges: {
-                ソース: true,
-                めんたいマヨ: true,
-                チーズ: true,
-                カツオ: true,
+                kind: 'mentai',
+                sauce: true,
+                mentaiMayo: true,
+                cheese: true,
+                katsuo: true,
               },
             })
           }
@@ -416,10 +420,11 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
             name: 'ソース（セット）前売り',
             price: 0,
             arranges: {
-              ソース: true,
-              マヨ: true,
-              アオサ: true,
-              カツオ: true,
+              kind: 'sauce',
+              sauce: true,
+              mayo: true,
+              aosa: true,
+              katsuo: true,
             },
           });
           handleAddToCart({
@@ -427,10 +432,11 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
             name: 'めんたい（セット）前売り',
             price: 0,
             arranges: {
-              ソース: true,
-              めんたいマヨ: true,
-              チーズ: true,
-              カツオ: true,
+              kind: 'mentai',
+              sauce: true,
+              mentaiMayo: true,
+              cheese: true,
+              katsuo: true,
             },
           });
         }}

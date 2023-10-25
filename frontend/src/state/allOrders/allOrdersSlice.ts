@@ -17,9 +17,10 @@ export const allOrdersSlice = createSlice({
       state,
       action: PayloadAction<OrderInformationType>,
     ): void => {
-      const order = action.payload;
-      const index = state.orders.findIndex((o) => o._id === order._id);
-      state.orders[index] = order;
+      const index = state.orders.findIndex(
+        (order) => order._id === action.payload._id,
+      );
+      state.orders[index] = action.payload;
     },
   },
 });

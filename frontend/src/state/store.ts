@@ -5,6 +5,6 @@ import { allOrdersSlice } from './allOrders/allOrdersSlice';
 export const store = configureStore({
   reducer: {
     cart: cartSlice.reducer,
-    orders: allOrdersSlice.reducer,
+    allOrders: allOrdersSlice.reducer,
   },
 });
