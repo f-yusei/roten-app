@@ -12,13 +12,13 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import { FC, useEffect } from 'react';
 import PayDrawer from './Payment';
 import OrderHistoryDrawer from './OrderHistoryDrawer';
-import { MenuInformation } from '../../../../types';
+import { MenuInformationForReception } from '../../../../types';
 import { v4 } from 'uuid';
 import { ArrangeState } from '../../../../state/cart/cartSlice';
 
 type ReceptionUIProps = {
-  cart: MenuInformation[];
-  handleAddToCart: ({ name, price, arranges, id }: MenuInformation) => void;
+  cart: MenuInformationForReception[];
+  handleAddToCart: ({ id, menuInfo }: MenuInformationForReception) => void;
   handleDeleteFromCart: (id: string) => void;
   handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
   handleDeleteSetMenu: (index: number) => void;
@@ -43,7 +43,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
           <h1>注文内容</h1>
           <Stack bgColor={'gray.50'} h={'88vh'} overflow={'scroll'}>
             {cart.map((order, index) =>
-              order.name === 'ソース（セット）前売り' ? (
+              order.menuInfo.name === 'ソース（セット）前売り' ? (
                 <HStack key={order.id}>
                   <SetCard
                     order={order}
@@ -62,29 +62,31 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
                     削除
                   </Button>
                 </HStack>
-              ) : order.name === 'めんたい（セット）前売り' ? (
+              ) : order.menuInfo.name === 'めんたい（セット）前売り' ? (
                 <Box key={v4()}></Box>
               ) : (
                 <Card key={order.id} w={'54vw'} minH={'8vh'} m={2}>
-                  <h2>{order.name}</h2>
+                  <h2>{order.menuInfo.name}</h2>
                   <HStack>
                     <CheckboxGroup>
-                      {Object.keys(order.arranges).map((topping, i) => (
-                        <Checkbox
-                          key={i}
-                          defaultChecked={true}
-                          colorScheme="green"
-                          onChange={(e) => {
-                            handleUpdateOrderCheck({
-                              id: order.id,
-                              arrange: topping,
-                              checked: e.target.checked,
-                            });
-                          }}
-                        >
-                          {topping}
-                        </Checkbox>
-                      ))}
+                      {Object.keys(order.menuInfo.arranges).map(
+                        (topping, i) => (
+                          <Checkbox
+                            key={i}
+                            defaultChecked={true}
+                            colorScheme="green"
+                            onChange={(e) => {
+                              handleUpdateOrderCheck({
+                                id: order.id,
+                                arrange: topping,
+                                checked: e.target.checked,
+                              });
+                            }}
+                          >
+                            {topping}
+                          </Checkbox>
+                        ),
+                      )}
                     </CheckboxGroup>
                     <Button
                       onClick={() => {
@@ -103,7 +105,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
             <h2>
               {
                 //注文の合計金額を表示
-                cart.reduce((sum, order) => sum + order.price, 0)
+                cart.reduce((sum, order) => sum + order.menuInfo.price, 0)
               }
             </h2>
             <PayDrawer />
@@ -118,12 +120,12 @@ const SetCard = ({
   order,
   handleUpdateOrderCheck,
 }: {
-  order: MenuInformation;
+  order: MenuInformationForReception;
   handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
 }) => {
   return (
     <>
-      {order.name === 'ソース（セット）前売り' ? (
+      {order.menuInfo.name === 'ソース（セット）前売り' ? (
         <Box width={'40vw'}>
           <Grid
             templateRows="repeat(2, 1rf)"
@@ -273,7 +275,7 @@ const SetCard = ({
 };
 
 type orderButtonProps = {
-  handleAddToCart: ({ name, price, arranges, id }: MenuInformation) => void;
+  handleAddToCart: ({ id, menuInfo }: MenuInformationForReception) => void;
 };
 
 const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
@@ -290,13 +292,16 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
           onClick={() =>
             handleAddToCart({
               id: v4(),
-              name: 'ソース',
-              price: 250,
-              arranges: {
-                ソース: true,
-                マヨ: true,
-                アオサ: true,
-                カツオ: true,
+              menuInfo: {
+                name: 'ソース',
+                price: 250,
+                arranges: {
+                  kind: 'sauce',
+                  sauce: true,
+                  mayo: true,
+                  aosa: true,
+                  katsuo: true,
+                },
               },
             })
           }
@@ -312,13 +317,16 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
           onClick={() =>
             handleAddToCart({
               id: v4(),
-              name: 'ソース前売り',
-              price: 0,
-              arranges: {
-                ソース: true,
-                マヨ: true,
-                アオサ: true,
-                カツオ: true,
+              menuInfo: {
+                name: 'ソース前売り',
+                price: 0,
+                arranges: {
+                  kind: 'sauce',
+                  sauce: true,
+                  mayo: true,
+                  aosa: true,
+                  katsuo: true,
+                },
               },
             })
           }
@@ -336,13 +344,16 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
           onClick={() =>
             handleAddToCart({
               id: v4(),
-              name: 'めんたい',
-              price: 300,
-              arranges: {
-                ソース: true,
-                めんたいマヨ: true,
-                チーズ: true,
-                カツオ: true,
+              menuInfo: {
+                name: 'めんたい',
+                price: 300,
+                arranges: {
+                  kind: 'mentai',
+                  sauce: true,
+                  mentaiMayo: true,
+                  cheese: true,
+                  katsuo: true,
+                },
               },
             })
           }
@@ -358,13 +369,16 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
           onClick={() =>
             handleAddToCart({
               id: v4(),
-              name: 'めんたい前売り',
-              price: 0,
-              arranges: {
-                ソース: true,
-                めんたいマヨ: true,
-                チーズ: true,
-                カツオ: true,
+              menuInfo: {
+                name: 'めんたい前売り',
+                price: 0,
+                arranges: {
+                  kind: 'mentai',
+                  sauce: true,
+                  mentaiMayo: true,
+                  cheese: true,
+                  katsuo: true,
+                },
               },
             })
           }
@@ -382,24 +396,31 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
         onClick={() => {
           handleAddToCart({
             id: v4(),
-            name: 'ソース（セット）前売り',
-            price: 0,
-            arranges: {
-              ソース: true,
-              マヨ: true,
-              アオサ: true,
-              カツオ: true,
+            menuInfo: {
+              name: 'ソース（セット）前売り',
+              price: 0,
+              arranges: {
+                kind: 'sauce',
+                sauce: true,
+                mayo: true,
+                aosa: true,
+                katsuo: true,
+              },
             },
           });
+
           handleAddToCart({
             id: v4(),
-            name: 'めんたい（セット）前売り',
-            price: 0,
-            arranges: {
-              ソース: true,
-              めんたいマヨ: true,
-              チーズ: true,
-              カツオ: true,
+            menuInfo: {
+              name: 'めんたい（セット）前売り',
+              price: 0,
+              arranges: {
+                kind: 'mentai',
+                sauce: true,
+                mentaiMayo: true,
+                cheese: true,
+                katsuo: true,
+              },
             },
           });
         }}

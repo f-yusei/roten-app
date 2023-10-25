@@ -65,6 +65,11 @@ export type MenuInformation = {
   arranges: SauceToppings | MentaiToppings;
 };
 
+export type MenuInformationForReception = {
+  id: string;
+  menuInfo: MenuInformation;
+};
+
 type SauceToppings = {
   kind: 'sauce';
   sauce: boolean;

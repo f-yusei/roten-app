@@ -19,7 +19,7 @@ const Calculator = () => {
   const cart = useSelector((state: RootState) => state.cart);
 
   const totalMoney = cart
-    .reduce((sum, order) => sum + order.price, 0)
+    .reduce((sum, order) => sum + order.menuInfo.price, 0)
     .toString();
 
   let difference_money = 0;

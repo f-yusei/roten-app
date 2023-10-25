@@ -1,8 +1,8 @@
-import { MenuInformation } from '../../types';
+import { MenuInformationForReception } from '../../types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const state = {
-  cart: [] as MenuInformation[],
+  cart: [] as MenuInformationForReception[],
 };
 
 export type ArrangeState = {
@@ -15,7 +15,10 @@ export const cartSlice = createSlice({
   name: 'cartSlice',
   initialState: state,
   reducers: {
-    addMenu: (state, action: PayloadAction<MenuInformation>): void => {
+    addMenu: (
+      state,
+      action: PayloadAction<MenuInformationForReception>,
+    ): void => {
       state.cart.push(action.payload);
     },
     removeMenu: (state, action: PayloadAction<string>): void => {
