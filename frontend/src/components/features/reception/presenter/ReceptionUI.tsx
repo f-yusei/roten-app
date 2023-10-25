@@ -33,7 +33,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
   handleDeleteSetMenu,
 }) => {
   useEffect(() => {
-    console.log(cart);
+    console.log("in cart: ", cart);
   }, [cart]);
 
   const { orders, isLoading } = useGetAllOrder();
@@ -78,6 +78,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
                 <HStack key={order.id}>
                   <SetCard
                     order={order}
+                    cart={cart}
                     handleUpdateOrderCheck={handleUpdateOrderCheck}
                   />
 
@@ -147,11 +148,16 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
 
 const SetCard = ({
   order,
+  cart,
   handleUpdateOrderCheck,
 }: {
   order: MenuInformation;
+  cart: MenuInformation[];
   handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
 }) => {
+    const nextIndex = cart.findIndex((element) => element.id === order.id) + 1;
+    // console.log("nextIndex is ", nextIndex);
+
   return (
     <>
       {order.name === 'ソース（セット）前売り' ? (
@@ -185,12 +191,12 @@ const SetCard = ({
                       onChange={(e) => {
                         handleUpdateOrderCheck({
                           id: order.id,
-                          arrange: 'ソース',
+                          arrange: 'sauce',
                           checked: e.target.checked,
                         });
                       }}
                     >
-                      ソース
+                      sauce
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -198,12 +204,12 @@ const SetCard = ({
                       onChange={(e) => {
                         handleUpdateOrderCheck({
                           id: order.id,
-                          arrange: 'マヨ',
+                          arrange: 'mayo',
                           checked: e.target.checked,
                         });
                       }}
                     >
-                      マヨ
+                      mayo
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -211,12 +217,12 @@ const SetCard = ({
                       onChange={(e) => {
                         handleUpdateOrderCheck({
                           id: order.id,
-                          arrange: 'アオサ',
+                          arrange: 'aosa',
                           checked: e.target.checked,
                         });
                       }}
                     >
-                      青のり
+                      aosa
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -224,12 +230,12 @@ const SetCard = ({
                       onChange={(e) => {
                         handleUpdateOrderCheck({
                           id: order.id,
-                          arrange: 'カツオ',
+                          arrange: 'katsuo',
                           checked: e.target.checked,
                         });
                       }}
                     >
-                      かつお節
+                      katsuo
                     </Checkbox>
                   </HStack>
                 </Card>
@@ -245,52 +251,53 @@ const SetCard = ({
                       colorScheme="green"
                       onChange={(e) => {
                         handleUpdateOrderCheck({
-                          id: order.id,
-                          arrange: 'ソース',
+                          id: cart[nextIndex]["id"],
+                          arrange: 'sauce',
                           checked: e.target.checked,
                         });
                       }}
                     >
-                      ソース
+                      sauce
+                    </Checkbox>
+                    <Checkbox
+                      defaultChecked={true}
+                      colorScheme="green"
+                      onChange={(e) => {
+                        
+                        handleUpdateOrderCheck({
+                          id: cart[nextIndex]["id"],
+                          arrange: 'mentaiMayo',
+                          checked: e.target.checked,
+                        });
+                      }}
+                    >
+                      mentaiMayo
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
                       colorScheme="green"
                       onChange={(e) => {
                         handleUpdateOrderCheck({
-                          id: order.id,
-                          arrange: 'めんたいマヨ',
+                          id: cart[nextIndex]["id"],
+                          arrange: 'cheese',
                           checked: e.target.checked,
                         });
                       }}
                     >
-                      めんたいマヨ
+                      cheese
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
                       colorScheme="green"
                       onChange={(e) => {
                         handleUpdateOrderCheck({
-                          id: order.id,
-                          arrange: 'チーズ',
+                          id: cart[nextIndex]["id"],
+                          arrange: 'katsuo',
                           checked: e.target.checked,
                         });
                       }}
                     >
-                      チーズ
-                    </Checkbox>
-                    <Checkbox
-                      defaultChecked={true}
-                      colorScheme="green"
-                      onChange={(e) => {
-                        handleUpdateOrderCheck({
-                          id: order.id,
-                          arrange: 'カツオ',
-                          checked: e.target.checked,
-                        });
-                      }}
-                    >
-                      かつお節
+                      katsuo
                     </Checkbox>
                   </HStack>
                 </Card>
