@@ -4,7 +4,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalCloseButton,
   ModalBody,
   Card,
   ModalFooter,
@@ -155,15 +154,18 @@ function OrderConfirmationModal({
   
   return (
     <>
-      <Button
+      {calculateChange() >= 0 ? (
+        <Button
         fontSize="2.4rem"
         mt={1}
         width="39.5vw"
         height="10vh"
         onClick={handleButtonClick}
-      >
+        >
         確定
-      </Button>
+        </Button>
+      ): null}
+      
       <Modal
         finalFocusRef={finalRef}
         isOpen={isOpen}
@@ -172,7 +174,6 @@ function OrderConfirmationModal({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalCloseButton />
           <ModalBody>
             <Box>
               <Grid
