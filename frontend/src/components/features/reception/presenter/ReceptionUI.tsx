@@ -35,34 +35,34 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
     console.log('in cart: ', cart);
   }, [cart]);
 
-const translateWords = (words: string) => {
-  let word="";
-  switch (words){
-    case 'sauce':
-      word = "ソース";
-      break;
-    case 'katsuo':
-      word = "かつおぶし";
-      break;
-    case 'aosa':
-      word = "あおさ";
-      break;
-    case 'mayo':
-      word = "マヨネーズ";
-      break;
-    case 'mentaiMayo':
-      word = "めんたいマヨ";
-      break;
-    case 'cheese':
-      word = "チーズ";
-      break;
-    default :
-    word = "?";
-    break;   
+  const translateWords = (words: string) => {
+    let word = '';
+    switch (words) {
+      case 'sauce':
+        word = 'ソース';
+        break;
+      case 'katsuo':
+        word = 'かつおぶし';
+        break;
+      case 'aosa':
+        word = 'あおさ';
+        break;
+      case 'mayo':
+        word = 'マヨネーズ';
+        break;
+      case 'mentaiMayo':
+        word = 'めんたいマヨ';
+        break;
+      case 'cheese':
+        word = 'チーズ';
+        break;
+      default:
+        word = '?';
+        break;
+    }
+    return word;
   };
-  return word;
-}
-  
+
   return (
     <Box maxHeight="100vh">
       <HStack>
@@ -94,8 +94,6 @@ const translateWords = (words: string) => {
               ) : order.name === 'めんたい（セット）前売り' ? (
                 <Box key={v4()}></Box>
               ) : (
-                <Card key={order.id} w={'54vw'} minH={'8vh'} m={2}>
-                <h2>{order.name}</h2>
                 <HStack>
                   <Box width={'40vw'}>
                     <Grid
@@ -119,22 +117,24 @@ const translateWords = (words: string) => {
                           <h2>{order.name}</h2>
                           <HStack>
                             <CheckboxGroup>
-                              {Object.keys(order.arranges).map((topping, i) => (
-                                <Checkbox
-                                  key={i}
-                                  defaultChecked={true}
-                                  colorScheme="green"
-                                  onChange={(e) => {
-                                    handleUpdateOrderCheck({
-                                      id: order.id,
-                                      arrange: topping,
-                                      checked: e.target.checked,
-                                    });
-                                  }}
-                                >
-                                  {translateWords(topping)}
-                                </Checkbox>
-                              ))}
+                              {Object.keys(order.arranges)
+                                .slice(1)
+                                .map((topping, i) => (
+                                  <Checkbox
+                                    key={i}
+                                    defaultChecked={true}
+                                    colorScheme="green"
+                                    onChange={(e) => {
+                                      handleUpdateOrderCheck({
+                                        id: order.id,
+                                        arrange: topping,
+                                        checked: e.target.checked,
+                                      });
+                                    }}
+                                  >
+                                    {translateWords(topping)}
+                                  </Checkbox>
+                                ))}
                             </CheckboxGroup>
                           </HStack>
                         </Card>

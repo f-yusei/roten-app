@@ -23,7 +23,7 @@ import { useSelector } from 'react-redux';
 import orderApi from '../../../../api/orderApi';
 import { RootState } from '../../../../state/common/rootState.type';
 import { v4 } from 'uuid';
-import {useGetAllOrder} from '../../../../api/hooks';
+import { useGetAllOrder } from '../../../../api/hooks';
 
 function OrderConfirmationModal({
   numberOfTicketsUsed,
@@ -73,11 +73,7 @@ function OrderConfirmationModal({
         },
       },
     ],
-
-    
-  },);
-
-  
+  });
 
   useEffect(() => {
     console.log(order);
@@ -88,26 +84,29 @@ function OrderConfirmationModal({
   };
 
   const returnWoodenNum = () => {
-    let orderRes:number[] = [];
+    const orderRes: number[] = [];
     let woodenNum = 0;
-  
-    if(orders !== undefined){
-      for (let i = 0; i < orders.length; i++){
-        console.log("orders.length", orders.length)
-        if (orders[i].orderState === 'waiting' || orders[i].orderState === 'available'){
-          console.log("orderRes[" + i + "]", orders[i].woodenNumber)
+
+    if (orders !== undefined) {
+      for (let i = 0; i < orders.length; i++) {
+        console.log('orders.length', orders.length);
+        if (
+          orders[i].orderState === 'waiting' ||
+          orders[i].orderState === 'available'
+        ) {
+          console.log('orderRes[' + i + ']', orders[i].woodenNumber);
           orderRes[i] = orders[i].woodenNumber;
         }
       }
 
-      console.log("orderRes:",orderRes);
-      if(orderRes.length !== 0){
-        return woodenNum = 1;
+      console.log('orderRes:', orderRes);
+      if (orderRes.length !== 0) {
+        return (woodenNum = 1);
       } else {
-        return woodenNum = 1;
+        return (woodenNum = 1);
       }
     } else {
-      console.log("orders is undefined");
+      console.log('orders is undefined');
       return 1;
     }
   };
@@ -131,7 +130,6 @@ function OrderConfirmationModal({
       })),
     };
 
-
     const responseData = await orderApi.storeOrder(orderForPost);
     setOrder(responseData);
     console.log(responseData);
@@ -143,7 +141,6 @@ function OrderConfirmationModal({
   };
 
   const totalItemCount = cart.length; // 合計の個数
-  
 
   // 特定の商品の個数をカウント
   const specificProducts = ['ソース', 'めんたい']; // カウントしたくない特定の商品名
@@ -155,7 +152,7 @@ function OrderConfirmationModal({
     }
     return count + 1;
   }, 0);
-  
+
   return (
     <>
       <Button
