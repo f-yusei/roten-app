@@ -30,7 +30,7 @@ const ToppingUI = ({ updateOrderState, orders }: ToppingUIProps) => {
   }, [orders]);
   return (
     <div>
-      <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+      <Grid templateColumns="repeat(3, 1fr)" m={4} gap={4}>
         {waitingOrders ? (
           waitingOrders.slice(0, 5).map((order) => (
             <GridItem key={order._id}>
