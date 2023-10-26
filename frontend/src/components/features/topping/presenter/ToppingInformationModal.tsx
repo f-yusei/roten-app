@@ -48,14 +48,23 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
       <Button
         minW={'sm'}
         minH={'xs'}
+        overflow={'auto'}
         onClick={() => {
           onOpen();
         }}
+        padding={0}
       >
         <VStack>
+          <Box fontSize={'20px'}>木札番号：{order.woodenNumber}</Box>
+
           {order.menus.map((menu, index) => (
             <VStack key={index}>
-              <Box fontSize={'20px'}>{menu.name}</Box>
+              <Box
+                fontSize={'20px'}
+                color={menu.arranges.kind === 'sauce' ? '#631A03' : '#F59090'}
+              >
+                {menu.name}
+              </Box>
               {menu.arranges.kind === 'sauce' ? (
                 <>
                   <Box>{menu.arranges.sauce ? '' : 'ソース: なし'}</Box>
