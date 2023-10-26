@@ -15,7 +15,6 @@ import OrderHistoryDrawer from './OrderHistoryDrawer';
 import { MenuInformation } from '../../../../types';
 import { v4 } from 'uuid';
 import { ArrangeState } from '../../../../state/cart/cartSlice';
-import { useGetAllOrder } from '../../../../api/hooks';
 
 type ReceptionUIProps = {
   cart: MenuInformation[];
@@ -35,43 +34,6 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
   useEffect(() => {
     console.log('in cart: ', cart);
   }, [cart]);
-
-  const { orders } = useGetAllOrder();
-  const returnWoodenNum = () => {
-    const orderRes: number[] = [];
-    let woodenNum = 20;
-    if (orders != undefined) {
-      for (let i = 0; i < orders.length; i++) {
-        if (
-          orders[i].orderState === 'available' ||
-          orders[i].orderState === 'waiting'
-        ) {
-          orderRes[i] = orders[i].woodenNumber;
-        }
-      }
-
-      // console.log("orderRes.length =", orderRes.length);
-      if (orderRes.length === 0) {
-        return woodenNum;
-      } else {
-        for (let j = 0; j < orders.length; j++) {
-          if (
-            orders[j].orderState === 'finished' ||
-            orders[j].orderState === 'discarded'
-          ) {
-            // console.log("orders[j].woodenNumber: ", orders[j].woodenNumber);
-            if (woodenNum > orders[j].woodenNumber)
-              woodenNum = orders[j].woodenNumber;
-          }
-        }
-        console.log('yougest woodenNumber is ', woodenNum);
-        return woodenNum;
-      }
-    } else {
-      console.log('orders is undefined');
-      return 1;
-    }
-  };
 
   return (
     <Box maxHeight="100vh">

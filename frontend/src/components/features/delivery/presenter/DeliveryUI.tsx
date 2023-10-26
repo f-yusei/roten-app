@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react';
 import orderApi from '../../../../api/orderApi';
 import { useGetAllOrder } from '../../../../api/hooks';
 import { v4 } from 'uuid';
-import { ClientRequest } from 'http';
 
 const DeliveryUI = () => {
   const { orders, isLoading } = useGetAllOrder();
@@ -123,7 +122,13 @@ const DeliveryUI = () => {
 
   return (
     <HStack>
-      <Box w="53vw" h="98vh" bgColor={'gray.20'} border="2px"  borderRadius="10px" >
+      <Box
+        w="53vw"
+        h="98vh"
+        bgColor={'gray.20'}
+        border="2px"
+        borderRadius="10px"
+      >
         <Grid templateColumns="repeat(2, 1fr)">
           {availableOrders.slice(0, 6).map((order) => (
             <GridItem key={v4()}>
@@ -156,7 +161,7 @@ const DeliveryUI = () => {
         <Box>
           <Card h={'44vh'} border="2px">
             <CardBody>
-              <Box height="25vh" >
+              <Box height="25vh">
                 <Box
                   w="5vw"
                   bgColor={'#ffeb99'}
@@ -245,7 +250,7 @@ const DeliveryUI = () => {
             </CardBody>
           </Card>
         </Box>
-        <Box h={'55vh'} border="2px"  borderRadius="10px">
+        <Box h={'55vh'} border="2px" borderRadius="10px">
           <PureCarousel
             cardInformation={[
               {
