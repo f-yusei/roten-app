@@ -12,10 +12,9 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import { FC, useEffect } from 'react';
 import PayDrawer from './Payment';
 import OrderHistoryDrawer from './OrderHistoryDrawer';
-import { MenuInformation, OrderInformationType } from '../../../../types';
+import { MenuInformation } from '../../../../types';
 import { v4 } from 'uuid';
 import { ArrangeState } from '../../../../state/cart/cartSlice';
-import {useGetAllOrder} from '../../../../api/hooks';
 
 type ReceptionUIProps = {
   cart: MenuInformation[];
@@ -33,38 +32,8 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
   handleDeleteSetMenu,
 }) => {
   useEffect(() => {
-    console.log("in cart: ", cart);
+    console.log('in cart: ', cart);
   }, [cart]);
-
-  const { orders, isLoading } = useGetAllOrder();
-  const returnWoodenNum = () => {
-    let orderRes:number[] = [];
-    let woodenNum = 20;
-    if(orders != undefined){
-      for (let i = 0; i < orders.length; i++){
-        if (orders[i].orderState === 'available' || orders[i].orderState === 'waiting'){
-          orderRes[i] = orders[i].woodenNumber;
-        };
-      };
-      
-      // console.log("orderRes.length =", orderRes.length);
-      if (orderRes.length === 0){
-        return woodenNum;
-      } else {
-        for (let j = 0; j < orders.length; j++){
-          if (orders[j].orderState === 'finished' || orders[j].orderState === 'discarded'){
-              // console.log("orders[j].woodenNumber: ", orders[j].woodenNumber);
-            if (woodenNum > orders[j].woodenNumber) woodenNum = orders[j].woodenNumber;
-          };
-      };
-        console.log("yougest woodenNumber is ", woodenNum);
-        return woodenNum;
-      };
-    } else {
-      console.log("orders is undefined");
-      return 1;
-    };
-  };
 
   return (
     <Box maxHeight="100vh">
@@ -97,36 +66,63 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
               ) : order.name === 'めんたい（セット）前売り' ? (
                 <Box key={v4()}></Box>
               ) : (
-                <Card key={order.id} w={'54vw'} minH={'8vh'} m={2}>
-                  <h2>{order.name}</h2>
-                  <HStack>
-                    <CheckboxGroup>
-                      {Object.keys(order.arranges).map((topping, i) => (
-                        <Checkbox
-                          key={i}
-                          defaultChecked={true}
-                          colorScheme="green"
-                          onChange={(e) => {
-                            handleUpdateOrderCheck({
-                              id: order.id,
-                              arrange: topping,
-                              checked: e.target.checked,
-                            });
-                          }}
-                        >
-                          {topping}
-                        </Checkbox>
-                      ))}
-                    </CheckboxGroup>
-                    <Button
-                      onClick={() => {
-                        handleDeleteFromCart(order.id);
-                      }}
+                <HStack>
+                  <Box width={'40vw'}>
+                    <Grid
+                      templateColumns="repeat(2, 1fr)"
+                      gap={4}
+                      marginLeft={5}
                     >
-                      削除
-                    </Button>
-                  </HStack>
-                </Card>
+                      <GridItem
+                        colSpan={1}
+                        h="10vh"
+                        w="4vw"
+                        bg="blue.400"
+                        borderRadius={10}
+                        color={'white'}
+                        p={'1.4vw'}
+                      >
+                        単品
+                      </GridItem>
+                      <GridItem colSpan={1}>
+                        <Card key={order.id} w={'35vw'} minH={'8vh'} mt={2}>
+                          <h2>{order.name}</h2>
+                          <HStack>
+                            <CheckboxGroup>
+                              {Object.keys(order.arranges).map((topping, i) => (
+                                <Checkbox
+                                  key={i}
+                                  defaultChecked={true}
+                                  colorScheme="green"
+                                  onChange={(e) => {
+                                    handleUpdateOrderCheck({
+                                      id: order.id,
+                                      arrange: topping,
+                                      checked: e.target.checked,
+                                    });
+                                  }}
+                                >
+                                  {topping}
+                                </Checkbox>
+                              ))}
+                            </CheckboxGroup>
+                          </HStack>
+                        </Card>
+                      </GridItem>
+                    </Grid>
+                  </Box>
+                  <Button
+                    w="12vw"
+                    h="10vh"
+                    m={5}
+                    borderRadius={10}
+                    onClick={() => {
+                      handleDeleteFromCart(order.id);
+                    }}
+                  >
+                    削除
+                  </Button>
+                </HStack>
               ),
             )}
           </Stack>
@@ -155,8 +151,8 @@ const SetCard = ({
   cart: MenuInformation[];
   handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
 }) => {
-    const nextIndex = cart.findIndex((element) => element.id === order.id) + 1;
-    // console.log("nextIndex is ", nextIndex);
+  const nextIndex = cart.findIndex((element) => element.id === order.id) + 1;
+  // console.log("nextIndex is ", nextIndex);
 
   return (
     <>
@@ -251,7 +247,7 @@ const SetCard = ({
                       colorScheme="green"
                       onChange={(e) => {
                         handleUpdateOrderCheck({
-                          id: cart[nextIndex]["id"],
+                          id: cart[nextIndex]['id'],
                           arrange: 'sauce',
                           checked: e.target.checked,
                         });
@@ -263,9 +259,8 @@ const SetCard = ({
                       defaultChecked={true}
                       colorScheme="green"
                       onChange={(e) => {
-                        
                         handleUpdateOrderCheck({
-                          id: cart[nextIndex]["id"],
+                          id: cart[nextIndex]['id'],
                           arrange: 'mentaiMayo',
                           checked: e.target.checked,
                         });
@@ -278,7 +273,7 @@ const SetCard = ({
                       colorScheme="green"
                       onChange={(e) => {
                         handleUpdateOrderCheck({
-                          id: cart[nextIndex]["id"],
+                          id: cart[nextIndex]['id'],
                           arrange: 'cheese',
                           checked: e.target.checked,
                         });
@@ -291,7 +286,7 @@ const SetCard = ({
                       colorScheme="green"
                       onChange={(e) => {
                         handleUpdateOrderCheck({
-                          id: cart[nextIndex]["id"],
+                          id: cart[nextIndex]['id'],
                           arrange: 'katsuo',
                           checked: e.target.checked,
                         });

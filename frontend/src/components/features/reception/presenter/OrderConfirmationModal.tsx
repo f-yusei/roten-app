@@ -14,7 +14,7 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   OrderInformationType,
   OrderInformationTypeForPost,
@@ -72,6 +72,10 @@ function OrderConfirmationModal({
     ],
   });
 
+  useEffect(() => {
+    console.log(order);
+  }, [order]);
+
   const calculateChange = () => {
     return depositAmount - difference_money;
   };
@@ -95,13 +99,13 @@ function OrderConfirmationModal({
       })),
     };
 
-    const response = await orderApi.storeOrder(orderForPost);
-    setOrder(response);
-    console.log(response);
+    const responseData = await orderApi.storeOrder(orderForPost);
+    setOrder(responseData);
+    console.log(responseData);
   };
 
-  const handleButtonClick = () => {
-    postOrder();
+  const handleButtonClick = async () => {
+    await postOrder();
     onOpen();
   };
 
@@ -176,7 +180,7 @@ function OrderConfirmationModal({
                   m={5}
                 >
                   {/* メニュー情報を表示 */}
-                  <div>
+                  <Box>
                     <h2 style={{ color: '#7d7d7d' }}>
                       木札の番号：{order.woodenNumber}
                     </h2>
@@ -191,14 +195,16 @@ function OrderConfirmationModal({
                           </p>
                           {Object.entries(menu.arranges).map(
                             ([topping, value]) => {
-                              if (!value) {
+                              if (value) {
                                 return (
-                                  <p key={topping} style={{ color: '#5f9ea0' }}>
-                                    -{topping}なし
+                                  <p key={topping}>
+                                    ・{topping}
+                                    <span style={{ color: '#ffa500' }}>
+                                      価格: {menu.price}円
+                                    </span>
                                   </p>
                                 );
                               }
-                              return null;
                             },
                           )}
                         </div>
@@ -207,7 +213,7 @@ function OrderConfirmationModal({
                         [100円券: {numberOfTicketsUsed}枚]
                       </p>
                     </ul>
-                  </div>
+                  </Box>
                 </GridItem>
                 <GridItem
                   rowSpan={3}
@@ -239,14 +245,14 @@ function OrderConfirmationModal({
                   borderRadius={10}
                   m={5}
                 >
-                  <p>
+                  <Box>
                     <p>
                       小計 | {totalItemCount}[点]（{nonSpecificProductCount}）
                     </p>
                     <p>合計 | {difference_money}円</p>
                     <p>お預かり | {depositAmount}円</p>
                     <p>お釣り | {calculateChange()}円</p>
-                  </p>
+                  </Box>
                 </GridItem>
               </Grid>
             </Box>
