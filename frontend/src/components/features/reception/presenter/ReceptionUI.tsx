@@ -66,36 +66,63 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
               ) : order.name === 'めんたい（セット）前売り' ? (
                 <Box key={v4()}></Box>
               ) : (
-                <Card key={order.id} w={'54vw'} minH={'8vh'} m={2}>
-                  <h2>{order.name}</h2>
-                  <HStack>
-                    <CheckboxGroup>
-                      {Object.keys(order.arranges).map((topping, i) => (
-                        <Checkbox
-                          key={i}
-                          defaultChecked={true}
-                          colorScheme="green"
-                          onChange={(e) => {
-                            handleUpdateOrderCheck({
-                              id: order.id,
-                              arrange: topping,
-                              checked: e.target.checked,
-                            });
-                          }}
-                        >
-                          {topping}
-                        </Checkbox>
-                      ))}
-                    </CheckboxGroup>
-                    <Button
-                      onClick={() => {
-                        handleDeleteFromCart(order.id);
-                      }}
+                <HStack>
+                  <Box width={'40vw'}>
+                    <Grid
+                      templateColumns="repeat(2, 1fr)"
+                      gap={4}
+                      marginLeft={5}
                     >
-                      削除
-                    </Button>
-                  </HStack>
-                </Card>
+                      <GridItem
+                        colSpan={1}
+                        h="10vh"
+                        w="4vw"
+                        bg="blue.400"
+                        borderRadius={10}
+                        color={'white'}
+                        p={'1.4vw'}
+                      >
+                        単品
+                      </GridItem>
+                      <GridItem colSpan={1}>
+                        <Card key={order.id} w={'35vw'} minH={'8vh'} mt={2}>
+                          <h2>{order.name}</h2>
+                          <HStack>
+                            <CheckboxGroup>
+                              {Object.keys(order.arranges).map((topping, i) => (
+                                <Checkbox
+                                  key={i}
+                                  defaultChecked={true}
+                                  colorScheme="green"
+                                  onChange={(e) => {
+                                    handleUpdateOrderCheck({
+                                      id: order.id,
+                                      arrange: topping,
+                                      checked: e.target.checked,
+                                    });
+                                  }}
+                                >
+                                  {topping}
+                                </Checkbox>
+                              ))}
+                            </CheckboxGroup>
+                          </HStack>
+                        </Card>
+                      </GridItem>
+                    </Grid>
+                  </Box>
+                  <Button
+                    w="12vw"
+                    h="10vh"
+                    m={5}
+                    borderRadius={10}
+                    onClick={() => {
+                      handleDeleteFromCart(order.id);
+                    }}
+                  >
+                    削除
+                  </Button>
+                </HStack>
               ),
             )}
           </Stack>
