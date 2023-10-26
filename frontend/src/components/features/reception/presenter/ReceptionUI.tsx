@@ -35,6 +35,34 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
     console.log('in cart: ', cart);
   }, [cart]);
 
+  const translateWords = (words: string) => {
+    let word = '';
+    switch (words) {
+      case 'sauce':
+        word = 'ソース';
+        break;
+      case 'katsuo':
+        word = 'かつおぶし';
+        break;
+      case 'aosa':
+        word = 'あおさ';
+        break;
+      case 'mayo':
+        word = 'マヨネーズ';
+        break;
+      case 'mentaiMayo':
+        word = 'めんたいマヨ';
+        break;
+      case 'cheese':
+        word = 'チーズ';
+        break;
+      default:
+        word = '?';
+        break;
+    }
+    return word;
+  };
+
   return (
     <Box maxHeight="100vh">
       <HStack>
@@ -89,22 +117,24 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
                           <h2>{order.name}</h2>
                           <HStack>
                             <CheckboxGroup>
-                              {Object.keys(order.arranges).map((topping, i) => (
-                                <Checkbox
-                                  key={i}
-                                  defaultChecked={true}
-                                  colorScheme="green"
-                                  onChange={(e) => {
-                                    handleUpdateOrderCheck({
-                                      id: order.id,
-                                      arrange: topping,
-                                      checked: e.target.checked,
-                                    });
-                                  }}
-                                >
-                                  {topping}
-                                </Checkbox>
-                              ))}
+                              {Object.keys(order.arranges)
+                                .slice(1)
+                                .map((topping, i) => (
+                                  <Checkbox
+                                    key={i}
+                                    defaultChecked={true}
+                                    colorScheme="green"
+                                    onChange={(e) => {
+                                      handleUpdateOrderCheck({
+                                        id: order.id,
+                                        arrange: topping,
+                                        checked: e.target.checked,
+                                      });
+                                    }}
+                                  >
+                                    {translateWords(topping)}
+                                  </Checkbox>
+                                ))}
                             </CheckboxGroup>
                           </HStack>
                         </Card>
@@ -192,7 +222,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      sauce
+                      ソース
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -205,7 +235,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      mayo
+                      マヨネーズ
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -218,7 +248,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      aosa
+                      あおさ
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -231,7 +261,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      katsuo
+                      かつおぶし
                     </Checkbox>
                   </HStack>
                 </Card>
@@ -253,7 +283,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      sauce
+                      ソース
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -266,7 +296,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      mentaiMayo
+                      めんたいマヨ
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -279,7 +309,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      cheese
+                      チーズ
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -292,7 +322,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      katsuo
+                      かつおぶし
                     </Checkbox>
                   </HStack>
                 </Card>
