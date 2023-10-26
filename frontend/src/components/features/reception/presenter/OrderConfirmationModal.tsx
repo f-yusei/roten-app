@@ -15,12 +15,6 @@ import {
   GridItem,
 } from '@chakra-ui/react';
 import React from 'react';
-import { OrderInformationType } from '../../../../types';
-
-const numberOfTicketsUsed = 10;
-const depositAmount = 1000;
-const totalMoney = 900;
-
 import {
   OrderInformationType,
   OrderInformationTypeForPost,
@@ -74,7 +68,7 @@ function OrderConfirmationModal({
         },
       },
     ],
-  });
+  }); 
 
   const calculateChange = () => {
     return depositAmount - difference_money;
@@ -82,26 +76,30 @@ function OrderConfirmationModal({
 
   //cartをpostする関数
   const postOrder = async () => {
-    const orderForPost: OrderInformationTypeForPost = {
-      woodenNumber: 1,
-      orderState: 'waiting',
-      orderStateLogs: {
-        orderReceivedAt: new Date(),
-        readiedAt: undefined,
-        deliveredAt: undefined,
-        invalidAt: undefined,
-      },
-      menus: cart.map((menu) => ({
-        id: menu.id,
-        name: menu.name,
-        price: menu.price,
-        arranges: menu.arranges,
-      })),
-    };
+    try {
+      const orderForPost: OrderInformationTypeForPost = {
+        woodenNumber: 1,
+        orderState: 'waiting',
+        orderStateLogs: {
+          orderReceivedAt: new Date(),
+          readiedAt: undefined,
+          deliveredAt: undefined,
+          invalidAt: undefined,
+        },
+        menus: cart.map((menu) => ({
+          id: menu.id,
+          name: menu.name,
+          price: menu.price,
+          arranges: menu.arranges,
+        })),
+      };
 
-    const response = await orderApi.storeOrder(orderForPost);
-    setOrder(response);
-    console.log(response);
+      const response = await orderApi.storeOrder(orderForPost);
+      setOrder(response);
+      console.log(response);
+    } catch (error) {
+      console.error("エラーが発生しました:", error);
+    }
   };
 
   const handleButtonClick = () => {
@@ -110,74 +108,9 @@ function OrderConfirmationModal({
   };
 
   const totalItemCount = order.menus.length; // 合計の個数
-
-  // 特定の商品の個数をカウント
   const specificProducts = ['ソース', 'めんたい']; // カウントしたくない特定の商品名
-
-  const nonSpecificProductCount = order.menus.reduce((count, menu) => {
-    if (specificProducts.includes(menu.name)) {
-      return count;
-    }
-    return count + 1;
-  }, 0);
-
+  const nonSpecificProductCount = order.menus.filter((menu) => !specificProducts.includes(menu.name)).length;
   const cart = useSelector((state: RootState) => state.cart);
-
-  const orders: OrderInformationType[] = [
-    {
-      _id: '6533ae6bfb99ad75540d3592',
-      woodenNumber: 1,
-      orderState: 'available',
-      menus: [
-        {
-          name: 'ソース',
-          price: 250,
-          arranges: {
-            ソース: true,
-            マヨ: true,
-            カツオ: true,
-            アオサ: true,
-          },
-        },
-        {
-          name: 'ソース',
-          price: 250,
-          arranges: {
-            ソース: false,
-            マヨ: true,
-            カツオ: true,
-            アオサ: true,
-          },
-        },
-        {
-          name: 'めんたい',
-          price: 300,
-          arranges: {
-            ソース: true,
-            めんたいマヨ: true,
-            チーズ: true,
-            カツオ: true,
-          },
-        },
-      ],
-    },
-  ]
-
-  const totalItemCount = orders.reduce((total, order) => total + order.menus.length, 0);
-
-  // 特定の商品の個数をカウント
-  const specificProducts = ['ソース', 'めんたい']; // カウントしたくない特定の商品名
-
-  const nonSpecificProductCount = orders.reduce((total, order) => {
-    const count = order.menus.reduce((itemTotal, menu) => {
-      if (!specificProducts.includes(menu.name)) {
-        return itemTotal + 1;
-      }
-      return itemTotal;
-    }, 0);
-
-    return total + count;
-  }, 0);
 
   return (
     <>
@@ -235,7 +168,6 @@ function OrderConfirmationModal({
                   borderRadius={10}
                   m={5}
                 >
-                  {/* メニュー情報を表示 */}
                   <div>
                     <h2 style={{ color: '#7d7d7d' }}>
                       木札の番号：{order.woodenNumber}
@@ -299,14 +231,14 @@ function OrderConfirmationModal({
                   borderRadius={10}
                   m={5}
                 >
-                  <p>
+                  <div>
                     <p>
                       小計 | {totalItemCount}[点]（{nonSpecificProductCount}）
                     </p>
                     <p>合計 | {difference_money}円</p>
                     <p>お預かり | {depositAmount}円</p>
                     <p>お釣り | {calculateChange()}円</p>
-                  </p>
+                  </div>
                 </GridItem>
               </Grid>
             </Box>
