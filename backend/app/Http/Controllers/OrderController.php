@@ -25,7 +25,14 @@ class OrderController extends Controller
 
         $post->save();
 
-        return response()->json(["result" => "Stored Successfully! :)"], 201);
+        return response()->json(
+            [
+                "woodenNumber" =>  $request->woodenNumber,
+                "orderState" => $request->orderState,
+                "orderStateLogs" => $request->orderStateLogs,
+                "menus" => $request->menus
+            ], 
+            201);
     }
 
     public function update(Request $request, $updateId)

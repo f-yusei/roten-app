@@ -14,7 +14,7 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   OrderInformationType,
   OrderInformationTypeForPost,
@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import orderApi from '../../../../api/orderApi';
 import { RootState } from '../../../../state/common/rootState.type';
 import { v4 } from 'uuid';
+import {useGetAllOrder} from '../../../../api/hooks';
 
 function OrderConfirmationModal({
   numberOfTicketsUsed,
@@ -33,8 +34,10 @@ function OrderConfirmationModal({
   difference_money: number;
   depositAmount: number;
 }) {
+  const { orders } = useGetAllOrder();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
+  const cart = useSelector((state: RootState) => state.cart).cart;
   const [order, setOrder] = React.useState<OrderInformationType>({
     _id: '6533ae6bfb99ad75540d3592',
     woodenNumber: 404,
@@ -70,16 +73,45 @@ function OrderConfirmationModal({
         },
       },
     ],
-  });
+
+    
+  },);
+
+  
 
   const calculateChange = () => {
     return depositAmount - difference_money;
   };
 
+  const returnWoodenNum = () => {
+    let orderRes:number[] = [];
+    let woodenNum = 0;
+  
+    if(orders !== undefined){
+      for (let i = 0; i < orders.length; i++){
+        console.log("orders.length", orders.length)
+        if (orders[i].orderState === 'waiting' || orders[i].orderState === 'available'){
+          console.log("orderRes[" + i + "]", orders[i].woodenNumber)
+          orderRes[i] = orders[i].woodenNumber;
+        }
+      }
+
+      console.log("orderRes:",orderRes);
+      if(orderRes.length !== 0){
+        return woodenNum = 1;
+      } else {
+        return woodenNum = 1;
+      }
+    } else {
+      console.log("orders is undefined");
+      return 1;
+    }
+  };
+
   //cartをpostする関数
   const postOrder = async () => {
     const orderForPost: OrderInformationTypeForPost = {
-      woodenNumber: 1,
+      woodenNumber: returnWoodenNum(),
       orderState: 'waiting',
       orderStateLogs: {
         orderReceivedAt: new Date(),
@@ -97,7 +129,9 @@ function OrderConfirmationModal({
 
     const response = await orderApi.storeOrder(orderForPost);
     setOrder(response);
-    console.log(response);
+    useEffect(() => {
+      console.log("response : ", response);
+    }, [response])
   };
 
   const handleButtonClick = () => {
@@ -105,20 +139,20 @@ function OrderConfirmationModal({
     onOpen();
   };
 
-  const totalItemCount = order.menus.length; // 合計の個数
+  const totalItemCount = cart.length; // 合計の個数
+  
 
   // 特定の商品の個数をカウント
   const specificProducts = ['ソース', 'めんたい']; // カウントしたくない特定の商品名
 
+  // console.log("order in 154", order.menus)
   const nonSpecificProductCount = order.menus.reduce((count, menu) => {
     if (specificProducts.includes(menu.name)) {
       return count;
     }
     return count + 1;
   }, 0);
-
-  const cart = useSelector((state: RootState) => state.cart).cart;
-
+  
   return (
     <>
       <Button
@@ -134,7 +168,7 @@ function OrderConfirmationModal({
         finalFocusRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
-        size={'4xl'}
+        size={'6xl'}
       >
         <ModalOverlay />
         <ModalContent>
@@ -177,9 +211,6 @@ function OrderConfirmationModal({
                 >
                   {/* メニュー情報を表示 */}
                   <div>
-                    <h2 style={{ color: '#7d7d7d' }}>
-                      木札の番号：{order.woodenNumber}
-                    </h2>
                     <ul>
                       {order.menus.map((menu, menuIndex) => (
                         <div key={menuIndex}>
@@ -227,7 +258,7 @@ function OrderConfirmationModal({
                       受取番号
                     </CardHeader>
                     <CardBody fontSize={50} textAlign={'center'} m={2} p={2}>
-                      16
+                      {returnWoodenNum()}
                     </CardBody>
                   </Card>
                 </GridItem>
@@ -239,14 +270,14 @@ function OrderConfirmationModal({
                   borderRadius={10}
                   m={5}
                 >
-                  <p>
+                  
                     <p>
                       小計 | {totalItemCount}[点]（{nonSpecificProductCount}）
                     </p>
                     <p>合計 | {difference_money}円</p>
                     <p>お預かり | {depositAmount}円</p>
                     <p>お釣り | {calculateChange()}円</p>
-                  </p>
+                  
                 </GridItem>
               </Grid>
             </Box>

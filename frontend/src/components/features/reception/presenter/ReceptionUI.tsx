@@ -12,10 +12,9 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import { FC, useEffect } from 'react';
 import PayDrawer from './Payment';
 import OrderHistoryDrawer from './OrderHistoryDrawer';
-import { MenuInformation, OrderInformationType } from '../../../../types';
+import { MenuInformation} from '../../../../types';
 import { v4 } from 'uuid';
 import { ArrangeState } from '../../../../state/cart/cartSlice';
-import {useGetAllOrder} from '../../../../api/hooks';
 
 type ReceptionUIProps = {
   cart: MenuInformation[];
@@ -36,35 +35,34 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
     console.log("in cart: ", cart);
   }, [cart]);
 
-  const { orders, isLoading } = useGetAllOrder();
-  const returnWoodenNum = () => {
-    let orderRes:number[] = [];
-    let woodenNum = 20;
-    if(orders != undefined){
-      for (let i = 0; i < orders.length; i++){
-        if (orders[i].orderState === 'available' || orders[i].orderState === 'waiting'){
-          orderRes[i] = orders[i].woodenNumber;
-        };
-      };
-      
-      // console.log("orderRes.length =", orderRes.length);
-      if (orderRes.length === 0){
-        return woodenNum;
-      } else {
-        for (let j = 0; j < orders.length; j++){
-          if (orders[j].orderState === 'finished' || orders[j].orderState === 'discarded'){
-              // console.log("orders[j].woodenNumber: ", orders[j].woodenNumber);
-            if (woodenNum > orders[j].woodenNumber) woodenNum = orders[j].woodenNumber;
-          };
-      };
-        console.log("yougest woodenNumber is ", woodenNum);
-        return woodenNum;
-      };
-    } else {
-      console.log("orders is undefined");
-      return 1;
-    };
+const translateWords = (words: string) => {
+  let word="";
+  switch (words){
+    case 'sauce':
+      word = "ソース";
+      break;
+    case 'katsuo':
+      word = "かつおぶし";
+      break;
+    case 'aosa':
+      word = "あおさ";
+      break;
+    case 'mayo':
+      word = "マヨネーズ";
+      break;
+    case 'mentaiMayo':
+      word = "めんたいマヨ";
+      break;
+    case 'cheese':
+      word = "チーズ";
+      break;
+    default :
+    word = "?";
+    break;   
   };
+  return word;
+}
+  
 
   return (
     <Box maxHeight="100vh">
@@ -101,7 +99,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
                   <h2>{order.name}</h2>
                   <HStack>
                     <CheckboxGroup>
-                      {Object.keys(order.arranges).map((topping, i) => (
+                      {Object.keys(order.arranges).slice(1).map((topping, i) => (
                         <Checkbox
                           key={i}
                           defaultChecked={true}
@@ -114,7 +112,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
                             });
                           }}
                         >
-                          {topping}
+                          {translateWords(topping)}
                         </Checkbox>
                       ))}
                     </CheckboxGroup>
@@ -196,7 +194,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      sauce
+                      ソース
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -209,7 +207,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      mayo
+                      マヨネーズ
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -222,7 +220,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      aosa
+                      あおさ
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -235,7 +233,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      katsuo
+                      かつおぶし
                     </Checkbox>
                   </HStack>
                 </Card>
@@ -257,7 +255,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      sauce
+                      ソース
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -271,7 +269,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      mentaiMayo
+                      めんたいマヨ
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -284,7 +282,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      cheese
+                      チーズ
                     </Checkbox>
                     <Checkbox
                       defaultChecked={true}
@@ -297,7 +295,7 @@ const SetCard = ({
                         });
                       }}
                     >
-                      katsuo
+                      かつおぶし
                     </Checkbox>
                   </HStack>
                 </Card>
