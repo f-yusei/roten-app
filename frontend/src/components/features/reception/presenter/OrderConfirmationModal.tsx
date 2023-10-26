@@ -121,8 +121,6 @@ function OrderConfirmationModal({
 
   const cart = useSelector((state: RootState) => state.cart).cart;
 
-  const cart = useSelector((state: RootState) => state.cart);
-
   return (
     <>
       <Button
@@ -272,7 +270,6 @@ function OrderConfirmationModal({
                 </GridItem>
               </Grid>
             </Box>
-=======
             <VStack justify="left">
               <h1>注文内容</h1>
               {cart.map((order) => (
@@ -298,7 +295,6 @@ function OrderConfirmationModal({
                 <CardBody>10</CardBody>
               </Card>
             </VStack>
->>>>>>> baeb3ca ("feat: 受け取り、受け渡しの金額をグローバルにあるcartから取ってくる")
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>

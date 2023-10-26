@@ -12,7 +12,7 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import { FC, useEffect } from 'react';
 import PayDrawer from './Payment';
 import OrderHistoryDrawer from './OrderHistoryDrawer';
-import { MenuInformation } from '../../../../types';
+import { MenuInformation, OrderInformationType } from '../../../../types';
 import { v4 } from 'uuid';
 import { ArrangeState } from '../../../../state/cart/cartSlice';
 import { useGetAllOrder } from '../../../../api/hooks';
@@ -270,6 +270,7 @@ const SetCard = ({
                       defaultChecked={true}
                       colorScheme="green"
                       onChange={(e) => {
+                        
                         handleUpdateOrderCheck({
                           id: cart[nextIndex]['id'],
                           arrange: 'mentaiMayo',
