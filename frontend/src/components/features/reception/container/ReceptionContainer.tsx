@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import ReceptionUI from '../presenter/ReceptionUI';
 import { RootState } from '../../../../state/common/rootState.type';
 import { useDispatch } from 'react-redux';
-import { MenuInformationForReception } from '../../../../types';
+import { MenuInformation } from '../../../../types';
 import {
   ArrangeState,
   addMenu,
@@ -16,15 +16,12 @@ const ReceptionContainer = () => {
 
   const dispatch = useDispatch();
 
-  const handleAddToCart = ({
-    id,
-    setId,
-    menuInfo,
-  }: MenuInformationForReception) => {
+  const handleAddToCart = ({ name, price, arranges, id }: MenuInformation) => {
     const newMenu = {
       id,
-      setId,
-      menuInfo,
+      name,
+      price,
+      arranges,
     };
     dispatch(addMenu(newMenu));
   };

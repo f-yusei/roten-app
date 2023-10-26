@@ -14,7 +14,6 @@ import {
   Grid,
   GridItem,
   VStack,
-  ModalBody,
 } from '@chakra-ui/react';
 import React from 'react';
 import {
@@ -218,7 +217,16 @@ function OrderConfirmationModal({
                           </p>
                           {Object.entries(menu.arranges).map(
                             ([topping, value]) => {
-                              return null;
+                              if (value) {
+                                return (
+                                  <p key={topping}>
+                                    ・{topping}
+                                    <span style={{ color: '#ffa500' }}>
+                                      価格: {menu.price}円
+                                    </span>
+                                  </p>
+                                );
+                              }
                             },
                           )}
                         </div>
