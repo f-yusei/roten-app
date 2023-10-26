@@ -40,8 +40,16 @@ export const cartSlice = createSlice({
       }
       state.cart = [...state.cart];
     },
+    clearCart: (state): void => {
+      state.cart = [];
+    },
   },
 });
 
-export const { addMenu, removeMenu, removeMenuByIndex, updateCheckBox } =
-  cartSlice.actions;
+export const {
+  addMenu,
+  removeMenu,
+  removeMenuByIndex,
+  updateCheckBox,
+  clearCart,
+} = cartSlice.actions;

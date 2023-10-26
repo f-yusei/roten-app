@@ -19,11 +19,12 @@ import {
   OrderInformationType,
   OrderInformationTypeForPost,
 } from '../../../../types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import orderApi from '../../../../api/orderApi';
 import { RootState } from '../../../../state/common/rootState.type';
 import { v4 } from 'uuid';
 import { useGetAllOrder } from '../../../../api/hooks';
+import { clearCart } from '../../../../state/cart/cartSlice';
 
 function OrderConfirmationModal({
   numberOfTicketsUsed,
@@ -38,6 +39,8 @@ function OrderConfirmationModal({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef(null);
   const cart = useSelector((state: RootState) => state.cart).cart;
+  const [availableWoodenNumber, setAvailableWoodenNumber] =
+    React.useState<number>(0);
   const [order, setOrder] = React.useState<OrderInformationType>({
     _id: '6533ae6bfb99ad75540d3592',
     woodenNumber: 404,
@@ -74,47 +77,42 @@ function OrderConfirmationModal({
       },
     ],
   });
+  const dispatch = useDispatch();
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+  const getNumberOfUnusedWoodenTag = () => {
+    if (!orders) return 1;
+    const waitingOrAvailableOrders = orders.filter(
+      (order) =>
+        order.orderState === 'waiting' || order.orderState === 'available',
+    );
+    const usedWoodenNumbers = waitingOrAvailableOrders.map(
+      (order) => order.woodenNumber,
+    );
+    const allWoodenNumbers = Array.from(
+      { length: 20 },
+      (_, index) => index + 1,
+    );
+    const unusedWoodenNumbers = allWoodenNumbers.filter(
+      (woodenNumber) => !usedWoodenNumbers.includes(woodenNumber),
+    );
+    return unusedWoodenNumbers[0];
+  };
 
   useEffect(() => {
-    console.log(order);
-  }, [order]);
+    setAvailableWoodenNumber(getNumberOfUnusedWoodenTag());
+    console.log('availableWoodenNumber', availableWoodenNumber);
+  }, [orders]);
 
   const calculateChange = () => {
     return depositAmount - difference_money;
   };
 
-  const returnWoodenNum = () => {
-    const orderRes: number[] = [];
-    let woodenNum = 0;
-
-    if (orders !== undefined) {
-      for (let i = 0; i < orders.length; i++) {
-        console.log('orders.length', orders.length);
-        if (
-          orders[i].orderState === 'waiting' ||
-          orders[i].orderState === 'available'
-        ) {
-          console.log('orderRes[' + i + ']', orders[i].woodenNumber);
-          orderRes[i] = orders[i].woodenNumber;
-        }
-      }
-
-      console.log('orderRes:', orderRes);
-      if (orderRes.length !== 0) {
-        return (woodenNum = 1);
-      } else {
-        return (woodenNum = 1);
-      }
-    } else {
-      console.log('orders is undefined');
-      return 1;
-    }
-  };
-
   //cartをpostする関数
   const postOrder = async () => {
     const orderForPost: OrderInformationTypeForPost = {
-      woodenNumber: returnWoodenNum(),
+      woodenNumber: availableWoodenNumber,
       orderState: 'waiting',
       orderStateLogs: {
         orderReceivedAt: new Date(),
@@ -138,6 +136,16 @@ function OrderConfirmationModal({
   const handleButtonClick = async () => {
     await postOrder();
     onOpen();
+  };
+
+  const reloadPage = () => {
+    window.location.reload();
+  };
+
+  const handleModalClose = () => {
+    handleClearCart();
+    onClose();
+    reloadPage();
   };
 
   const totalItemCount = cart.length; // 合計の個数
@@ -263,7 +271,7 @@ function OrderConfirmationModal({
                       受取番号
                     </CardHeader>
                     <CardBody fontSize={50} textAlign={'center'} m={2} p={2}>
-                      {returnWoodenNum()}
+                      {availableWoodenNumber}
                     </CardBody>
                   </Card>
                 </GridItem>
@@ -288,7 +296,7 @@ function OrderConfirmationModal({
             </Box>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="blue" mr={3} onClick={handleModalClose}>
               閉じる
             </Button>
           </ModalFooter>
