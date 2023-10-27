@@ -19,12 +19,14 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN pecl install mongodb \
     && docker-php-ext-enable mongodb
 
+# Node.jsのインストール
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y nodejs
+
 # Laravelの依存関係をインストール
 WORKDIR /var/www
 COPY . /var/www
 RUN composer install
-
-
 
 # Image config
 ENV SKIP_COMPOSER 1
