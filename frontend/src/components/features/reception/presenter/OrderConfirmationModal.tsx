@@ -140,7 +140,9 @@ function OrderConfirmationModal({
   };
 
   const reloadPage = () => {
-    window.location.href = `${import.meta.env.BASE_URL}/reception`;
+    window.location.href = `${
+      import.meta.env.VITE_FRONTEND_BASE_URL
+    }/reception`;
   };
 
   const handleModalClose = () => {
