@@ -40,11 +40,11 @@ ENV APP_ENV production
 ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
 ENV APP_TIMEZONE Asia/Tokyo
-ENV APP_URL http://localhost:8080
+
 
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-EXPOSE 8080
+EXPOSE 8000
 
 CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8080"]
