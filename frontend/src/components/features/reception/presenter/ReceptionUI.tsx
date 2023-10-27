@@ -92,9 +92,9 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
                   </Button>
                 </HStack>
               ) : order.name === 'めんたい（セット）前売り' ? (
-                <Box key={v4()}></Box>
+                <Box key={order.id}></Box>
               ) : (
-                <HStack>
+                <HStack key={order.id}>
                   <Box width={'40vw'}>
                     <Grid
                       templateColumns="repeat(2, 1fr)"

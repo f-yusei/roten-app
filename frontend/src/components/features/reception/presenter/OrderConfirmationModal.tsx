@@ -4,7 +4,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalCloseButton,
   ModalBody,
   Card,
   ModalFooter,
@@ -14,7 +13,6 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
 import {
   OrderInformationType,
   OrderInformationTypeForPost,
@@ -25,7 +23,9 @@ import { RootState } from '../../../../state/common/rootState.type';
 import { v4 } from 'uuid';
 import { useGetAllOrder } from '../../../../api/hooks';
 import { clearCart } from '../../../../state/cart/cartSlice';
+import { useRef, useState } from 'react';
 
+let gotWoodenNum: number;
 function OrderConfirmationModal({
   numberOfTicketsUsed,
   difference_money,
@@ -37,11 +37,9 @@ function OrderConfirmationModal({
 }) {
   const { orders } = useGetAllOrder();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const finalRef = React.useRef(null);
+  const finalRef = useRef(null);
   const cart = useSelector((state: RootState) => state.cart).cart;
-  const [availableWoodenNumber, setAvailableWoodenNumber] =
-    React.useState<number>(0);
-  const [order, setOrder] = React.useState<OrderInformationType>({
+  const [order, setOrder] = useState<OrderInformationType>({
     _id: '6533ae6bfb99ad75540d3592',
     woodenNumber: 404,
     orderState: 'waiting',
@@ -81,8 +79,12 @@ function OrderConfirmationModal({
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+
   const getNumberOfUnusedWoodenTag = () => {
-    if (!orders) return 1;
+    if (!orders) {
+      console.log('89');
+      return 1;
+    }
     const waitingOrAvailableOrders = orders.filter(
       (order) =>
         order.orderState === 'waiting' || order.orderState === 'available',
@@ -97,22 +99,19 @@ function OrderConfirmationModal({
     const unusedWoodenNumbers = allWoodenNumbers.filter(
       (woodenNumber) => !usedWoodenNumbers.includes(woodenNumber),
     );
+
+    console.log('unu', unusedWoodenNumbers[0]);
     return unusedWoodenNumbers[0];
   };
-
-  useEffect(() => {
-    setAvailableWoodenNumber(getNumberOfUnusedWoodenTag());
-    console.log('availableWoodenNumber', availableWoodenNumber);
-  }, [orders]);
 
   const calculateChange = () => {
     return depositAmount - difference_money;
   };
 
   //cartをpostする関数
-  const postOrder = async () => {
+  const postOrder = async (woodenNumber: number) => {
     const orderForPost: OrderInformationTypeForPost = {
-      woodenNumber: availableWoodenNumber,
+      woodenNumber: woodenNumber,
       orderState: 'waiting',
       orderStateLogs: {
         orderReceivedAt: new Date(),
@@ -130,11 +129,13 @@ function OrderConfirmationModal({
 
     const responseData = await orderApi.storeOrder(orderForPost);
     setOrder(responseData);
-    console.log(responseData);
+    console.log('response:', responseData);
   };
 
   const handleButtonClick = async () => {
-    await postOrder();
+    gotWoodenNum = getNumberOfUnusedWoodenTag();
+    console.log('gWN', gotWoodenNum);
+    await postOrder(gotWoodenNum);
     onOpen();
   };
 
@@ -163,15 +164,18 @@ function OrderConfirmationModal({
 
   return (
     <>
-      <Button
-        fontSize="2.4rem"
-        mt={1}
-        width="39.5vw"
-        height="10vh"
-        onClick={handleButtonClick}
-      >
-        確定
-      </Button>
+      {calculateChange() >= 0 ? (
+        <Button
+          fontSize="2.4rem"
+          mt={1}
+          width="39.5vw"
+          height="10vh"
+          onClick={handleButtonClick}
+        >
+          確定
+        </Button>
+      ) : null}
+
       <Modal
         finalFocusRef={finalRef}
         isOpen={isOpen}
@@ -180,82 +184,45 @@ function OrderConfirmationModal({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalCloseButton />
           <ModalBody>
             <Box>
               <Grid
                 templateRows="repeat(6, 1fr)"
-                templateColumns="repeat(5, 1fr)"
+                templateColumns="repeat(7, 1fr)"
               >
                 <GridItem
-                  rowSpan={3}
-                  colSpan={2}
-                  bg="gray.100"
-                  borderRadius={10}
-                  m={5}
-                >
-                  <Card m={5}>
-                    <CardHeader
-                      fontWeight="bold"
-                      fontSize={30}
-                      textAlign={'center'}
-                      marginTop={10}
-                      p={0}
-                    >
-                      注文番号
-                    </CardHeader>
-                    <CardBody fontSize={50} textAlign={'center'} m={2} p={2}>
-                      26
-                    </CardBody>
-                  </Card>
-                </GridItem>
-                <GridItem
-                  rowSpan={4}
-                  colSpan={3}
+                  className="menuInfo"
+                  rowSpan={6}
+                  colSpan={4}
                   fontSize={30}
+                  fontWeight={'medium'}
                   bg="gray.100"
                   borderRadius={10}
                   m={5}
+                  p={5}
                 >
                   {/* メニュー情報を表示 */}
                   <Box>
-                    <h2 style={{ color: '#7d7d7d' }}>
-                      木札の番号：{order.woodenNumber}
-                    </h2>
                     <ul>
                       {order.menus.map((menu, menuIndex) => (
                         <div key={menuIndex}>
                           <p>
                             ・{menu.name}
                             <span style={{ color: '#ffa500' }}>
-                              価格: {menu.price}円
+                              &emsp; 価格: {menu.price}円
                             </span>
                           </p>
-                          {Object.entries(menu.arranges).map(
-                            ([topping, value]) => {
-                              if (value) {
-                                return (
-                                  <p key={topping}>
-                                    ・{topping}
-                                    <span style={{ color: '#ffa500' }}>
-                                      価格: {menu.price}円
-                                    </span>
-                                  </p>
-                                );
-                              }
-                            },
-                          )}
                         </div>
                       ))}
                       <p style={{ lineHeight: '3' }}>
-                        [100円券: {numberOfTicketsUsed}枚]
+                        内 [100円券: {numberOfTicketsUsed}枚]
                       </p>
                     </ul>
                   </Box>
                 </GridItem>
                 <GridItem
                   rowSpan={3}
-                  colSpan={2}
+                  colSpan={3}
                   bg="gray.100"
                   borderRadius={10}
                   m={5}
@@ -271,7 +238,7 @@ function OrderConfirmationModal({
                       受取番号
                     </CardHeader>
                     <CardBody fontSize={50} textAlign={'center'} m={2} p={2}>
-                      {availableWoodenNumber}
+                      {gotWoodenNum}
                     </CardBody>
                   </Card>
                 </GridItem>
@@ -282,14 +249,16 @@ function OrderConfirmationModal({
                   bg="gray.100"
                   borderRadius={10}
                   m={5}
+                  p={5}
                 >
                   <Box>
                     <p>
-                      小計 | {totalItemCount}[点]（{nonSpecificProductCount}）
+                      &emsp;小計&emsp;&ensp;|&ensp; {totalItemCount}[点]（
+                      {nonSpecificProductCount}）
                     </p>
-                    <p>合計 | {difference_money}円</p>
-                    <p>お預かり | {depositAmount}円</p>
-                    <p>お釣り | {calculateChange()}円</p>
+                    <p>&emsp;合計&emsp;&ensp;|&ensp; {difference_money}円</p>
+                    <p>お預かり&ensp;|&ensp; {depositAmount}円</p>
+                    <p>&ensp;お釣り&emsp;|&ensp; {calculateChange()}円</p>
                   </Box>
                 </GridItem>
               </Grid>
@@ -305,5 +274,4 @@ function OrderConfirmationModal({
     </>
   );
 }
-
 export default OrderConfirmationModal;
