@@ -23,8 +23,9 @@ import { RootState } from '../../../../state/common/rootState.type';
 import { v4 } from 'uuid';
 import { useGetAllOrder } from '../../../../api/hooks';
 import { clearCart } from '../../../../state/cart/cartSlice';
+import { useRef, useState } from 'react';
 
-var gotWoodenNum:number;
+let gotWoodenNum: number;
 function OrderConfirmationModal({
   numberOfTicketsUsed,
   difference_money,
@@ -36,9 +37,9 @@ function OrderConfirmationModal({
 }) {
   const { orders } = useGetAllOrder();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const finalRef = React.useRef(null);
+  const finalRef = useRef(null);
   const cart = useSelector((state: RootState) => state.cart).cart;
-  const [order, setOrder] = React.useState<OrderInformationType>({
+  const [order, setOrder] = useState<OrderInformationType>({
     _id: '6533ae6bfb99ad75540d3592',
     woodenNumber: 404,
     orderState: 'waiting',
@@ -80,11 +81,10 @@ function OrderConfirmationModal({
   };
 
   const getNumberOfUnusedWoodenTag = () => {
-
-    if (!orders){
-      console.log("89");
+    if (!orders) {
+      console.log('89');
       return 1;
-    } 
+    }
     const waitingOrAvailableOrders = orders.filter(
       (order) =>
         order.orderState === 'waiting' || order.orderState === 'available',
@@ -99,8 +99,8 @@ function OrderConfirmationModal({
     const unusedWoodenNumbers = allWoodenNumbers.filter(
       (woodenNumber) => !usedWoodenNumbers.includes(woodenNumber),
     );
-    
-    console.log("unu", unusedWoodenNumbers[0])
+
+    console.log('unu', unusedWoodenNumbers[0]);
     return unusedWoodenNumbers[0];
   };
 
@@ -109,7 +109,7 @@ function OrderConfirmationModal({
   };
 
   //cartをpostする関数
-  const postOrder = async (woodenNumber:number) => {
+  const postOrder = async (woodenNumber: number) => {
     const orderForPost: OrderInformationTypeForPost = {
       woodenNumber: woodenNumber,
       orderState: 'waiting',
@@ -129,18 +129,15 @@ function OrderConfirmationModal({
 
     const responseData = await orderApi.storeOrder(orderForPost);
     setOrder(responseData);
-    console.log("response:", responseData);
+    console.log('response:', responseData);
   };
 
-  
   const handleButtonClick = async () => {
     gotWoodenNum = getNumberOfUnusedWoodenTag();
-    console.log("gWN", gotWoodenNum);
+    console.log('gWN', gotWoodenNum);
     await postOrder(gotWoodenNum);
     onOpen();
-    
   };
-
 
   const reloadPage = () => {
     window.location.reload();
@@ -150,7 +147,6 @@ function OrderConfirmationModal({
     handleClearCart();
     onClose();
     reloadPage();
-
   };
 
   const totalItemCount = cart.length; // 合計の個数
@@ -170,16 +166,16 @@ function OrderConfirmationModal({
     <>
       {calculateChange() >= 0 ? (
         <Button
-        fontSize="2.4rem"
-        mt={1}
-        width="39.5vw"
-        height="10vh"
-        onClick={handleButtonClick}
-      >
-        確定
-      </Button>
-      ):null}
-      
+          fontSize="2.4rem"
+          mt={1}
+          width="39.5vw"
+          height="10vh"
+          onClick={handleButtonClick}
+        >
+          確定
+        </Button>
+      ) : null}
+
       <Modal
         finalFocusRef={finalRef}
         isOpen={isOpen}
@@ -199,7 +195,7 @@ function OrderConfirmationModal({
                   rowSpan={6}
                   colSpan={4}
                   fontSize={30}
-                  fontWeight={"medium"}
+                  fontWeight={'medium'}
                   bg="gray.100"
                   borderRadius={10}
                   m={5}
@@ -257,7 +253,8 @@ function OrderConfirmationModal({
                 >
                   <Box>
                     <p>
-                      &emsp;小計&emsp;&ensp;|&ensp; {totalItemCount}[点]（{nonSpecificProductCount}）
+                      &emsp;小計&emsp;&ensp;|&ensp; {totalItemCount}[点]（
+                      {nonSpecificProductCount}）
                     </p>
                     <p>&emsp;合計&emsp;&ensp;|&ensp; {difference_money}円</p>
                     <p>お預かり&ensp;|&ensp; {depositAmount}円</p>
