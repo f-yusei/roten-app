@@ -2,7 +2,6 @@ FROM php:8.1.5-apache
 
 COPY public .
 
-RUN apk add --update nodejs npm
 
 # Image config
 ENV SKIP_COMPOSER 1
