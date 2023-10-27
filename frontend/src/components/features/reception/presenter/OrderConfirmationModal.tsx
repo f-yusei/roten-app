@@ -13,7 +13,6 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
 import {
   OrderInformationType,
   OrderInformationTypeForPost,
