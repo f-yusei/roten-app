@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const baseURL = process.env.BACKEND_SERVER_URL || '間違いです。';
+const baseURL = import.meta.env.VITE_BACKEND_SERVER_URL;
 
 const apiClient = axios.create({
   baseURL: baseURL,
