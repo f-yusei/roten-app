@@ -45,6 +45,6 @@ ENV APP_TIMEZONE Asia/Tokyo
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8080"]
