@@ -1,8 +1,9 @@
 import axios from 'axios';
 
+const baseURL = process.env.BACKEND_SERVER_URL || '間違いです。';
+
 const apiClient = axios.create({
-  //TODO: 環境変数をenvファイルに移す
-  baseURL: 'http://127.0.0.1:8000/api',
+  baseURL: baseURL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
