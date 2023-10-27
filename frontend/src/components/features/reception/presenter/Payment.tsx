@@ -1,5 +1,4 @@
 import {
-  useDisclosure,
   Drawer,
   DrawerOverlay,
   DrawerContent,
@@ -7,44 +6,43 @@ import {
   DrawerBody,
   Button,
 } from '@chakra-ui/react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../state/common/rootState.type';
 import Calculator from './Calculator';
 
-
 function PayDrawer() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onOpen = () => setIsOpen(true);
+  const onClose = () => setIsOpen(false);
   const btnRef = useRef();
   const cart = useSelector((state: RootState) => state.cart).cart;
-
-  // console.log("cart : ", cart.length);
 
   return (
     <>
       {cart.length === 0 ? (
         <Button
-        fontSize="24px"
-        size={{ base: '100px', sm: '150px' }}
-        m={2}
-        p={8}
-        ref={btnRef.current}
-        bg={"gray.200"}
-        disabled  
+          fontSize="24px"
+          size={{ base: '100px', sm: '150px' }}
+          m={2}
+          p={8}
+          ref={btnRef.current}
+          bg={'gray.200'}
+          disabled
         >
-        注文がありません
+          注文がありません
         </Button>
-      ): (
+      ) : (
         <Button
-        fontSize="24px"
-        size={{ base: '100px', sm: '150px' }}
-        m={2}
-        p={8}
-        ref={btnRef.current}
-        onClick={onOpen}
-
+          fontSize="24px"
+          size={{ base: '100px', sm: '150px' }}
+          m={2}
+          p={8}
+          ref={btnRef.current}
+          onClick={onOpen}
         >
-        会計
+          会計
         </Button>
       )}
 
@@ -59,7 +57,7 @@ function PayDrawer() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerBody>
-            <Calculator />
+            <Calculator setIsOpen={setIsOpen} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

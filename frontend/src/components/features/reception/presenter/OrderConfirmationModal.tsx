@@ -30,10 +30,12 @@ function OrderConfirmationModal({
   numberOfTicketsUsed,
   difference_money,
   depositAmount,
+  setIsOpen,
 }: {
   numberOfTicketsUsed: number;
   difference_money: number;
   depositAmount: number;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { orders } = useGetAllOrder();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -139,16 +141,10 @@ function OrderConfirmationModal({
     onOpen();
   };
 
-  const reloadPage = () => {
-    window.location.href = `${
-      import.meta.env.VITE_FRONTEND_BASE_URL
-    }/reception`;
-  };
-
   const handleModalClose = () => {
     handleClearCart();
     onClose();
-    reloadPage();
+    setIsOpen(false);
   };
 
   const totalItemCount = cart.length; // 合計の個数

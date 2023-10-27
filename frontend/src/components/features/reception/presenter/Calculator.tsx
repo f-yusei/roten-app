@@ -12,7 +12,11 @@ import OrderConfirmationModal from './OrderConfirmationModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../state/common/rootState.type';
 
-const Calculator = () => {
+type CaluculatorProps = {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Calculator = ({ setIsOpen }: CaluculatorProps) => {
   const [numberOfTicketsUsed, setNumberOfTicketsUsed] = React.useState(0);
   const [depositAmount, setDepositAmount] = React.useState('0');
 
@@ -263,6 +267,7 @@ const Calculator = () => {
             numberOfTicketsUsed={numberOfTicketsUsed}
             difference_money={difference_money}
             depositAmount={parseInt(depositAmount)}
+            setIsOpen={setIsOpen}
           />
         </GridItem>
       </Grid>
