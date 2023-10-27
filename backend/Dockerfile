@@ -15,14 +15,16 @@ RUN apt-get update && apt-get install -y \
 # Composerのインストール
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+#mongoDBのインストール
+RUN pecl install mongodb \
+    && docker-php-ext-enable mongodb
+
 # Laravelの依存関係をインストール
 WORKDIR /var/www
 COPY . /var/www
 RUN composer install
 
-#mongoDBのインストール
-RUN pecl install mongodb \
-    && docker-php-ext-enable mongodb
+
 
 # Image config
 ENV SKIP_COMPOSER 1
