@@ -44,7 +44,7 @@ const ToppingUI = ({ updateOrderState, orders }: ToppingUIProps) => {
           <Box>お疲れ様でした。ちょっと休憩...</Box>
         )}
         <GridItem key={5}>
-          <PureCarousel cardInformation={historyOrders} />
+          <PureCarousel cardInformation={historyOrders} width={12} />
         </GridItem>
       </Grid>
     </div>

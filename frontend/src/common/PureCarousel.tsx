@@ -3,8 +3,9 @@ import { FC, useRef } from 'react';
 import { OrderInformationType } from '../types';
 import { v4 } from 'uuid';
 
-export const PureCarousel: FC<{ cardInformation: OrderInformationType[] }> = ({
+export const PureCarousel: FC<{ cardInformation: OrderInformationType[], width: number }> = ({
   cardInformation,
+  width
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const size = 440;
@@ -12,7 +13,7 @@ export const PureCarousel: FC<{ cardInformation: OrderInformationType[] }> = ({
     <HStack alignItems={'stretch'}>
       <HStack
         bg="gray.100"
-        w={16}
+        w={width}
         justifyContent="center"
         cursor={'pointer'}
         onClick={() => {
@@ -21,7 +22,6 @@ export const PureCarousel: FC<{ cardInformation: OrderInformationType[] }> = ({
           ref.current.scrollTo({
             left: ref.current.scrollLeft - size,
           });
-          // scrollToPosition(currentPosition - 1)
         }}
       >
         <Box>◀️</Box>
