@@ -290,7 +290,7 @@ const DeliveryUI = () => {
                 ],
               },
             ]}
-            width={16}
+            size={440}
           />
         </Box>
       </Box>

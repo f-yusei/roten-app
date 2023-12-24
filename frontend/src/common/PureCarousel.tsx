@@ -3,17 +3,16 @@ import { FC, useRef } from 'react';
 import { OrderInformationType } from '../types';
 import { v4 } from 'uuid';
 
-export const PureCarousel: FC<{ cardInformation: OrderInformationType[], width: number }> = ({
+export const PureCarousel: FC<{ cardInformation: OrderInformationType[], size: number }> = ({
   cardInformation,
-  width
+  size,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const size = 440;
   return (
     <HStack alignItems={'stretch'}>
       <HStack
         bg="gray.100"
-        w={width}
+        w={8}
         justifyContent="center"
         cursor={'pointer'}
         onClick={() => {
@@ -46,8 +45,8 @@ export const PureCarousel: FC<{ cardInformation: OrderInformationType[], width: 
               }}
             >
               <Card key={i}>
-                <Box>{order._id}</Box>
-                <Box>{order.woodenNumber}</Box>
+                <Box>{"オーダーID:"+order._id}</Box>
+                <Box>{"木札番号:"+ order.woodenNumber}</Box>
                 {order.menus.map((menu) => (
                   <Box key={v4()}>
                     <Box>{menu.name}</Box>
@@ -66,7 +65,7 @@ export const PureCarousel: FC<{ cardInformation: OrderInformationType[], width: 
       </HStack>
       <HStack
         bg="gray.100"
-        w={16}
+        w={8}
         justifyContent="center"
         cursor={'pointer'}
         onClick={() => {
