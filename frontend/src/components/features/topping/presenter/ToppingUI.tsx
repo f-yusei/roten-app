@@ -1,33 +1,21 @@
 import { Box, Grid, GridItem } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
 import ToppingInformationModal from './ToppingInformationModal';
-import { useEffect, useState } from 'react';
 import { OrderInformationType } from '../../../../types';
+import { useRef } from 'react';
 
 type ToppingUIProps = {
   updateOrderState: (order: OrderInformationType) => void;
   setAllOrders: (orders: OrderInformationType[]) => void;
-  orders: OrderInformationType[];
+  onOpen: () => void;
+  onClose: () => void;
+  isOpen: boolean;
+  waitingOrders: OrderInformationType[];
+  historyOrders: OrderInformationType[];
 };
 
-const ToppingUI = ({ updateOrderState, orders }: ToppingUIProps) => {
-  const [waitingOrders, setWaitingOrders] = useState<OrderInformationType[]>(
-    [],
-  );
-  const [historyOrders, setHistoryOrders] = useState<OrderInformationType[]>(
-    [],
-  );
-  useEffect(() => {
-    const waitingOrders = orders.filter(
-      (order) => order.orderState === 'waiting',
-    );
-    const historyOrders = orders.filter(
-      (order) => order.orderState !== 'waiting',
-    );
-
-    setWaitingOrders(waitingOrders);
-    setHistoryOrders(historyOrders);
-  }, [orders]);
+const ToppingUI = ({ updateOrderState, onOpen,onClose,isOpen, waitingOrders,historyOrders }: ToppingUIProps) => {
+  const finalRef = useRef(null);
   return (
     <div>
       <Grid templateColumns="repeat(3, 1fr)" m={4} gap={4}>
@@ -37,6 +25,10 @@ const ToppingUI = ({ updateOrderState, orders }: ToppingUIProps) => {
               <ToppingInformationModal
                 order={order}
                 updateOrderState={updateOrderState}
+                onOpen={onOpen}
+                onClose={onClose}
+                isOpen={isOpen}
+                finalRef={finalRef}
               />
             </GridItem>
           ))
@@ -44,7 +36,7 @@ const ToppingUI = ({ updateOrderState, orders }: ToppingUIProps) => {
           <Box>お疲れ様でした。ちょっと休憩...</Box>
         )}
         <GridItem key={5}>
-          <PureCarousel cardInformation={historyOrders} />
+          <PureCarousel cardInformation={historyOrders} size={320} />
         </GridItem>
       </Grid>
     </div>

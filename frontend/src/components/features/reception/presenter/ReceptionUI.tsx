@@ -31,6 +31,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
   handleUpdateOrderCheck,
   handleDeleteSetMenu,
 }) => {
+  
   useEffect(() => {
     console.log('in cart: ', cart);
   }, [cart]);

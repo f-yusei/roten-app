@@ -1,5 +1,4 @@
 import {
-  useDisclosure,
   Button,
   Modal,
   ModalOverlay,
@@ -11,7 +10,6 @@ import {
   ModalFooter,
   Box,
 } from '@chakra-ui/react';
-import React from 'react';
 import { FC } from 'react';
 import { OrderInformationType } from '../../../../types';
 import orderApi from '../../../../api/orderApi';
@@ -19,14 +17,21 @@ import orderApi from '../../../../api/orderApi';
 export type ToppingInformationModalProps = {
   order: OrderInformationType;
   updateOrderState: (order: OrderInformationType) => void;
+  onOpen: () => void;
+  onClose: () => void;
+  isOpen: boolean;
+  finalRef: React.MutableRefObject<null>;
 };
 
 const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
   order,
   updateOrderState,
+  onOpen,
+  onClose,
+  isOpen,
+  finalRef,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const finalRef = React.useRef(null);
+  
 
   const completeTopping = async () => {
     const newOrder: OrderInformationType = {
