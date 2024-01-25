@@ -12,11 +12,11 @@ import OrderConfirmationModal from './OrderConfirmationModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../state/common/rootState.type';
 
-type CaluculatorProps = {
+type CalculatorProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Calculator = ({ setIsOpen }: CaluculatorProps) => {
+const Calculator = ({ setIsOpen }: CalculatorProps) => {
   const [numberOfTicketsUsed, setNumberOfTicketsUsed] = React.useState(0);
   const [depositAmount, setDepositAmount] = React.useState('0');
 
