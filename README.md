@@ -1,4 +1,10 @@
-# アプリURL
+# アプリ
+バックエンドを以下のリンクで開いてからアプリのリンクを開いてください。
+
+### バックエンドURL
+https://roten-app-backend.onrender.com
+
+### アプリURL
 https://roten-app-front.vercel.app/
 
 # Figma
