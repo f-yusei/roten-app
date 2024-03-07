@@ -15,6 +15,9 @@ import OrderHistoryDrawer from './OrderHistoryDrawer';
 import { MenuInformation } from '../../../../types';
 import { v4 } from 'uuid';
 import { ArrangeState } from '../../../../state/cart/cartSlice';
+import { translateWords } from '../../../../common/transWord';
+import { mentaiTopping, sauceTopping } from './variable';
+
 
 type ReceptionUIProps = {
   cart: MenuInformation[];
@@ -31,149 +34,157 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
   handleUpdateOrderCheck,
   handleDeleteSetMenu,
 }) => {
-  
-  useEffect(() => {
-    console.log('in cart: ', cart);
-  }, [cart]);
 
-  const translateWords = (words: string) => {
-    let word = '';
-    switch (words) {
-      case 'sauce':
-        word = 'ソース';
-        break;
-      case 'katsuo':
-        word = 'かつおぶし';
-        break;
-      case 'aosa':
-        word = 'あおさ';
-        break;
-      case 'mayo':
-        word = 'マヨネーズ';
-        break;
-      case 'mentaiMayo':
-        word = 'めんたいマヨ';
-        break;
-      case 'cheese':
-        word = 'チーズ';
-        break;
-      default:
-        word = '?';
-        break;
-    }
-    return word;
-  };
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
 
   return (
     <Box maxHeight="100vh">
       <HStack>
         <OrderButton handleAddToCart={handleAddToCart} />
-        <Card w={'60vw'} h={'96vh'} p={4} m={2}>
-          <h1>注文内容</h1>
-          <Stack bgColor={'gray.50'} h={'88vh'} overflow={'scroll'}>
-            {cart.map((order, index) =>
-              order.name === 'ソース（セット）前売り' ? (
-                <HStack key={order.id}>
-                  <SetCard
-                    order={order}
-                    cart={cart}
-                    handleUpdateOrderCheck={handleUpdateOrderCheck}
-                  />
-
-                  <Button
-                    w="12vw"
-                    h="20vh"
-                    borderRadius={10}
-                    m={5}
-                    onClick={() => {
-                      handleDeleteSetMenu(index);
-                    }}
-                  >
-                    削除
-                  </Button>
-                </HStack>
-              ) : order.name === 'めんたい（セット）前売り' ? (
-                <Box key={order.id}></Box>
-              ) : (
-                <HStack key={order.id}>
-                  <Box width={'40vw'}>
-                    <Grid
-                      templateColumns="repeat(2, 1fr)"
-                      gap={4}
-                      marginLeft={5}
-                    >
-                      <GridItem
-                        colSpan={1}
-                        h="10vh"
-                        w="4vw"
-                        bg="blue.400"
-                        borderRadius={10}
-                        color={'white'}
-                        p={'1.4vw'}
-                      >
-                        単品
-                      </GridItem>
-                      <GridItem colSpan={1}>
-                        <Card key={order.id} w={'35vw'} minH={'8vh'} mt={2}>
-                          <h2>{order.name}</h2>
-                          <HStack>
-                            <CheckboxGroup>
-                              {Object.keys(order.arranges)
-                                .slice(1)
-                                .map((topping, i) => (
-                                  <Checkbox
-                                    key={i}
-                                    defaultChecked={true}
-                                    colorScheme="green"
-                                    onChange={(e) => {
-                                      handleUpdateOrderCheck({
-                                        id: order.id,
-                                        arrange: topping,
-                                        checked: e.target.checked,
-                                      });
-                                    }}
-                                  >
-                                    {translateWords(topping)}
-                                  </Checkbox>
-                                ))}
-                            </CheckboxGroup>
-                          </HStack>
-                        </Card>
-                      </GridItem>
-                    </Grid>
-                  </Box>
-                  <Button
-                    w="12vw"
-                    h="10vh"
-                    m={5}
-                    borderRadius={10}
-                    onClick={() => {
-                      handleDeleteFromCart(order.id);
-                    }}
-                  >
-                    削除
-                  </Button>
-                </HStack>
-              ),
-            )}
-          </Stack>
-          <HStack>
-            <h2>合計</h2>
-            <h2>
-              {
-                //注文の合計金額を表示
-                cart.reduce((sum, order) => sum + order.price, 0)
-              }
-            </h2>
-            <PayDrawer />
-          </HStack>
-        </Card>
+        <ShowCart
+          cart={cart}
+          handleDeleteFromCart={handleDeleteFromCart}
+          handleUpdateOrderCheck={handleUpdateOrderCheck}
+          handleDeleteSetMenu={handleDeleteSetMenu}
+          translateWords={translateWords}
+        />
       </HStack>
     </Box>
   );
 };
 
-const SetCard = ({
+const ShowCart = ({
+  cart,
+  handleDeleteFromCart,
+  handleUpdateOrderCheck,
+  handleDeleteSetMenu,
+  translateWords,
+}: {
+  cart: MenuInformation[],
+  handleDeleteFromCart: (id: string) => void,
+  handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void,
+  handleDeleteSetMenu: (index: number) => void,
+  translateWords: (words: string) => string
+}) => {
+  return (
+    <Card w={'60vw'} h={'96vh'} p={4} m={2}>
+      <h1>注文内容</h1>
+      <Stack bgColor={'gray.50'} h={'88vh'} overflow={'scroll'}>
+        {cart.map((order, index) =>
+          order.name === 'ソース（セット）前売り' ? (
+            <HStack key={order.id}>
+              <SetCardInCart
+                order={order}
+                cart={cart}
+                handleUpdateOrderCheck={handleUpdateOrderCheck}
+              />
+
+              <Button
+                w="12vw"
+                h="20vh"
+                borderRadius={10}
+                m={5}
+                onClick={() => {
+                  handleDeleteSetMenu(index);
+                }}
+              >
+                削除
+              </Button>
+            </HStack>
+          ) : order.name === 'めんたい（セット）前売り' ? (
+            <Box key={order.id}></Box>
+          ) : (
+            <HStack key={order.id}>
+              <Box width={'40vw'}>
+                <Grid
+                  templateColumns="repeat(2, 1fr)"
+                  gap={4}
+                  marginLeft={5}
+                >
+                  <GridItem
+                    colSpan={1}
+                    h="10vh"
+                    w="4vw"
+                    bg="blue.400"
+                    borderRadius={10}
+                    color={'white'}
+                    p={'1.4vw'}
+                  >
+                    単品
+                  </GridItem>
+                  <GridItem colSpan={1}>
+                    <Card key={order.id} w={'35vw'} minH={'8vh'} mt={2}>
+                      <h2>{order.name}</h2>
+                      <HStack>
+                        <CheckboxGroup>
+                          {Object.keys(order.arranges)
+                            .slice(1)
+                            .map((topping, i) => (
+                              <Checkbox
+                                key={i}
+                                defaultChecked={true}
+                                colorScheme="green"
+                                onChange={(e) => {
+                                  handleUpdateOrderCheck({
+                                    id: order.id,
+                                    arrange: topping,
+                                    checked: e.target.checked,
+                                  });
+                                }}
+                              >
+                                {translateWords(topping)}
+                              </Checkbox>
+                            ))}
+                        </CheckboxGroup>
+                      </HStack>
+                    </Card>
+                  </GridItem>
+                </Grid>
+              </Box>
+              <Button
+                w="12vw"
+                h="10vh"
+                m={5}
+                borderRadius={10}
+                onClick={() => {
+                  handleDeleteFromCart(order.id);
+                }}
+              >
+                削除
+              </Button>
+            </HStack>
+          ),
+        )}
+      </Stack>
+      <HStack>
+        <ShowTotalPrice cart={cart} />
+        <PayDrawer />
+      </HStack>
+    </Card>
+  )
+}
+
+
+
+
+const ShowTotalPrice = ({ cart }: { cart: MenuInformation[] }) => {
+  const totalPrice = cart.reduce((sum, order) => {
+    return sum + order.price;
+  }, 0);
+
+  return (
+    <Box>
+      <h2>合計金額</h2>
+      <h2>{totalPrice}円</h2>
+    </Box>
+  );
+}
+
+
+
+const SetCardInCart = ({
   order,
   cart,
   handleUpdateOrderCheck,
@@ -183,7 +194,6 @@ const SetCard = ({
   handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
 }) => {
   const nextIndex = cart.findIndex((element) => element.id === order.id) + 1;
-  // console.log("nextIndex is ", nextIndex);
 
   return (
     <>
@@ -209,124 +219,20 @@ const SetCard = ({
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Stack>
-                <Card w={'35vw'} minH={'8vh'}>
-                  <h2>ソース（セット）前売り</h2>
-                  <HStack>
-                    <Checkbox
-                      defaultChecked={true}
-                      colorScheme="green"
-                      onChange={(e) => {
-                        handleUpdateOrderCheck({
-                          id: order.id,
-                          arrange: 'sauce',
-                          checked: e.target.checked,
-                        });
-                      }}
-                    >
-                      ソース
-                    </Checkbox>
-                    <Checkbox
-                      defaultChecked={true}
-                      colorScheme="green"
-                      onChange={(e) => {
-                        handleUpdateOrderCheck({
-                          id: order.id,
-                          arrange: 'mayo',
-                          checked: e.target.checked,
-                        });
-                      }}
-                    >
-                      マヨネーズ
-                    </Checkbox>
-                    <Checkbox
-                      defaultChecked={true}
-                      colorScheme="green"
-                      onChange={(e) => {
-                        handleUpdateOrderCheck({
-                          id: order.id,
-                          arrange: 'aosa',
-                          checked: e.target.checked,
-                        });
-                      }}
-                    >
-                      あおさ
-                    </Checkbox>
-                    <Checkbox
-                      defaultChecked={true}
-                      colorScheme="green"
-                      onChange={(e) => {
-                        handleUpdateOrderCheck({
-                          id: order.id,
-                          arrange: 'katsuo',
-                          checked: e.target.checked,
-                        });
-                      }}
-                    >
-                      かつおぶし
-                    </Checkbox>
-                  </HStack>
-                </Card>
+                <OrderCardInCart 
+                  toppings={sauceTopping}
+                  order={order}
+                  handleUpdateOrderCheck={handleUpdateOrderCheck}
+                />
               </Stack>
             </GridItem>
             <GridItem rowSpan={1} colSpan={1}>
               <Stack>
-                <Card w={'35vw'} minH={'8vh'}>
-                  <h2>めんたい（セット）前売り</h2>
-                  <HStack>
-                    <Checkbox
-                      defaultChecked={true}
-                      colorScheme="green"
-                      onChange={(e) => {
-                        handleUpdateOrderCheck({
-                          id: cart[nextIndex]['id'],
-                          arrange: 'sauce',
-                          checked: e.target.checked,
-                        });
-                      }}
-                    >
-                      ソース
-                    </Checkbox>
-                    <Checkbox
-                      defaultChecked={true}
-                      colorScheme="green"
-                      onChange={(e) => {
-                        handleUpdateOrderCheck({
-                          id: cart[nextIndex]['id'],
-                          arrange: 'mentaiMayo',
-                          checked: e.target.checked,
-                        });
-                      }}
-                    >
-                      めんたいマヨ
-                    </Checkbox>
-                    <Checkbox
-                      defaultChecked={true}
-                      colorScheme="green"
-                      onChange={(e) => {
-                        handleUpdateOrderCheck({
-                          id: cart[nextIndex]['id'],
-                          arrange: 'cheese',
-                          checked: e.target.checked,
-                        });
-                      }}
-                    >
-                      チーズ
-                    </Checkbox>
-                    <Checkbox
-                      defaultChecked={true}
-                      colorScheme="green"
-                      onChange={(e) => {
-                        handleUpdateOrderCheck({
-                          id: cart[nextIndex]['id'],
-                          arrange: 'katsuo',
-                          checked: e.target.checked,
-                        });
-                      }}
-                    >
-                      かつおぶし
-                    </Checkbox>
-                  </HStack>
-                </Card>
+                <OrderCardInCart 
+                  toppings={mentaiTopping}
+                  order={cart[nextIndex]}
+                  handleUpdateOrderCheck={handleUpdateOrderCheck}
+                />
               </Stack>
             </GridItem>
           </Grid>
@@ -335,6 +241,62 @@ const SetCard = ({
     </>
   );
 };
+
+const OrderCardInCart = ({
+  toppings,
+  order,
+  handleUpdateOrderCheck,
+}: {
+  toppings: string[];
+  order: MenuInformation;
+  handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;  
+}) => {
+  return (
+    <Card w={'35vw'} minH={'8vh'}>
+                  <h2>{order.name}</h2>
+                  <HStack>
+                    {toppings.map((topping, i) => (
+                      <ToppingCheckbox
+                        key={i}
+                        order={order}
+                        handleUpdateOrderCheck={handleUpdateOrderCheck}
+                        arrange={topping}
+                      />
+                    ))}
+                  </HStack>
+                </Card>
+  )
+}
+
+
+
+
+
+const ToppingCheckbox = ({
+  order,
+  handleUpdateOrderCheck,
+  arrange,
+}: {
+  order: MenuInformation;
+  handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
+  arrange: string;
+}) => {
+  return (
+    <Checkbox
+      defaultChecked={true}
+      colorScheme="green"
+      onChange={(e) => {
+        handleUpdateOrderCheck({
+          id: order.id,
+          arrange: arrange,
+          checked: e.target.checked,
+        });
+      }}
+    >
+      {translateWords(arrange)}
+    </Checkbox>
+  );
+}
 
 type orderButtonProps = {
   handleAddToCart: ({ name, price, arranges, id }: MenuInformation) => void;
@@ -346,9 +308,9 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
       <OrderHistoryDrawer />
       <HStack>
         <Button
-          fontSize={{ base: '50px', sm: '24px' }}
-          h={{ base: '100px', sm: '200px' }}
-          w={{ base: '100px', sm: '200px' }}
+          fontSize={"1.6rem"}
+          h={'20vh'}
+          w={'12vw'}
           p={4}
           m={4}
           onClick={() =>
@@ -369,9 +331,9 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
           ソース
         </Button>
         <Button
-          fontSize={{ base: '50px', sm: '24px' }}
-          h={{ base: '100px', sm: '200px' }}
-          w={{ base: '100px', sm: '200px' }}
+          fontSize={"1.6rem"}
+          h={'20vh'}
+          w={'12vw'}
           p={4}
           m={4}
           onClick={() =>
@@ -394,9 +356,9 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
       </HStack>
       <HStack>
         <Button
-          fontSize={{ base: '50px', sm: '24px' }}
-          h={{ base: '100px', sm: '200px' }}
-          w={{ base: '100px', sm: '200px' }}
+          fontSize={"1.6rem"}
+          h={'20vh'}
+          w={'12vw'}
           p={4}
           m={4}
           onClick={() =>
@@ -417,9 +379,9 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
           メンタイ
         </Button>
         <Button
-          fontSize={{ base: '50px', sm: '24px' }}
-          h={{ base: '100px', sm: '200px' }}
-          w={{ base: '100px', sm: '200px' }}
+          fontSize={"1.6rem"}
+          h={'20vh'}
+          w={'12vw'}
           p={4}
           m={4}
           onClick={() =>
@@ -441,9 +403,9 @@ const OrderButton: FC<orderButtonProps> = ({ handleAddToCart }) => {
         </Button>
       </HStack>
       <Button
-        fontSize={{ base: '50px', sm: '24px' }}
-        h={{ base: '100px', sm: '200px' }}
-        w={{ base: '100px', sm: '400px' }}
+        fontSize={"1.6rem"}
+        h={'20vh'}
+        w={'24vw'}
         p={4}
         m={2}
         mb={4}
