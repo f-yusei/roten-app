@@ -152,32 +152,10 @@ const ShowCurrentSelectOrder = ({
                   ))}
                 </Box>
               </Box>
-              <div className="oprButton">
-                <HStack spacing="50px">
-                  <Button
-                    onClick={discardOrder}
-                    height="8vh"
-                    width="14vw"
-                    fontWeight={'bold'}
-                    mt={12}
-                    fontSize={30}
-                    bgColor="red.500"
-                  >
-                    廃棄
-                  </Button>
-                  <Button
-                    onClick={finishOrderDelivery}
-                    height="8vh"
-                    width="19vw"
-                    mt={12}
-                    bgColor="green.300"
-                    fontSize={30}
-                    fontWeight={'bold'}
-                  >
-                    受け渡し
-                  </Button>
-                </HStack>
-              </div>
+              <DeliveryFinishButton
+                discardOrder={discardOrder}
+                finishOrderDelivery={finishOrderDelivery}
+              />
             </CardBody>
           </Card>
         </Box>
@@ -229,6 +207,43 @@ const ShowOrderHistory = () => {
             size={440}
           />
         </Box>
+  )
+}
+
+const DeliveryFinishButton = ({
+  discardOrder,
+  finishOrderDelivery,
+}: {
+  discardOrder: () => void;
+  finishOrderDelivery: () => void;
+}) => {
+  return (
+    <div className="oprButton">
+                <HStack spacing="50px">
+                  <Button
+                    onClick={discardOrder}
+                    height="8vh"
+                    width="14vw"
+                    fontWeight={'bold'}
+                    mt={12}
+                    fontSize={30}
+                    bgColor="red.500"
+                  >
+                    廃棄
+                  </Button>
+                  <Button
+                    onClick={finishOrderDelivery}
+                    height="8vh"
+                    width="19vw"
+                    mt={12}
+                    bgColor="green.300"
+                    fontSize={30}
+                    fontWeight={'bold'}
+                  >
+                    受け渡し
+                  </Button>
+                </HStack>
+              </div>
   )
 }
 
