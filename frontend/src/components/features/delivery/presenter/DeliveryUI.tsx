@@ -108,18 +108,6 @@ const DeliveryUI = () => {
     }
   };
 
-  //現在の時間とorder.orderStateLogs.readiedAtの差を計算する関数
-  // const calculateSec = (order: OrderInformationType) => {
-  //   const now = new Date();
-  //   //注文受付からの経過時間を計算
-  //   const readiedAt = order.orderStateLogs.readiedAt;
-  //   if (!readiedAt) return 'lording...';
-  //   const diff = now.getTime() - readiedAt.getTime();
-  //   //秒数まで計算
-  //   const diffSec = Math.floor(diff / 1000).toString();
-  //   return diffSec;
-  // };
-
   return (
     <HStack>
       <Box
@@ -145,14 +133,6 @@ const DeliveryUI = () => {
               >
                 {order.woodenNumber}
               </Button>
-              {
-                //TODO: ここで時間を表示する
-                /* <Box>
-              {order.orderStateLogs.readiedAt
-                ? calculateSec(order) + '秒'
-                : 'lording...'}
-            </Box> */
-              }
             </GridItem>
           ))}
         </Grid>
