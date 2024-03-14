@@ -10,8 +10,13 @@ import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../state/common/rootState.type';
 import Calculator from './Calculator';
+import { CalculatorProps } from './Calculator';
 
-function PayDrawer() {
+function PayDrawer({
+  calculatorArgs,
+}: {
+  calculatorArgs: CalculatorProps['calculatorArgs'];
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const onOpen = () => setIsOpen(true);
@@ -57,7 +62,7 @@ function PayDrawer() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerBody>
-            <Calculator setIsOpen={setIsOpen} />
+            <Calculator setIsOpen={setIsOpen} calculatorArgs={calculatorArgs} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

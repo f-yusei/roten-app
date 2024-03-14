@@ -8,121 +8,48 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { PureCarousel } from '../../../../common/PureCarousel';
-import { OrderInformationType } from '../../../../types';
-import { useEffect, useState } from 'react';
-import orderApi from '../../../../api/orderApi';
-import { useGetAllOrder } from '../../../../api/hooks';
 import { v4 } from 'uuid';
+import { OrderInformationType } from '../../../../types';
 
-const DeliveryUI = () => {
-  const { orders, isLoading } = useGetAllOrder();
-
-  const [availableOrders, setAvailableOrders] = useState<
-    OrderInformationType[]
-  >([
-    {
-      _id: '6533ae6bfb99ad75540d3592',
-      woodenNumber: 1,
-      orderState: 'available',
-      orderStateLogs: {
-        orderReceivedAt: new Date(),
-        readiedAt: new Date(),
-        deliveredAt: undefined,
-      },
-      menus: [
-        {
-          id: v4(),
-          name: 'ソース',
-          price: 250,
-          arranges: {
-            kind: 'sauce',
-            sauce: true,
-            mayo: false,
-            katsuo: true,
-            aosa: true,
-          },
-        },
-        {
-          id: v4(),
-          name: 'めんたい',
-          price: 300,
-          arranges: {
-            kind: 'mentai',
-            sauce: true,
-            mentaiMayo: true,
-            cheese: true,
-            katsuo: true,
-          },
-        },
-      ],
-    },
-  ]);
-
-  const [currentSelectOrder, setCurrentSelectOrder] =
-    useState<OrderInformationType | null>(availableOrders[0]);
-
-  useEffect(() => {
-    if (!orders) return;
-    setAvailableOrders(
-      orders.filter((order) => order.orderState === 'available'),
-    );
-  }, [orders]);
-
-  if (isLoading) return <div>loading...</div>;
-  //選択した注文番号
-  const handleClick = (order: OrderInformationType) => {
-    setCurrentSelectOrder(order);
-  };
-
-  const discardOrder = async () => {
-    if (!currentSelectOrder) return;
-    const newOrder: OrderInformationType = {
-      ...currentSelectOrder,
-      orderState: 'discarded',
-    };
-    try {
-      const res = await orderApi.updateOrder(newOrder);
-      console.log(res);
-      //画面を更新する
-      const newAvailableOrders = availableOrders.filter(
-        (order) => order._id !== newOrder._id,
-      );
-      setAvailableOrders(newAvailableOrders);
-      setCurrentSelectOrder(null);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const finishOrderDelivery = async () => {
-    if (!currentSelectOrder) return;
-    const newOrder: OrderInformationType = {
-      ...currentSelectOrder,
-      orderState: 'finished',
-    };
-    try {
-      const res = await orderApi.updateOrder(newOrder);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  //現在の時間とorder.orderStateLogs.readiedAtの差を計算する関数
-  // const calculateSec = (order: OrderInformationType) => {
-  //   const now = new Date();
-  //   //注文受付からの経過時間を計算
-  //   const readiedAt = order.orderStateLogs.readiedAt;
-  //   if (!readiedAt) return 'lording...';
-  //   const diff = now.getTime() - readiedAt.getTime();
-  //   //秒数まで計算
-  //   const diffSec = Math.floor(diff / 1000).toString();
-  //   return diffSec;
-  // };
-
+const DeliveryUI = ({
+  availableOrders,
+  currentSelectOrder,
+  handleClick,
+  discardOrder,
+  finishOrderDelivery,
+}: {
+  availableOrders: OrderInformationType[];
+  currentSelectOrder: OrderInformationType | null;
+  handleClick: (order: OrderInformationType) => void;
+  discardOrder: () => void;
+  finishOrderDelivery: () => void;
+}) => {
+  
   return (
     <HStack>
-      <Box
+      <OrderCards availableOrders={availableOrders} handleClick={handleClick} />
+      <Box>
+        <ShowCurrentSelectOrder
+          currentSelectOrder={currentSelectOrder}
+          discardOrder={discardOrder}
+          finishOrderDelivery={finishOrderDelivery}
+        />
+        <ShowOrderHistory/>
+      </Box>
+    </HStack>
+  );
+};
+
+
+const OrderCards = ({
+  availableOrders,
+  handleClick,
+}: {
+  availableOrders: OrderInformationType[];
+  handleClick: (order: OrderInformationType) => void;
+}) => {
+  return (
+    <Box
         w="53vw"
         h="98vh"
         bgColor={'gray.20'}
@@ -145,20 +72,24 @@ const DeliveryUI = () => {
               >
                 {order.woodenNumber}
               </Button>
-              {
-                //TODO: ここで時間を表示する
-                /* <Box>
-              {order.orderStateLogs.readiedAt
-                ? calculateSec(order) + '秒'
-                : 'lording...'}
-            </Box> */
-              }
             </GridItem>
           ))}
         </Grid>
       </Box>
-      <Box>
-        <Box>
+  )
+}
+
+const ShowCurrentSelectOrder = ({
+  currentSelectOrder,
+  discardOrder,
+  finishOrderDelivery,
+}: {
+  currentSelectOrder: OrderInformationType | null;
+  discardOrder: () => void;
+  finishOrderDelivery: () => void;
+}) => {
+  return (
+    <Box>
           <Card h={'44vh'} border="2px">
             <CardBody>
               <Box height="25vh">
@@ -221,36 +152,19 @@ const DeliveryUI = () => {
                   ))}
                 </Box>
               </Box>
-              <div className="oprButton">
-                <HStack spacing="50px">
-                  <Button
-                    onClick={discardOrder}
-                    height="8vh"
-                    width="14vw"
-                    fontWeight={'bold'}
-                    mt={12}
-                    fontSize={30}
-                    bgColor="red.500"
-                  >
-                    廃棄
-                  </Button>
-                  <Button
-                    onClick={finishOrderDelivery}
-                    height="8vh"
-                    width="19vw"
-                    mt={12}
-                    bgColor="green.300"
-                    fontSize={30}
-                    fontWeight={'bold'}
-                  >
-                    受け渡し
-                  </Button>
-                </HStack>
-              </div>
+              <DeliveryFinishButton
+                discardOrder={discardOrder}
+                finishOrderDelivery={finishOrderDelivery}
+              />
             </CardBody>
           </Card>
         </Box>
-        <Box h={'55vh'} border="2px" borderRadius="10px">
+  )
+}
+
+const ShowOrderHistory = () => {
+  return (
+    <Box h={'55vh'} border="2px" borderRadius="10px">
           <PureCarousel
             cardInformation={[
               {
@@ -293,9 +207,44 @@ const DeliveryUI = () => {
             size={440}
           />
         </Box>
-      </Box>
-    </HStack>
-  );
-};
+  )
+}
+
+const DeliveryFinishButton = ({
+  discardOrder,
+  finishOrderDelivery,
+}: {
+  discardOrder: () => void;
+  finishOrderDelivery: () => void;
+}) => {
+  return (
+    <div className="oprButton">
+                <HStack spacing="50px">
+                  <Button
+                    onClick={discardOrder}
+                    height="8vh"
+                    width="14vw"
+                    fontWeight={'bold'}
+                    mt={12}
+                    fontSize={30}
+                    bgColor="red.500"
+                  >
+                    廃棄
+                  </Button>
+                  <Button
+                    onClick={finishOrderDelivery}
+                    height="8vh"
+                    width="19vw"
+                    mt={12}
+                    bgColor="green.300"
+                    fontSize={30}
+                    fontWeight={'bold'}
+                  >
+                    受け渡し
+                  </Button>
+                </HStack>
+              </div>
+  )
+}
 
 export default DeliveryUI;
