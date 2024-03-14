@@ -9,7 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Grid, GridItem } from '@chakra-ui/react';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import PayDrawer from './Payment';
 import OrderHistoryDrawer from './OrderHistoryDrawer';
 import { MenuInformation } from '../../../../types';
@@ -18,27 +18,50 @@ import { ArrangeState } from '../../../../state/cart/cartSlice';
 import { translateWords } from '../../../../common/transWord';
 import { mentaiTopping, sauceTopping } from './variable';
 
-
-type ReceptionUIProps = {
-  cart: MenuInformation[];
-  handleAddToCart: ({ name, price, arranges, id }: MenuInformation) => void;
-  handleDeleteFromCart: (id: string) => void;
-  handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
-  handleDeleteSetMenu: (index: number) => void;
-};
-
-const ReceptionUI: FC<ReceptionUIProps> = ({
+const ReceptionUI = ({
   cart,
   handleAddToCart,
   handleDeleteFromCart,
   handleUpdateOrderCheck,
   handleDeleteSetMenu,
+  difference_money,
+  depositAmount,
+  numberOfTicketsUsed,
+  totalMoney,
+  useTicket,
+  handleClick,
+  handleClear,
+  handleBackspace,
+  calculatorButtonLabels,
+}: {
+  cart: MenuInformation[];
+  handleAddToCart: ({ name, price, arranges, id }: MenuInformation) => void;
+  handleDeleteFromCart: (id: string) => void;
+  handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void;
+  handleDeleteSetMenu: (index: number) => void;
+difference_money: number;
+    depositAmount: string;
+    numberOfTicketsUsed: number;
+    totalMoney: string;
+    useTicket: () => void;
+    handleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    handleClear: () => void;
+    handleBackspace: () => void;
+    calculatorButtonLabels: string[];
 }) => {
 
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
-
+  const calculatorArgs = {
+    difference_money,
+    depositAmount,
+    numberOfTicketsUsed,
+    totalMoney,
+    useTicket,
+    handleClick,
+    handleClear,
+    handleBackspace,
+    calculatorButtonLabels,
+  };
+  
   return (
     <Box maxHeight="100vh">
       <HStack>
@@ -49,6 +72,7 @@ const ReceptionUI: FC<ReceptionUIProps> = ({
           handleUpdateOrderCheck={handleUpdateOrderCheck}
           handleDeleteSetMenu={handleDeleteSetMenu}
           translateWords={translateWords}
+          calculatorArgs={calculatorArgs}
         />
       </HStack>
     </Box>
@@ -61,12 +85,24 @@ const ShowCart = ({
   handleUpdateOrderCheck,
   handleDeleteSetMenu,
   translateWords,
+  calculatorArgs,
 }: {
   cart: MenuInformation[],
   handleDeleteFromCart: (id: string) => void,
   handleUpdateOrderCheck: ({ id, arrange, checked }: ArrangeState) => void,
   handleDeleteSetMenu: (index: number) => void,
   translateWords: (words: string) => string
+  calculatorArgs: {
+    difference_money: number;
+    depositAmount: string;
+    numberOfTicketsUsed: number;
+    totalMoney: string;
+    useTicket: () => void;
+    handleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    handleClear: () => void;
+    handleBackspace: () => void;
+    calculatorButtonLabels: string[];
+  };
 }) => {
   return (
     <Card w={'60vw'} h={'96vh'} p={4} m={2}>
@@ -160,7 +196,7 @@ const ShowCart = ({
       </Stack>
       <HStack>
         <ShowTotalPrice cart={cart} />
-        <PayDrawer />
+        <PayDrawer calculatorArgs={calculatorArgs} />
       </HStack>
     </Card>
   )
