@@ -27,7 +27,29 @@ const DeliveryUI = ({
   
   return (
     <HStack>
-      <Box
+      <OrderCards availableOrders={availableOrders} handleClick={handleClick} />
+      <Box>
+        <ShowCurrentSelectOrder
+          currentSelectOrder={currentSelectOrder}
+          discardOrder={discardOrder}
+          finishOrderDelivery={finishOrderDelivery}
+        />
+        <ShowOrderHistory/>
+      </Box>
+    </HStack>
+  );
+};
+
+
+const OrderCards = ({
+  availableOrders,
+  handleClick,
+}: {
+  availableOrders: OrderInformationType[];
+  handleClick: (order: OrderInformationType) => void;
+}) => {
+  return (
+    <Box
         w="53vw"
         h="98vh"
         bgColor={'gray.20'}
@@ -54,8 +76,20 @@ const DeliveryUI = ({
           ))}
         </Grid>
       </Box>
-      <Box>
-        <Box>
+  )
+}
+
+const ShowCurrentSelectOrder = ({
+  currentSelectOrder,
+  discardOrder,
+  finishOrderDelivery,
+}: {
+  currentSelectOrder: OrderInformationType | null;
+  discardOrder: () => void;
+  finishOrderDelivery: () => void;
+}) => {
+  return (
+    <Box>
           <Card h={'44vh'} border="2px">
             <CardBody>
               <Box height="25vh">
@@ -147,7 +181,12 @@ const DeliveryUI = ({
             </CardBody>
           </Card>
         </Box>
-        <Box h={'55vh'} border="2px" borderRadius="10px">
+  )
+}
+
+const ShowOrderHistory = () => {
+  return (
+    <Box h={'55vh'} border="2px" borderRadius="10px">
           <PureCarousel
             cardInformation={[
               {
@@ -190,9 +229,7 @@ const DeliveryUI = ({
             size={440}
           />
         </Box>
-      </Box>
-    </HStack>
-  );
-};
+  )
+}
 
 export default DeliveryUI;
