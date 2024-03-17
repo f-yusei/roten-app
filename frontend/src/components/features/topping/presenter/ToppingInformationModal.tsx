@@ -11,7 +11,7 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { FC } from 'react';
-import { OrderInformationType } from '../../../../types';
+import { OrderInformationType,MenuInformation} from '../../../../types';
 import orderApi from '../../../../api/orderApi';
 
 export type ToppingInformationModalProps = {
@@ -32,7 +32,6 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
   finalRef,
 }) => {
   
-
   const completeTopping = async () => {
     const newOrder: OrderInformationType = {
       ...order,
@@ -50,48 +49,10 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
 
   return (
     <>
-      <Button
-        minW={'sm'}
-        minH={'xs'}
-        overflow={'auto'}
-        onClick={() => {
-          onOpen();
-        }}
-        padding={0}
-      >
-        <VStack>
-          <Box fontSize={'20px'}>木札番号：{order.woodenNumber}</Box>
-
-          {order.menus.map((menu, index) => (
-            <VStack key={index}>
-              <Box
-                fontSize={'20px'}
-                color={menu.arranges.kind === 'sauce' ? '#631A03' : '#F59090'}
-              >
-                {menu.name}
-              </Box>
-              {menu.arranges.kind === 'sauce' ? (
-                <>
-                  <Box>{menu.arranges.sauce ? '' : 'ソース: なし'}</Box>
-                  <Box>{menu.arranges.mayo ? '' : 'マヨ: なし'}</Box>
-                  <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
-                  <Box> {menu.arranges.aosa ? '' : 'アオサ:なし'}</Box>
-                </>
-              ) : (
-                <>
-                  <Box> {menu.arranges.sauce ? '' : 'ソース:なし'}</Box>
-                  <Box>
-                    {menu.arranges.mentaiMayo ? '' : 'めんたいマヨ:なし'}
-                  </Box>
-                  <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
-                  <Box>{menu.arranges.cheese ? '' : 'チーズ:なし'}</Box>
-                </>
-              )}
-            </VStack>
-          ))}
-        </VStack>
-      </Button>
-
+    <ToppingInformationButton 
+    order={order}
+    onOpen={onOpen}
+    />
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -102,23 +63,7 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
               {order.menus.map((menu, index) => (
                 <VStack key={index}>
                   <Box fontSize={'20px'}>{menu.name}</Box>
-                  {menu.arranges.kind === 'sauce' ? (
-                    <>
-                      <Box>{menu.arranges.sauce ? '' : 'ソース: なし'}</Box>
-                      <Box>{menu.arranges.mayo ? '' : 'マヨ: なし'}</Box>
-                      <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
-                      <Box> {menu.arranges.aosa ? '' : 'アオサ:なし'}</Box>
-                    </>
-                  ) : (
-                    <>
-                      <Box> {menu.arranges.sauce ? '' : 'ソース:なし'}</Box>
-                      <Box>
-                        {menu.arranges.mentaiMayo ? '' : 'めんたいマヨ:なし'}
-                      </Box>
-                      <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
-                      <Box>{menu.arranges.cheese ? '' : 'チーズ:なし'}</Box>
-                    </>
-                  )}
+                  <MenuArrangesBox menu={menu}/>
                 </VStack>
               ))}
             </VStack>
@@ -134,7 +79,72 @@ const ToppingInformationModal: FC<ToppingInformationModalProps> = ({
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+      </>
   );
 };
 export default ToppingInformationModal;
+
+type ToppingInformationButtonProps = {
+  order: OrderInformationType;
+  onOpen: () => void;
+};
+
+const ToppingInformationButton: FC<ToppingInformationButtonProps> = ({
+  order,
+  onOpen,
+  }) => {
+  return (
+<Button
+        minW={'sm'}
+        minH={'xs'}
+        overflow={'auto'}
+        onClick={() => {
+          onOpen();
+        }}
+        padding={0}
+      >
+        <VStack>
+          <Box fontSize={'20px'}>木札番号：{order.woodenNumber}</Box>
+          {order.menus.map((menu, index) => (
+            <VStack key={index}>
+              <Box
+                fontSize={'20px'}
+                color={menu.arranges.kind === 'sauce' ? '#631A03' : '#F59090'}
+              >
+                {menu.name}
+              </Box>
+              <MenuArrangesBox menu={menu}/>
+            </VStack>
+          ))}
+        </VStack>
+      </Button>
+  );
+}
+
+const MenuArrangesBox = ({
+  menu
+}:{
+  menu:MenuInformation
+}) => {
+return (
+  <>
+  {menu.arranges.kind === 'sauce' ? (
+    <>
+      <Box>{menu.arranges.sauce ? '' : 'ソース: なし'}</Box>
+      <Box>{menu.arranges.mayo ? '' : 'マヨ: なし'}</Box>
+      <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
+      <Box>{menu.arranges.aosa ? '' : 'アオサ:なし'}</Box>
+    </>
+  ) : (
+    <>
+      <Box>{menu.arranges.sauce ? '' : 'ソース:なし'}</Box>
+      <Box>
+        {menu.arranges.mentaiMayo ? '' : 'めんたいマヨ:なし'}
+      </Box>
+      <Box>{menu.arranges.katsuo ? '' : 'カツオ:なし'}</Box>
+      <Box>{menu.arranges.cheese ? '' : 'チーズ:なし'}</Box>
+    </>
+  )}
+  </>
+);
+}
